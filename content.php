@@ -74,10 +74,28 @@ if( ! empty( $et_loop['size'] ) ) {
             <?php endif; ?>
         </div>
     </div>
-    <?php if(etheme_get_option('blog_byline') && $layout == 'timeline'): ?>
+    <?php if(etheme_get_option('blog_byline') && ( $layout == 'timeline' || $layout == 'timeline2' ) ): ?>
+
+        <?php if ( $layout == 'timeline2' ): ?>
+            <div class="timeline-content">
+        <?php endif; ?>
         <div class="meta-post-timeline">
             <span class="time-day"><?php the_time('d'); ?></span>
             <span class="time-mon"><?php the_time('M'); ?></span>
         </div>
+        <?php if ( $layout == 'timeline2' ): ?>
+            </div><!-- .timeline-content -->
+        <?php endif; ?>
     <?php endif; ?>
 </article>
+
+
+
+
+
+
+
+
+
+
+

@@ -192,7 +192,7 @@ if(!function_exists('etheme_redux_init')) {
                 array (
                     'id' => 'portfolio_projects',
                     'type' => 'switch',
-                    'title' => __( 'Portoflio projects', 'xstore' ),
+                    'title' => __( 'Portfolio projects', 'xstore' ),
                     'default' => true,
                 ),
                 array (
@@ -1298,8 +1298,9 @@ Surely you can find something for yourself!</p> ',
                         'options' => array (
                             'disable' => __( 'Disable', 'xstore' ),
                             'default' => __( 'Default', 'xstore' ),
-                            'mask' => __( 'Buttons on hover', 'xstore' ),
-                            'mask2' => __( 'Buttons on hover 2', 'xstore' ),
+                            'mask3' => __( 'Buttons on hover middle', 'xstore' ),
+                            'mask' => __( 'Buttons on hover bottom', 'xstore' ),
+                            'mask2' => __( 'Buttons on hover right', 'xstore' ),
                             'info' => __( 'Information mask', 'xstore' ),
                             'booking' => __( 'Booking', 'xstore' ),
                         ),
@@ -1825,6 +1826,10 @@ Surely you can find something for yourself!</p> ',
                         'timeline' => array(
                             'title' => __( 'Timeline', 'xstore' ),
                             'img' => ETHEME_CODE_IMAGES . 'blog/posts5-1.png',
+                        ),
+                        'timeline2' => array(
+                            'title' => __( 'Timeline 2', 'xstore' ),
+                            'img' => ETHEME_CODE_IMAGES . 'blog/timeline2.png',
                         ),
                         'small' => array(
                             'title' => __( 'List', 'xstore' ),

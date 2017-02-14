@@ -286,7 +286,20 @@ return array(
         ),
         'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
         'type' => 'demo'
-    ), 
+    ),
+    'flowers' => array(
+        'title' => 'Flowers',
+        'preview_url' => $main_domain . 'flowers/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
     'dark' => array(
         'title' => 'Dark',
         'preview_url' => $main_domain . 'dark/',
@@ -904,6 +917,24 @@ return array(
     'lawyer-services' => array(
         'title' => 'Lawyer services',
         'preview_url' => $main_domain . 'lawyer/services/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'flowers-about' => array(
+        'title' => 'Flowers about',
+        'preview_url' => $main_domain . 'flowers/about-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'flowers-contacts' => array(
+        'title' => 'Flowers contacts',
+        'preview_url' => $main_domain . 'flowers/contact-us/',
         'to_import' => array(
             'content' => true,
             'slider' => false

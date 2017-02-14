@@ -225,7 +225,7 @@ if(!function_exists('etheme_byline')) {
         $comment_link_template = '<span>%s</span> <span>%s</span>';
 		?>
             <div class="meta-post">
-    	        <?php if(etheme_get_option('blog_byline') && etheme_get_option('blog_layout') != 'timeline'): ?>
+    	        <?php if(etheme_get_option('blog_byline') && etheme_get_option('blog_layout') != 'timeline' && etheme_get_option('blog_layout') != 'timeline2'): ?>
 					<time class="entry-date published updated" datetime="<?php the_time('F j, Y'); ?>"><?php the_time(get_option('date_format')); ?></time>
                     <?php if ( $time ): ?>
 						<?php esc_html_e('at', 'xstore');?>
@@ -249,7 +249,7 @@ if(!function_exists('etheme_byline')) {
                             );
                         }
                      ?>
-    	        <?php elseif(etheme_get_option('blog_byline') && etheme_get_option('blog_layout') == 'timeline'): ?>
+    	        <?php elseif(etheme_get_option('blog_byline') && ( etheme_get_option('blog_layout') == 'timeline' || etheme_get_option('blog_layout') == 'timeline2' ) ): ?>
                     <?php esc_html_e('Posted by', 'xstore');?> <?php the_author_posts_link(); ?>
                      <span class="meta-divider">/</span>
                      <?php if (etheme_get_option('views_counter')): ?>
@@ -660,7 +660,10 @@ if(!function_exists('etheme_create_slider')) {
 			'mobile' => 2,
 			'slider_autoplay' => 'no',
 			'slider_speed' => 10000,
-			'hide_pagination' => false,
+			'pagination_type' => 'hide',
+			'default_color' => '#e6e6e6',
+			'active_color' => '#b3a089',
+			'hide_fo' => '',
 			'hide_buttons' => false,
 	        'style' => 'default',
 	        'product_view' => '',
@@ -743,7 +746,7 @@ if(!function_exists('etheme_create_slider')) {
 						var options = {
 							items:5,
 							autoPlay: ' . (($slider_autoplay == "yes") ? $slider_speed : "false" ). ',
-							pagination: ' . (($hide_pagination == "yes") ? "false" : "true") . ',
+							pagination: ' . (($pagination_type == "hide") ? "false" : "true") . ',
 							navigation: ' . (($hide_buttons == "yes") ? "false" : "true" ). ',
 							navigationText:false,
 							stopOnHover: true,
@@ -757,10 +760,26 @@ if(!function_exists('etheme_create_slider')) {
 
 						jQuery( window ).bind( "vc_js", function() {
 							owl.reinit(options);
+							jQuery(".slider-'.$box_id.' .owl-pagination").addClass("pagination-type-'.$pagination_type.' hide-for-'.$hide_fo.'");
 						} );
 	            	})();
 	            </script>
 	        ';
+	        if ( $pagination_type != 'hide' && ( $default_color != '#e6e6e6' || $active_color !='#b3a089' ) ) {
+		        echo '
+		            <style>
+		                .slider-'.$box_id.' .owl-pagination .owl-page{
+		                    background-color:'.$default_color.';
+		                }
+		                .slider-'.$box_id.' .owl-carousel .owl-pagination .owl-page:hover{
+		                    background-color:'.$active_color.';
+		                }
+		                .slider-'.$box_id.' .owl-pagination .owl-page.active{
+		                    background-color:'.$active_color.';
+		                }
+		            </style>
+		        ';
+		    }
         } elseif($slider_type == 'swiper') {
         	$initialSlide = 0;
         	if( $from_first == 'no' )  {
@@ -1060,8 +1079,11 @@ if(!function_exists('etheme_create_posts_slider')) {
 			'mobile' => 1,
 			'slider_autoplay' => 'no',
 			'slider_speed' => 10000,
-			'hide_pagination' => false,
+			'pagination_type' => 'hide',
+			'default_color' => '#e6e6e6',
+			'active_color' => '#b3a089',
 			'hide_buttons' => false,
+			'hide_fo' => '',
 			'size' => 'medium',
 			'el_class' => '',
 		), $atts ) );
@@ -1099,7 +1121,7 @@ if(!function_exists('etheme_create_posts_slider')) {
 					var options = {
 						items:4,
 						autoPlay: ' . (($slider_autoplay == "yes") ? $slider_speed : "false" ). ',
-						pagination: ' . (($hide_pagination == "yes") ? "false" : "true") . ',
+						pagination: ' . (($pagination_type == "hide") ? "false" : "true") . ',
 						navigation: ' . (($hide_buttons == "yes") ? "false" : "true" ). ',
 						stopOnHover: true,
 						navigationText:false,
@@ -1107,10 +1129,24 @@ if(!function_exists('etheme_create_posts_slider')) {
 						itemsCustom: [[0, ' . esc_js($mobile) . '], [479, ' . esc_js($tablet_portrait) . '], [619, ' . esc_js($tablet_portrait) . '], [768, ' . esc_js($tablet_land) . '],  [1200, ' . esc_js($notebook) . '], [1600, ' . esc_js($large) . ']]
 					};
 					jQuery(".slider-'.$box_id.' .slider").owlCarousel(options);
+					jQuery(".slider-'.$box_id.' .owl-pagination").addClass("pagination-type-'.$pagination_type.' hide-for-'.$hide_fo.'");
                 </script>
             ';
-
-
+            if ( $pagination_type != 'hide' && ( $default_color != '#e6e6e6' || $active_color !='#b3a089' ) ) {
+            	echo '
+            	    <style>
+		                .slider-'.$box_id.' .owl-pagination .owl-page{
+		                	background-color:'.$default_color.';
+		                }
+		                .slider-'.$box_id.' .owl-carousel .owl-pagination .owl-page:hover{
+		                	background-color:'.$active_color.';
+		                }
+		                .slider-'.$box_id.' .owl-pagination .owl-page.active{
+		                	background-color:'.$active_color.';
+		                }
+	                </style>
+            	';
+            }
         endif;
         unset($et_loop);
 		wp_reset_postdata();

@@ -1,6 +1,8 @@
 <?php
 global $et_loop;
 
+//print_r($et_loop);
+
 if( empty( $et_loop['columns'] ) ) {
     $et_loop['columns'] = etheme_get_option('blog_columns');
 }
@@ -14,6 +16,10 @@ if( empty( $et_loop['loop'] ) ) {
 }
 
 $layout = etheme_get_option('blog_layout');
+
+if ( is_single() && $layout == 'timeline2' ) {
+    $et_loop['slide_view'] = $layout;
+}
 
 if( ! empty( $et_loop['blog_layout'] ) ) {
     $layout = $et_loop['blog_layout'];
@@ -35,6 +41,12 @@ $read_more 		= etheme_get_read_more();
 
 <article <?php post_class($postClass); ?> id="post-<?php the_ID(); ?>" >
     <div>
+        <?php if ( $et_loop['slide_view'] == 'timeline2' ): ?>
+            <div class="meta-post-timeline">
+                <span class="time-day"><?php the_time('d'); ?></span>
+                <span class="time-mon"><?php the_time('M'); ?></span>
+            </div>
+        <?php endif; ?>
         <?php etheme_post_thumb( array('size' => $size, 'in_slider' => $et_loop['slider'] ) ); ?>
 
         <div class="grid-post-body">

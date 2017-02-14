@@ -6,6 +6,7 @@ var etTheme;
 
     etTheme = {
         init: function() {
+            this.resizeVideo();
             this.isotope();
             this.sitePreloader();
             this.funcySelect();
@@ -16,7 +17,6 @@ var etTheme;
             this.onePageMenu();
             this.fixedHeader();
             this.fixedFooter();
-            this.resizeVideo();
             this.windowsPhoneFix();
             this.popup();
             this.imagesLightbox();

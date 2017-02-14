@@ -93,19 +93,59 @@ if( ! function_exists( 'etheme_get_slider_params' ) ) {
 			),
 			array(
 				"type" => "checkbox",
-				"heading" => esc_html__("Hide pagination control", 'xstore'),
-				"param_name" => "hide_pagination",
-				"group" => esc_html__('Slider settings', 'xstore'),
-				'value' => array( esc_html__( 'Yes, please', 'xstore' ) => 'yes' )
-
-			),
-			array(
-				"type" => "checkbox",
 				"heading" => esc_html__("Hide prev/next buttons", 'xstore'),
 				"param_name" => "hide_buttons",
 				"group" => esc_html__('Slider settings', 'xstore'),
 				'value' => array( esc_html__( 'Yes, please', 'xstore' ) => 'yes' )
 
+			),
+			array(
+				'type' => 'dropdown',
+				'heading' => esc_html__( 'Pagination type', 'xstore' ),
+				'param_name' => 'pagination_type',
+				'group' => esc_html__('Slider settings', 'xstore'),
+				'value' => array(
+					__( 'Hide', 'xstore' ) => 'hide',
+					__( 'Bullets', 'xstore' ) => 'bullets',
+					__( 'Lines', 'xstore' ) => 'lines',
+				),
+			),
+			array(
+				'type' => 'dropdown',
+				'heading' => esc_html__( 'Hide pagination only for', 'xstore' ),
+				'param_name' => 'hide_fo',
+				'dependency' => array(
+					'element' => 'pagination_type',
+					'value' => array( 'bullets', 'lines' ),
+				),
+				'group' => esc_html__('Slider settings', 'xstore'),
+				'value' => array(
+					__( '', '' ) => '',
+					__( 'Mobile', 'xstore' ) => 'mobile',
+					__( 'Desktop', 'xstore' ) => 'desktop',
+				),
+			),
+			array(
+				"type" => "colorpicker",
+				"heading" => __( "Pagination default color", "xstore" ),
+				"param_name" => "default_color",
+				'dependency' => array(
+					'element' => 'pagination_type',
+					'value' => array( 'bullets', 'lines' ),
+				),
+				"group" => esc_html__('Slider settings', 'xstore'),
+				"value" => '#e6e6e6',
+			),
+			array(
+				"type" => "colorpicker",
+				"heading" => __( "Pagination active color", "xstore" ),
+				"param_name" => "active_color",
+				'dependency' => array(
+					'element' => 'pagination_type',
+					'value' => array( 'bullets', 'lines' ),
+				),
+				"group" => esc_html__('Slider settings', 'xstore'),
+				"value" => '#b3a089',
 			),
 			array(
 				"type" => "textfield",

@@ -20,7 +20,10 @@ function etheme_brands_shortcode($atts) {
         'mobile' => 1,
         'slider_autoplay' => false,
         'slider_speed' => 10000,
-        'hide_pagination' => false,
+        'pagination_type' => 'hide',
+        'default_color' => '#e6e6e6',
+        'active_color' => '#b3a089',
+        'hide_fo' => '',
         'hide_buttons' => false,
         'class'      => ''
     ), $atts ) );
@@ -71,7 +74,7 @@ function etheme_brands_shortcode($atts) {
                 var options = {
                     items:5,
                     autoPlay: ' . (($slider_autoplay == "yes") ? $slider_speed : "false" ). ',
-                    pagination: ' . (($hide_pagination == "yes") ? "false" : "true") . ',
+                    pagination: ' . (($pagination_type == "hide") ? "false" : "true") . ',
                     navigation: ' . (($hide_buttons == "yes") ? "false" : "true" ). ',
                     navigationText:false,
                     rewindNav: ' . (($slider_autoplay == "yes") ? "true" : "false" ). ',
@@ -81,14 +84,31 @@ function etheme_brands_shortcode($atts) {
                 jQuery(".slider-'.$box_id.'").owlCarousel(options);
 
                 var owl = jQuery(".slider-'.$box_id.'").data("owlCarousel");
-
+                
                 jQuery( window ).bind( "vc_js", function() {
                     owl.reinit(options);
+                    jQuery(".slider-'.$box_id.' .owl-pagination").addClass("pagination-type-'.$pagination_type.' hide-for-'.$hide_fo.'");
                 } );
+
+                
             })();
         </script>
     ';
-
+    if ( $pagination_type != 'hide' && $default_color != '#e6e6e6' && $active_color !='#b3a089' ) {
+        echo '
+            <style>
+                .slider-'.$box_id.' .owl-pagination .owl-page{
+                    background-color:'.$default_color.';
+                }
+                .slider-'.$box_id.' .owl-carousel .owl-pagination .owl-page:hover{
+                    background-color:'.$active_color.';
+                }
+                .slider-'.$box_id.' .owl-pagination .owl-page.active{
+                    background-color:'.$active_color.';
+                }
+            </style>
+        ';
+    }
     return ob_get_clean();
 }
 

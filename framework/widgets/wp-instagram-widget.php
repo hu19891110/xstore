@@ -68,6 +68,20 @@ class ETheme_Instagram_Widget extends WP_Widget {
 		$slider = empty($instance['slider']) ? false : true;
 		$spacing = empty($instance['spacing']) ? false : true;
 
+		// slider args
+		$large = empty($instance['large']) ? 4 : $instance['large'];
+		$notebook = empty($instance['notebook']) ? 3 : $instance['notebook'];
+		$tablet_land = empty($instance['tablet_land']) ? 2 : $instance['tablet_land'];
+        $tablet_portrait = empty($instance['tablet_portrait']) ? 2 : $instance['tablet_portrait'];
+        $mobile = empty($instance['mobile']) ? 1 : $instance['mobile'];
+        $slider_autoplay = empty($instance['slider_autoplay']) ? false : true;
+        $slider_speed = empty($instance['slider_speed']) ? 10000 : $instance['slider_speed'];
+        $pagination_type = empty($instance['pagination_type']) ? 'hide' : $instance['pagination_type'];
+        $default_color = empty($instance['default_color']) ? '#e6e6e6' : $instance['default_color'];
+        $active_color = empty($instance['active_color']) ? '#b3a089' : $instance['active_color'];
+        $hide_fo = empty($instance['hide_fo']) ? '' : $instance['hide_fo'];
+        $hide_buttons = empty($instance['hide_buttons']) ? false : true;
+
 		echo $before_widget;
 		if(!empty($title)) { echo $before_title . $title . $after_title; };
 
@@ -91,9 +105,9 @@ class ETheme_Instagram_Widget extends WP_Widget {
 				$liclass = esc_attr( apply_filters( 'wpiw_item_class', '' ) );
 				$aclass = esc_attr( apply_filters( 'wpiw_a_class', '' ) );
 				$imgclass = esc_attr( apply_filters( 'wpiw_img_class', '' ) );
+				$box_id = rand(1000,10000);
 
-
-				?><ul class="instagram-pics instagram-size-<?php echo esc_attr( $size ); ?> instagram-columns-<?php echo esc_attr( $columns ); ?> <?php if($spacing) echo 'instagram-no-space'; ?> <?php if($slider) echo 'instagram-slider'; ?>"><?php
+				?><ul class="instagram-pics instagram-size-<?php echo esc_attr( $size ); ?> instagram-columns-<?php echo esc_attr( $columns ); ?> <?php if($spacing) echo 'instagram-no-space'; ?> <?php if($slider) echo 'instagram-slider slider-'.$box_id.''; ?>"><?php
 				foreach ( $media_array as $item ) {
 					// copy the else line into a new file (parts/wp-instagram-widget.php) within your theme and customise accordingly
 					
@@ -135,28 +149,47 @@ class ETheme_Instagram_Widget extends WP_Widget {
 						break;
 					}
 			        $items = '[[0, 2], [479,2], [619,3], [768,' . ($large_items - 2) . '],  [1200, ' . ($large_items - 1) . '], [1600, ' . $large_items . ']]';
-					?>
-			            <script type="text/javascript">
-			            	(function() {
-				            	var instaOptions = {
-				                    items:4, 
+		        	echo '
+				        <script type="text/javascript">
+				            (function() {
+				                var instaOptions = {
+				                    items:5,
 				                    lazyLoad : false,
-				                    navigation: true,
+				                    autoPlay: ' . (($slider_autoplay == true) ? $slider_speed : "false" ). ',
+				                    pagination: ' . (($pagination_type == "hide") ? "false" : "true") . ',
+				                    navigation: ' . (($hide_buttons == true) ? "false" : "true" ). ',
 				                    navigationText:false,
-				                    rewindNav: false,
-				                    itemsCustom: <?php echo $items; ?>
+				                    rewindNav: ' . (($slider_autoplay == true) ? "true" : "false" ). ',
+				                    itemsCustom: '.$items.'
 				                };
+
+				                jQuery(".slider-'.$box_id.'").owlCarousel(instaOptions);
+
+								var instaOwl = jQuery(".slider-'.$box_id.'").data("owlCarousel");
 				                
-				                jQuery(".instagram-slider").owlCarousel(instaOptions);
-
-				                var instaOwl = jQuery(".instagram-slider").data('owlCarousel');
-
-								jQuery( window ).bind( 'vc_js', function() {
+				                jQuery( window ).bind( "vc_js", function() {
 									instaOwl.reinit(instaOptions);
+									jQuery(".slider-'.$box_id.' .owl-pagination").addClass("pagination-type-'.$pagination_type.' hide-for-'.$hide_fo.'");
 								} );
-			            	})();
-			            </script>
-					<?php
+				                
+				            })();
+				        </script>
+				    ';
+			        if ( $pagination_type != 'hide' && $default_color != '#e6e6e6' && $active_color !='#b3a089' ) {
+				        echo '
+				            <style>
+				                .slider-'.$box_id.' .owl-pagination .owl-page{
+				                    background-color:'.$default_color.';
+				                }
+				                .slider-'.$box_id.'.owl-carousel .owl-pagination .owl-page:hover{
+				                    background-color:'.$active_color.';
+				                }
+				                .slider-'.$box_id.' .owl-pagination .owl-page.active{
+				                    background-color:'.$active_color.';
+				                }
+				            </style>
+				        ';
+				    }
 				}
 			}
 		}
@@ -176,11 +209,11 @@ class ETheme_Instagram_Widget extends WP_Widget {
 		$username = esc_attr($instance['username']);
 		$number = absint($instance['number']);
 		$size = esc_attr($instance['size']);
-		$columns = (int) $instance['columns'];
+		$columns = @(int) $instance['columns'];
 		$target = esc_attr($instance['target']);
 		$link = esc_attr($instance['link']);
-		$slider = esc_attr($instance['slider']);
-		$spacing = esc_attr($instance['spacing']);
+		//$slider = esc_attr($instance['slider']);
+		$spacing = @esc_attr($instance['spacing']);
 
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title', 'xstore'); ?>: <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>

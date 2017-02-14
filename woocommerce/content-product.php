@@ -165,15 +165,26 @@ if( etheme_get_option( 'hide_buttons_mobile' ) ) {
                 ?>
             <?php endif ?>
             
-            <?php if ($view == 'mask' || $view == 'mask2' || $view == 'default' || $view == 'info'): ?>
+            <?php if ($view == 'mask' || $view == 'mask2' || $view == 'mask3' || $view == 'default' || $view == 'info'): ?>
     			<footer class="footer-product">
-                    <?php if (etheme_get_option('quick_view')): ?>
-                        <span class="show-quickly" data-prodid="<?php echo $post->ID;?>"><?php esc_html_e('Quick View', 'xstore') ?></span>
-                    <?php endif ?>
+                    <?php if ( $view == 'mask3' ): ?>
+                        <?php echo etheme_wishlist_btn(__('Wishlist', 'xstore')); ?>
+                    <?php else: ?>
+                        <?php if (etheme_get_option('quick_view')): ?>
+                            <span class="show-quickly" data-prodid="<?php echo $post->ID;?>"><?php esc_html_e('Quick View', 'xstore') ?></span>
+                         <?php endif; ?>
+                    <?php endif; ?>
+                    
                     <?php //if (etheme_get_option('product_page_addtocart')) {
                         do_action( 'woocommerce_after_shop_loop_item' );
                     //}?>
-                    <?php echo etheme_wishlist_btn(__('Wishlist', 'xstore')); ?>
+                    <?php if ( $view == 'mask3' ): ?>
+                        <?php if (etheme_get_option('quick_view')): ?>
+                            <span class="show-quickly" data-prodid="<?php echo $post->ID;?>"><?php esc_html_e('Quick View', 'xstore') ?></span>
+                         <?php endif ?>
+                    <?php else: ?>
+                        <?php echo etheme_wishlist_btn(__('Wishlist', 'xstore')); ?>
+                    <?php endif; ?>
     			</footer>
             <?php endif ?>
 		</div>
@@ -211,7 +222,7 @@ if( etheme_get_option( 'hide_buttons_mobile' ) ) {
                 <?php if( $show_counter ) etheme_product_countdown(); ?>
 
     			<?php
-    				if (etheme_get_option('product_page_addtocart') && $view != 'mask') {
+    				if (etheme_get_option('product_page_addtocart') && $view != 'mask' && $view != 'mask3') {
     					do_action( 'woocommerce_after_shop_loop_item' );
     				}
     			?>

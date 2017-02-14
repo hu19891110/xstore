@@ -15,6 +15,18 @@ function etheme_instagram_shortcode($atts, $content) {
         'slider'  => 0,
         'spacing'  => 0,
         'link'  => '',
+        'large' => 4,
+        'notebook' => 3,
+        'tablet_land' => 2,
+        'tablet_portrait' => 2,
+        'mobile' => 1,
+        'slider_autoplay' => false,
+        'slider_speed' => 10000,
+        'pagination_type' => 'hide',
+        'default_color' => '#e6e6e6',
+        'active_color' => '#b3a089',
+        'hide_fo' => '',
+        'hide_buttons' => false,
     ), $atts);
     
     ob_start();
@@ -39,7 +51,7 @@ if(!function_exists('etheme_register_vc_scslug')) {
 	      'base' => 'instagram',
 		  'icon' => ETHEME_CODE_IMAGES . 'vc/el-instagram.png',
 	      'category' => 'Eight Theme',
-	      'params' => array(
+	      'params' => array_merge(array(
 	        array(
 	          "type" => "textfield",
 	          "heading" => esc_html__("Title", 'xstore'),
@@ -107,7 +119,7 @@ if(!function_exists('etheme_register_vc_scslug')) {
 					__( 'Yes', 'xstore' ) => 1,
 				),
 			),
-	      )
+	      ), etheme_get_slider_params() )
 	
 	    );  
 	

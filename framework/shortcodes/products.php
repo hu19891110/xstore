@@ -31,7 +31,10 @@ function etheme_products_shortcode($atts, $content) {
         'mobile' => 1,
         'slider_autoplay' => false,
         'slider_speed' => 10000,
-        'hide_pagination' => false,
+        'pagination_type' => 'hide',
+        'default_color' => '#e6e6e6',
+        'active_color' => '#b3a089',
+        'hide_fo' => '',
         'hide_buttons' => false,
         'size' => 'shop_catalog',
         'orderby' => '',
@@ -134,8 +137,11 @@ function etheme_products_shortcode($atts, $content) {
             'mobile' => $mobile,
             'slider_autoplay' => $slider_autoplay,
             'slider_speed' => $slider_speed,
-            'hide_pagination' => $hide_pagination,
+            'pagination_type' => $pagination_type,
+            'default_color' => $default_color,
+            'active_color' => $active_color,
             'hide_buttons' => $hide_buttons,
+            'hide_fo' => $hide_fo,
     	);
         ob_start();
         etheme_create_slider($args, $slider_args);

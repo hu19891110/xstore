@@ -57,9 +57,14 @@ class ETheme_Blog_Shortcodes {
 			'mobile' => 1,
 			'slider_autoplay' => false,
 			'slider_speed' => 10000,
-			'hide_pagination' => false,
+			'pagination_type' => 'hide',
+			'hide_fo' => '',
+			'default_color' => '#e6e6e6',
+			'active_color' => '#b3a089',
 			'hide_buttons' => false,
 		) );
+
+		//print_r($atts);
 
 		return $this->get_carousel( $atts );
 
@@ -467,11 +472,12 @@ class ETheme_Blog_Shortcodes {
 		return array_merge($this->get_params(), array(
 			array(
 				'type' => 'dropdown',
-				'heading' => esc_html__( 'Slide view', 'xstore' ),
+				'heading' => esc_html__( 'Posts template', 'xstore' ),
 				'param_name' => 'slide_view',
 				'value' => array(
 					'Vertical' => 'vertical',
 					'Horizontal' => 'horizontal',
+					'Timeline2' => 'timeline2',
 				),
 			),
 			array(

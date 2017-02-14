@@ -85,7 +85,9 @@ table.cart .product-details a:hover,
 .mc4wp-alert.mc4wp-error,
 .et-tabs-wrapper.title-hover .tabs-nav li a span,
 .et-timer.product-sale-counter .time-block span,
-#fullscreenMenu .menu > li > a:hover
+.fullscreen-menu .menu > li > a:hover,
+.slide-view-timeline2 .meta-post-timeline .time-day,
+article.content-timeline2 .timeline-content .meta-post-timeline .time-day
 ';
 
 $et_selectors['active_bg'] = '
@@ -196,7 +198,15 @@ div.pp_default .pp_content_container a.pp_next:hover, div.pp_default .pp_content
 .global-header-simple .header-color-dark .cart-bag,
 .header-simple .menu-wrapper .menu > li > a:hover:after,
 .header-simple .menu-wrapper .menu > li.current-menu-item > a:after,
-.team-member.member-type-2:hover .content-section
+.team-member.member-type-2:hover .content-section,
+.product-view-mask3 .footer-product .yith-wcwl-add-button a.add_to_wishlist, .product-view-mask3 .footer-product .yith-wcwl-wishlistexistsbrowse a, .product-view-mask3 .footer-product .yith-wcwl-wishlistaddedbrowse a,
+.product-view-mask3 .footer-product .yith-wcwl-add-button a.add_to_wishlist.alt:hover,
+.product-view-mask3 .footer-product .button,
+.product-view-mask3 .footer-product .button:hover,
+.product-view-mask3 .footer-product .show-quickly,
+.product-view-mask3 .footer-product .compare,
+.slide-view-timeline2:hover .meta-post-timeline,
+article.content-timeline2:hover .meta-post-timeline
 
 ';
 
@@ -243,7 +253,9 @@ table.cart .remove-item:hover,
 .global-header-simple .header-color-dark .cart-bag:before,
 .global-header-simple .header-color-dark .cart-summ:hover .cart-bag,
 .global-header-simple .header-color-dark .cart-summ:hover .cart-bag:before,
-.team-member.member-type-2:hover .content-section:before
+.team-member.member-type-2:hover .content-section:before,
+.slide-view-timeline2 .meta-post-timeline,
+article.content-timeline2 .timeline-content .meta-post-timeline
 
 ';
 
