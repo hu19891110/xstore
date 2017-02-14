@@ -274,6 +274,19 @@ return array(
         'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
         'type' => 'demo'
     ), 
+     'lawyer' => array(
+        'title' => 'Lawyer',
+        'preview_url' => $main_domain . 'lawyer/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ), 
     'dark' => array(
         'title' => 'Dark',
         'preview_url' => $main_domain . 'dark/',
@@ -855,6 +868,42 @@ return array(
     'marketing-offers' => array(
         'title' => 'Marketing offers',
         'preview_url' => $main_domain . 'marketing/offers/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'lawyer-about' => array(
+        'title' => 'Lawyer about',
+        'preview_url' => $main_domain . 'lawyer/about-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'lawyer-team' => array(
+        'title' => 'Lawyer team',
+        'preview_url' => $main_domain . 'lawyer/lawyers-team/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'lawyer-contacts' => array(
+        'title' => 'Lawyer contacts',
+        'preview_url' => $main_domain . 'lawyer/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'lawyer-services' => array(
+        'title' => 'Lawyer services',
+        'preview_url' => $main_domain . 'lawyer/services/',
         'to_import' => array(
             'content' => true,
             'slider' => false

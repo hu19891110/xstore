@@ -14,11 +14,11 @@ class ETheme_About_Author_Widget extends WP_Widget {
     function widget($args, $instance) {
         extract($args);
 
-        $title = apply_filters('widget_title', empty($instance['title']) ? false : $instance['title']);
-        $caption = @$instance['caption'];
-        $bio = @$instance['bio'];
-        $image = @$instance['image'];
-        $autograph = @$instance['autograph'];
+        $title     = apply_filters('widget_title', empty($instance['title']) ? false : $instance['title']);
+        $caption   = (!empty($instance['caption'])) ? $instance['caption'] : '';
+        $bio       = (!empty($instance['bio'])) ? $instance['bio'] : '';
+        $image     = (!empty($instance['image'])) ? $instance['image'] : '';
+        $autograph = (!empty($instance['autograph'])) ? $instance['autograph'] : '';
 
         echo $before_widget;
         if(!$title == '' ){

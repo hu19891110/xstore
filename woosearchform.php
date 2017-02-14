@@ -12,13 +12,13 @@ if($ajax) {
 
 ?>
 <?php if(class_exists('Woocommerce')) : ?>
-
-	<?php $wpml = function_exists( 'icl_object_id' ) ? '/' . ICL_LANGUAGE_CODE : ''; ?>
-
-	<form action="<?php echo esc_url( home_url( '' . $wpml . '/' ) ); ?>" id="searchform" class="<?php echo esc_attr($class); ?>" method="get">
+	<form action="<?php echo esc_url( home_url( '/' ) ); ?>" id="searchform" class="<?php echo esc_attr($class); ?>" method="get">
 		<div class="input-row">
 			<input type="text" value="" placeholder="<?php esc_attr_e( 'Type here...', 'xstore' ); ?>" autocomplete="off" class="form-control" name="s" id="s" />
 			<input type="hidden" name="post_type" value="product" />
+			<?php if ( defined( 'ICL_LANGUAGE_CODE' ) ) : ?>
+				<input type="hidden" name="lang" value="<?php echo ICL_LANGUAGE_CODE; ?>"/>
+			<?php endif ?>
 			<?php wp_dropdown_categories(array( 'show_option_all' => __('All categories', 'xstore') ,'taxonomy' => 'product_cat', 'hierarchical' => true, 'name' => 'product_cat', 'value_field' => 'slug')) ?>
 			<button type="submit" class="btn filled"><?php esc_html_e( 'Search', 'xstore' ); ?><i class="fa fa-search"></i></button>
 		</div>

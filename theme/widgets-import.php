@@ -768,4 +768,47 @@ Phone: <mark>+1 408 996 1010</mark>'
 			),
 		),	
 	),
+	'lawyer' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+					'text' => array(
+						'text' => '<p style="color: #ffffff;font-weight: 700;text-transform: uppercase;font-size: 12px;"><span class="active">Phone </span>  +613 8376 6284</p>'
+					),
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+					'text' => array(
+						'text' => '<p style="color: #ffffff;font-weight: 700;text-transform: uppercase;font-size: 12px;"><span class="active">Email </span>  contact@xlawyer.com</p>'
+					),
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 5710
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
 );

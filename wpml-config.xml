@@ -17,6 +17,7 @@
       <key name="custom_tab"/>
       <key name="promo-link-text"/>
       <key name="pp_content"/>
+      <key name="header_custom_block"/>
     </key>
   </admin-texts>
 </wpml-config>

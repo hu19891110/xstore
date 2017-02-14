@@ -41,8 +41,8 @@ if (!function_exists('etheme_logo')) {
     	$logo = etheme_get_logo_data();
     	?>
             <a href="<?php echo home_url(); ?>">
-                <img src="<?php echo $logo['logo']['src']; ?>" alt="<?php bloginfo( 'description' ); ?>" width="<?php echo $logo['logo']['width']; ?>" height="<?php echo $logo['logo']['height']; ?>" class="logo-default" />
-            	<img src="<?php echo $logo['fixed_logo']['src']; ?>" alt="<?php bloginfo( 'description' ); ?>" width="<?php echo $logo['fixed_logo']['width']; ?>" height="<?php echo $logo['fixed_logo']['height']; ?>" class="logo-fixed" />
+                <img src="<?php echo $logo['logo']['src']; ?>" alt="<?php echo $logo['logo']['alt']; ?>" width="<?php echo $logo['logo']['width']; ?>" height="<?php echo $logo['logo']['height']; ?>" class="logo-default" />
+            	<img src="<?php echo $logo['fixed_logo']['src']; ?>" alt="<?php echo $logo['fixed_logo']['alt']; ?>" width="<?php echo $logo['fixed_logo']['width']; ?>" height="<?php echo $logo['fixed_logo']['height']; ?>" class="logo-fixed" />
             </a>
         <?php
         do_action('etheme_after_logo');

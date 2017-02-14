@@ -18,7 +18,7 @@
                 </div>
                 <div class="header-logo"><?php etheme_logo(); ?></div>
                 <div class="navbar-header">
-                    <?php if( etheme_woocommerce_installed() ) etheme_wishlist_widget(); ?>
+                    <?php if( etheme_woocommerce_installed() && etheme_get_option( 'top_wishlist_widget' ) ) etheme_wishlist_widget(); ?>
                     
                     <?php if(class_exists('Woocommerce') && current_theme_supports('woocommerce') && !etheme_get_option('just_catalog') && etheme_get_option('cart_widget')): ?>
                         <?php etheme_top_cart(); ?>

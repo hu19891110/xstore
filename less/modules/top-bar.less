@@ -465,6 +465,21 @@
 .top-bar.topbar-color-dark .topbar-widget.etheme_widget_socials .widget-title + .et-follow-buttons a:first-child{
 	border-left: 1px solid #e6e6e6;
 }
+
+.my-account-link.type-icon,
+.login-link.type-icon{
+	>a{
+		font-size: 0;
+		&:before{
+			content:"\f2c0";
+			font-size: 20px;
+			font-family: FontAwesome;
+			position: relative;
+			top: -1px;
+		}
+	}
+
+}
 @media only screen and (max-width:1030px){
 	.top-bar {
 		// Remove that if you want to show top bar on responsive

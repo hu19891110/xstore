@@ -84,7 +84,8 @@ table.cart .product-details a:hover,
 .header-wrapper.header-advanced .header-search.act-default div.fancy-select ul.options li:hover,
 .mc4wp-alert.mc4wp-error,
 .et-tabs-wrapper.title-hover .tabs-nav li a span,
-.et-timer.product-sale-counter .time-block span
+.et-timer.product-sale-counter .time-block span,
+#fullscreenMenu .menu > li > a:hover
 ';
 
 $et_selectors['active_bg'] = '
@@ -194,7 +195,8 @@ div.pp_default .pp_content_container a.pp_next:hover, div.pp_default .pp_content
 .header-simple .menu-wrapper .menu > li > a:after,
 .global-header-simple .header-color-dark .cart-bag,
 .header-simple .menu-wrapper .menu > li > a:hover:after,
-.header-simple .menu-wrapper .menu > li.current-menu-item > a:after
+.header-simple .menu-wrapper .menu > li.current-menu-item > a:after,
+.team-member.member-type-2:hover .content-section
 
 ';
 
@@ -240,7 +242,8 @@ table.cart .remove-item:hover,
 .global-header-simple .header-color-dark .cart-bag,
 .global-header-simple .header-color-dark .cart-bag:before,
 .global-header-simple .header-color-dark .cart-summ:hover .cart-bag,
-.global-header-simple .header-color-dark .cart-summ:hover .cart-bag:before
+.global-header-simple .header-color-dark .cart-summ:hover .cart-bag:before,
+.team-member.member-type-2:hover .content-section:before
 
 ';
 

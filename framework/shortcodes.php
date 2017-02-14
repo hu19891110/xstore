@@ -25,6 +25,7 @@ etheme_load_shortcode('brands');
 etheme_load_shortcode('looks');
 etheme_load_shortcode('the-look');
 etheme_load_shortcode('custom-tabs');
+etheme_load_shortcode('menu');
 
 
 // Add shortcodes to MCE

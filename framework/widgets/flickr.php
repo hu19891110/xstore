@@ -17,9 +17,10 @@ class ETheme_Flickr_Widget extends WP_Widget {
         extract($args);
 
         $title = apply_filters('widget_title', empty( $instance['title'] ) ? esc_html__('Flickr', 'xstore') : $instance['title'], $instance, $this->id_base);
-        $screen_name = @$instance['screen_name'];
-        $number = @$instance['number'];
-        $show_button = @$instance['show_button'];
+
+        $screen_name = (!empty($instance['screen_name'])) ? $instance['screen_name'] : '';
+        $number      = (!empty($instance['number'])) ? $instance['number'] : '';
+        $show_button = (!empty($instance['show_button'])) ? $instance['show_button'] : '';
         
         if(!$screen_name || $screen_name == '') {
             $screen_name = '95572727@N00';

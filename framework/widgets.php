@@ -16,6 +16,7 @@ require_once( apply_filters('etheme_file_url', ETHEME_CODE_WIDGETS . 'socials.ph
 require_once( apply_filters('etheme_file_url', ETHEME_CODE_WIDGETS . 'featured-posts.php') );
 require_once( apply_filters('etheme_file_url', ETHEME_CODE_WIDGETS . 'posts-tabs.php') );
 require_once( apply_filters('etheme_file_url', ETHEME_CODE_WIDGETS . 'products.php') );
+require_once( apply_filters('etheme_file_url', ETHEME_CODE_WIDGETS . 'menu.php') );
 
 if(!function_exists('etheme_register_general_widgets')) {
 	add_action( 'widgets_init', 'etheme_register_general_widgets' );
@@ -35,6 +36,7 @@ if(!function_exists('etheme_register_general_widgets')) {
 	    register_widget('ETheme_Socials_Widget');
 	    register_widget('ETheme_Featured_Posts_Widget');
 	    register_widget('ETheme_Posts_Tabs_Widget');
+	    register_widget('ETheme_Menu_Widget');
 	}
 }
 

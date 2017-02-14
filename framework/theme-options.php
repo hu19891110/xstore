@@ -261,6 +261,10 @@ if(!function_exists('etheme_redux_init')) {
                             'title' => __( 'Variant simple', 'xstore' ),
                             'img' => ETHEME_CODE_IMAGES . 'headers/simple.jpg',
                         ),
+                        'hamburger-icon' => array (
+                            'title' => __( 'Variant hamburger', 'xstore' ),
+                            'img' => ETHEME_CODE_IMAGES . 'headers/hamburger-icon.jpg',
+                        ),
                     ),
                     'default' => 'xstore'
                 ),
@@ -387,6 +391,12 @@ if(!function_exists('etheme_redux_init')) {
                     "step"      => 1,
                     "max"       => 500,
                     'display_value' => 'label'
+                ),
+                array (
+                    'id' => 'top_wishlist_widget',
+                    'type' => 'switch',
+                    'title' => __( 'Enable wishlist widget in header', 'xstore' ),
+                    'default' => true,
                 ),
                 array (
                     'id' => 'top_links',
@@ -1007,7 +1017,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'menu_level_1',
                     'type' => 'typography',
                     'title' => __( 'Menu first level font', 'xstore' ),
-                    'output' => '.menu-wrapper .menu > li > a, .mobile-menu-wrapper .menu > li > a, .mobile-menu-wrapper .links li a, .secondary-menu-wrapper .menu > li > a, .secondary-title',
+                    'output' => '.menu-wrapper .menu > li > a, .mobile-menu-wrapper .menu > li > a, .mobile-menu-wrapper .links li a, .secondary-menu-wrapper .menu > li > a, .secondary-title, .fullscreen-menu .menu > li > a, .fullscreen-menu .menu > li .inside > a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -1015,7 +1025,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'menu_level_2',
                     'type' => 'typography',
                     'title' => __( 'Menu second level', 'xstore' ),
-                    'output' => '.item-design-mega-menu .nav-sublist-dropdown .item-level-1 > a, .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children.item-level-1 > a, .secondary-menu-wrapper .nav-sublist-dropdown .menu-widgets .widget-title',
+                    'output' => '.item-design-mega-menu .nav-sublist-dropdown .item-level-1 > a, .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children.item-level-1 > a, .secondary-menu-wrapper .nav-sublist-dropdown .menu-widgets .widget-title, .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown li a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -1023,7 +1033,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'menu_level_3',
                     'type' => 'typography',
                     'title' => __( 'Menu third level', 'xstore' ),
-                    'output' => '.item-design-dropdown .nav-sublist-dropdown ul > li > a, .item-design-mega-menu .nav-sublist-dropdown .item-link, .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children .nav-sublist ul > li > a, .item-design-mega-menu .nav-sublist-dropdown .nav-sublist a',
+                    'output' => '.item-design-dropdown .nav-sublist-dropdown ul > li > a, .item-design-mega-menu .nav-sublist-dropdown .item-link, .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children .nav-sublist ul > li > a, .item-design-mega-menu .nav-sublist-dropdown .nav-sublist a, .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown ul > li > a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -2155,15 +2165,20 @@ Surely you can find something for yourself!</p> ',
 add_action( 'redux/loaded', 'remove_demo' );
 
 // Remove the demo link and the notice of integrated demo from the redux-framework plugin
-function remove_demo() {
-    // Used to hide the demo mode link from the plugin page. Only used when Redux is a plugin.
-    if ( class_exists( 'ReduxFrameworkPlugin' ) ) {
-        remove_filter( 'plugin_row_meta', array(
-            ReduxFrameworkPlugin::instance(),
-            'plugin_metalinks'
-        ), null, 2 );
 
-        // Used to hide the activation notice informing users of the demo panel. Only used when Redux is a plugin.
-        remove_action( 'admin_notices', array( ReduxFrameworkPlugin::instance(), 'admin_notices' ) );
+if ( ! function_exists( 'remove_demo' ) ) {
+    function remove_demo() {
+        // Used to hide the demo mode link from the plugin page. Only used when Redux is a plugin.
+        if ( class_exists( 'ReduxFrameworkPlugin' ) ) {
+            remove_filter( 'plugin_row_meta', array(
+                ReduxFrameworkPlugin::instance(),
+                'plugin_metalinks'
+            ), null, 2 );
+
+            // Used to hide the activation notice informing users of the demo panel. Only used when Redux is a plugin.
+            remove_action( 'admin_notices', array( ReduxFrameworkPlugin::instance(), 'admin_notices' ) );
+        }
     }
 }
+
+

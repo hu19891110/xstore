@@ -501,6 +501,10 @@ blockquote {
 .widget_product_categories.sidebar-widget ul li > ul.children li.current-cat > a {
   color: #808080;
 }
+.widget_product_categories.sidebar-widget > ul > li:last-child > a,
+.wpb_widgetised_column .widget_product_categories > ul > li:last-child > a {
+  border-color: #2f2f2f;
+}
 .mark-text.paragraph-boxed {
   background-color: #1f1f1f;
   color: #808080;
@@ -686,7 +690,11 @@ select,
 }
 .mobile-menu-wrapper .menu > li a,
 .mobile-menu-wrapper .links li a {
-  color: #808080;
+  color: #808080 !important;
+}
+.mobile-menu-wrapper .menu > li a:hover,
+.mobile-menu-wrapper .links li a:hover {
+  color: #FFF !important;
 }
 .mobile-menu-wrapper .header-search.act-default {
   background-color: #262626;
@@ -1040,6 +1048,9 @@ legend {
 .fixed-header.header-color-dark .cart-bag .badge-number {
   color: #FFF;
 }
+.fixed-header.header-color-dark .cart-bag:hover:before {
+  border-color: #8a8a8a !important;
+}
 .fixed-header .shopping-container.ico-design-2 .badge-number,
 .fixed-header .shopping-container.ico-design-3 .badge-number,
 .fixed-header .shopping-container.ico-bg-yes .badge-number {
@@ -1163,4 +1174,26 @@ div.bbp-forum-header {
 }
 .my_account_orders td {
   color: #fff;
+}
+.hamburger-icon span {
+  background: #fff;
+}
+.team-member.member-type-2 .content-section {
+  background-color: #242424;
+}
+.team-member.member-type-2 .content-section:before {
+  border-color: #242424;
+}
+.team-member.member-type-2 .content-section .member-details .member-position {
+  color: rgba(255, 255, 255, 0.4);
+}
+.global-header-hamburger-icon .header-widget-area .top-links > div > *,
+.global-header-hamburger-icon .header-widget-area .languages-area > div > * {
+  color: #FFF;
+}
+.my-account-link ul {
+  background-color: #1f1f1f;
+}
+.my-account-link ul li a {
+  color: #FFF;
 }

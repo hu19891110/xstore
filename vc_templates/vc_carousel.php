@@ -102,10 +102,6 @@ $this->setLinktarget( $link_target );
 
 $options = array();
 // Convert keys to Camel case.
-foreach ( $tmp_options as $key => $value ) {
-	$key = preg_replace( '/_([a-z])/e', "strtoupper('\\1')", $key );
-	$options[$key] = $value;
-}
 if ( (int)$slides_per_view > 0 ) $options['slidesPerView'] = (int)$slides_per_view;
 if ( (int)$autoplay > 0 ) $options['autoplay'] = (int)$autoplay;
 $options['mode'] = $mode;

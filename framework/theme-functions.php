@@ -303,8 +303,18 @@ if(!function_exists('etheme_get_logo_data')) {
             $return['fixed_logo']['src'] = str_replace('http://', 'https://', $return['fixed_logo']['src']);
         }
 
+        $return['logo']['alt'] = '';
+        $return['fixed_logo']['alt'] ='';
+
+        if ( isset( $logoimg['id'] ) && $logoimg['id'] != '') {
+            $return['logo']['alt'] = get_post_meta( $logoimg['id'], '_wp_attachment_image_alt', true ) ;
+            $return['fixed_logo']['alt'] = get_post_meta( $logo_fixed['id'], '_wp_attachment_image_alt', true ) ;
+        }
+
+        if ( $return['logo']['alt'] == '' )  $return['logo']['alt'] = get_bloginfo( 'description' );
+        if ( $return['fixed_logo']['alt'] == '' )  $return['logo']['alt'] = get_bloginfo( 'description' );    
         $return['logo']['width'] = (!empty($logoimg['width'])) ? $logoimg['width'] : 259;
-        $return['logo']['height'] = (!empty($logoimg['height'])) ? $logoimg['height'] : 45;
+        $return['logo']['height'] = (!empty($logoimg['height'])) ? $logoimg['height'] : 45;      
         $return['fixed_logo']['width'] = (!empty($logo_fixed['width'])) ? $logo_fixed['width'] : 259;
         $return['fixed_logo']['height'] = (!empty($logo_fixed['height'])) ? $logo_fixed['height'] : 45;
 
@@ -348,6 +358,7 @@ if(!function_exists('etheme_get_links')) {
         }
 
         if( etheme_get_option('top_links') ) {
+            $class = ( etheme_get_header_type() == 'hamburger-icon' ) ? ' type-icon' : '';
             if ( is_user_logged_in() ) {
                 if( class_exists('WooCommerce')) {
                     if ( has_nav_menu( 'my-account' ) ) { 
@@ -376,7 +387,7 @@ if(!function_exists('etheme_get_links')) {
                     }
 
                     $links['my-account'] = array(
-                        'class' => 'my-account-link',
+                        'class' => 'my-account-link' . $class,
                         'link_class' => '',
                         'href' => get_permalink( get_option('woocommerce_myaccount_page_id') ),
                         'title' => esc_html__( 'My Account', 'xstore' ),
@@ -385,7 +396,7 @@ if(!function_exists('etheme_get_links')) {
 
                 }
                 // $links['logout'] = array(
-                //     'class' => 'logout-link',
+                //     'class' => 'logout-link' . $class,
                 //     'link_class' => '',
                 //     'href' => wp_logout_url(home_url()),
                 //     'title' => esc_html__( 'Logout', 'xstore' )
@@ -395,7 +406,7 @@ if(!function_exists('etheme_get_links')) {
                 $login_text = ($short) ? esc_html__( 'Sign In', 'xstore' ): esc_html__( 'Sign In or Create an account', 'xstore' );
 
                 $links['login'] = array(
-                    'class' => 'login-link',
+                    'class' => 'login-link' . $class,
                     'link_class' => '',
                     'href' => $login_link,
                     'title' => $login_text
@@ -403,7 +414,7 @@ if(!function_exists('etheme_get_links')) {
 
                 if(!empty($reg_id)) {
                     $links['register'] = array(
-                        'class' => 'register-link',
+                        'class' => 'register-link' . $class,
                         'link_class' => '',
                         'href' => get_permalink($reg_id),
                         'title' => esc_html__( 'Register', 'xstore' )

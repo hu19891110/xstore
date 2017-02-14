@@ -16,6 +16,8 @@ function etheme_team_member_shortcode($atts, $content = null) {
         'linkedin' => '',
         'instagram' => '',
         'position' => '',
+        'content_position' => 'top',
+        'img_position' => 'left',
         'content' => '',
         'img' => '',
         'img_size' => '270x170'
@@ -28,11 +30,10 @@ function etheme_team_member_shortcode($atts, $content = null) {
     if ($a['content'] != '') {
         $content = $a['content'];
     }
-
     
     $html = '';
     $span = 12;
-    $html .= '<div class="team-member member-type-'.$a['type'].' '.$a['class'].'">';
+    $html .= '<div class="team-member member-type-'.$a['type'].' '.$a['class'].' content-position-' . $a['content_position'] . ' image-position-' . $a['img_position'] . '">';
 
         if($a['type'] == 2) {
             $html .= '<div class="row">';
@@ -40,7 +41,7 @@ function etheme_team_member_shortcode($atts, $content = null) {
 	    if( ! empty( $image ) ){
 
             if($a['type'] == 2) {
-                $html .= '<div class="col-md-6">';
+                $html .= '<div class="image-section col-md-6">';
                 $span = 6;
             }
             $html .= '<div class="member-image">';
@@ -74,7 +75,7 @@ function etheme_team_member_shortcode($atts, $content = null) {
 
     
         if($a['type'] == 2) {
-            $html .= '<div class="col-md-'.$span.'">';
+            $html .= '<div class="content-section col-md-'.$span.'">';
         }
         $html .= '<div class="member-details">';
             if($a['position'] != ''){
@@ -86,7 +87,7 @@ function etheme_team_member_shortcode($atts, $content = null) {
 		    }
 
             if($a['email'] != ''){
-                $html .= '<p class="member-email"><span>'.__('Email:', 'xstore').'</span> <a href="'.$a['email'].'">'.$a['email'].'</a></p>';
+                $html .= '<p class="member-email"><span>'.__('Email:', 'xstore').'</span> <a href="mailto:'.$a['email'].'">'.$a['email'].'</a></p>';
             }
 		    $html .= do_shortcode($content);
     	$html .= '</div>';
@@ -155,6 +156,27 @@ if(!function_exists('etheme_register_vc_team_member')) {
 	              "", 
 	              esc_html__("Vertical", 'xstore') => 1,
 	              esc_html__("Horizontal", 'xstore') => 2
+	            )
+	        ),
+	       	array(
+	          "type" => "dropdown",
+	          "heading" => esc_html__("Content position", 'xstore' ),
+	          "param_name" => "content_position",
+	          "dependency" => array('element' => "type", 'value' => array('2')),
+	          "value" => array(
+	              esc_html__("Top", 'xstore') => 'top',
+	              esc_html__("Middle", 'xstore') => 'middle',
+	              esc_html__("Bottom", 'xstore') => 'bottom'
+	            )
+	        ),
+	        array(
+	          "type" => "dropdown",
+	          "heading" => esc_html__("Image position", 'xstore' ),
+	          "param_name" => "img_position",
+	          "dependency" => array('element' => "type", 'value' => array('2')),
+	          "value" => array(
+	              esc_html__("Left", 'xstore') => 'left',
+	              esc_html__("Right", 'xstore') => 'right'
 	            )
 	        ),
 	        array(
