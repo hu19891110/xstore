@@ -1,7 +1,7 @@
 <?php  if ( ! defined('ETHEME_FW')) exit('No direct script access allowed');
 
 // **********************************************************************// 
-// ! The look
+// ! Best offer
 // **********************************************************************// 
 
 function etheme_offer_shortcode($atts, $content) {
@@ -18,6 +18,8 @@ function etheme_offer_shortcode($atts, $content) {
         'taxonomies'  => '',
         'items_per_page'  => 10,
         'columns' => 3,
+        'hover' => '',
+        'banner_double' => '',
         'orderby'  => 'date',
         'order'  => 'DESC',
         'meta_key'  => '',
@@ -25,10 +27,28 @@ function etheme_offer_shortcode($atts, $content) {
         'class'  => '',
         'product_view' => '',
         'product_view_color' => '',
-        'css' => ''
+        'css' => '',
+        'img_size' => 'medium',
+        'dis_type' => '',
+        // ! slider args
+        'slider_autoplay' => false,
+        'slider_speed' => 10000,
+        'pagination_type' => 'hide',
+        'default_color' => '#e6e6e6',
+        'active_color' => '#b3a089',
+        'hide_fo' => '',
+        'hide_buttons' => false,
     ), $atts);
 
+
+
     extract($atts);
+
+    if ( ! in_array( $img_size, array(  'thumbnail', 'medium', 'large', 'full' ) ) ) {
+      $size = explode( 'x', $img_size );
+    } else {
+      $size = $img_size;
+    }
 
     $paged = (get_query_var('page')) ? get_query_var('page') : 1;
 
@@ -59,9 +79,9 @@ function etheme_offer_shortcode($atts, $content) {
         $args['tax_query'] = array('relation' => 'OR');
         foreach ($terms as $key => $term) {
           $args['tax_query'][] = array(
-                'taxonomy' => $term->taxonomy,                //(string) - Taxonomy.
+                'taxonomy' => $term->taxonomy,        //(string) - Taxonomy.
                 'field' => 'slug',                    //(string) - Select taxonomy term by ('id' or 'slug')
-                'terms' => array( $term->slug ),    //(int/string/array) - Taxonomy term(s).
+                'terms' => array( $term->slug ),      //(int/string/array) - Taxonomy term(s).
                 'include_children' => true,           //(bool) - Whether or not to include children for hierarchical taxonomies. Defaults to true.
                 'operator' => 'IN'  
           );
@@ -82,6 +102,8 @@ function etheme_offer_shortcode($atts, $content) {
     }
 
     $output = '';
+
+    $box_id = rand( 1000,10000 );
 
     ob_start();
 
@@ -106,7 +128,7 @@ function etheme_offer_shortcode($atts, $content) {
     }
 
     if ( $products->have_posts() ) : ?>
-      <div class="et-offer" data-class="<?php echo esc_attr($images_class); ?>">
+      <div class="et-offer slider-<?php echo $box_id;?>" data-class="<?php echo esc_attr($images_class); ?>">
         <?php $i=0; while ( $products->have_posts() ) : $products->the_post(); ?>
             <div <?php post_class(); ?>>
                 <div class="content-product">
@@ -143,7 +165,7 @@ function etheme_offer_shortcode($atts, $content) {
 
                       <a class="product-content-image" href="<?php the_permalink(); ?>" data-images="<?php echo etheme_get_image_list( $size ); ?>">
                         <?php if( $hover == 'swap' ) etheme_get_second_image( $size ); ?>
-                        <?php echo woocommerce_get_product_thumbnail( $size ); ?>
+                        <?php echo etheme_get_image( get_post_thumbnail_id(), $size ); ?>
                       </a>
 
                       <footer class="footer-product">
@@ -175,6 +197,46 @@ function etheme_offer_shortcode($atts, $content) {
           unset($woocommerce_loop['product_view_color']); 
         ?>
       </div>
+
+      <?php if ( $dis_type == 'slider' ): ?>
+          <script type="text/javascript">
+              (function() {
+                  var options = {
+                      items: 1,
+                      autoPlay: <?php echo ( ( $slider_autoplay == "yes" ) ? $slider_speed : "false" ); ?>,
+                      pagination: <?php echo ( ( $pagination_type == "hide" ) ? "false" : "true")  ?>,
+                      navigation: <?php echo ( ( $hide_buttons == "yes" ) ? "false" : "true" ); ?>,
+                      navigationText:false,
+                      rewindNav: <?php echo ( ( $slider_autoplay == "yes") ? "true" : "false" ); ?>,
+                      itemsCustom: [[0, 1], [479, 1], [619, 1], [768, 1],  [1200, 1], [1600, 1]]
+                  };
+
+                  jQuery( ".slider-<?php echo $box_id ?>" ).owlCarousel( options );
+
+                  var owl = jQuery( ".slider-<?php echo $box_id ?>" ).data( "owlCarousel" );
+                  
+                  jQuery( window ).bind( "vc_js", function() {
+                      owl.reinit( options );
+                      jQuery( ".slider-<?php echo $box_id; ?> .owl-pagination" ).addClass( "pagination-type-<?php echo $pagination_type; ?> hide-for-<?php echo $hide_fo ?>" );
+                  } );
+              })();
+          </script>
+        
+          <?php if ( $pagination_type != 'hide' && $default_color != '#e6e6e6' && $active_color !='#b3a089' ) : ?>
+              <style>
+                  .slider-<?php echo $box_id; ?> .owl-pagination .owl-page{
+                      background-color: <?php echo $default_color; ?>;
+                  }
+                  .slider-<?php echo $box_id; ?>.owl-carousel .owl-pagination .owl-page:hover{
+                      background-color: <?php echo $active_color; ?>;
+                  }
+                  .slider-<?php echo $box_id; ?> .owl-pagination .owl-page.active{
+                      background-color: <?php echo $active_color; ?>;
+                  }
+              </style>
+          <?php endif; ?>
+      <?php endif; ?>
+
     <?php endif;
 
     wp_reset_postdata();
@@ -185,7 +247,7 @@ function etheme_offer_shortcode($atts, $content) {
 }
 
 // **********************************************************************// 
-// ! Register New Element: The Look
+// ! Register New Element: Best offer
 // **********************************************************************//
 add_action( 'init', 'etheme_register_offer');
 if(!function_exists('etheme_register_offer')) {
@@ -238,10 +300,107 @@ if(!function_exists('etheme_register_offer')) {
               'groups' => true,
             ),
           ),
-	      )
-	
+          array(
+            'type' => 'textfield',
+            'heading' => esc_html__('Image size', 'xstore' ),
+            'param_name' => 'img_size',
+            'description' => esc_html__('Enter image size. Example in pixels: 200x100 (Width x Height).', 'xstore'),
+          ),
+          array(
+            'type' => 'dropdown',
+            'heading' => esc_html__( 'Display type', 'xstore' ),
+            'param_name' => 'dis_type',
+            'value' => array(
+              __( 'Default', 'xstore' ) => 'default',
+              __( 'Slider', 'xstore' ) => 'slider',
+            ),
+          ),
+          array(
+            "type" => "textfield",
+            "heading" => esc_html__("Slider speed", 'xstore'),
+            "param_name" => "slider_speed",
+            'dependency' => array(
+              'element' => 'dis_type',
+              'value' => array( 'slider' ),
+            ),
+            "group" => esc_html__('Slider settings', 'xstore')
+          ),
+          array(
+            "type" => "checkbox",
+            "heading" => esc_html__("Slider autoplay", 'xstore'),
+            "param_name" => "slider_autoplay",
+            'dependency' => array(
+              'element' => 'dis_type',
+              'value' => array( 'slider' ),
+            ),
+            "group" => esc_html__('Slider settings', 'xstore'),
+            'value' => array( esc_html__( 'Yes, please', 'xstore' ) => 'yes' )
+          ),
+          array(
+            "type" => "checkbox",
+            "heading" => esc_html__("Hide prev/next buttons", 'xstore'),
+            "param_name" => "hide_buttons",
+            'dependency' => array(
+              'element' => 'dis_type',
+              'value' => array( 'slider' ),
+            ),
+            "group" => esc_html__('Slider settings', 'xstore'),
+            'value' => array( esc_html__( 'Yes, please', 'xstore' ) => 'yes' )
+          ),
+          array(
+            'type' => 'dropdown',
+            'heading' => esc_html__( 'Pagination type', 'xstore' ),
+            'param_name' => 'pagination_type',
+            'dependency' => array(
+              'element' => 'dis_type',
+              'value' => array( 'slider' ),
+            ),
+            'group' => esc_html__('Slider settings', 'xstore'),
+            'value' => array(
+              __( 'Hide', 'xstore' ) => 'hide',
+              __( 'Bullets', 'xstore' ) => 'bullets',
+              __( 'Lines', 'xstore' ) => 'lines',
+            ),
+          ),
+          array(
+            'type' => 'dropdown',
+            'heading' => esc_html__( 'Hide pagination only for', 'xstore' ),
+            'param_name' => 'hide_fo',
+            'dependency' => array(
+              'element' => 'pagination_type',
+              'value' => array( 'bullets', 'lines' ),
+            ),
+            'group' => esc_html__('Slider settings', 'xstore'),
+            'value' => array(
+              '' => '',
+              __( 'Mobile', 'xstore' ) => 'mobile',
+              __( 'Desktop', 'xstore' ) => 'desktop',
+            ),
+          ),
+          array(
+            "type" => "colorpicker",
+            "heading" => __( "Pagination default color", "xstore" ),
+            "param_name" => "default_color",
+            'dependency' => array(
+              'element' => 'pagination_type',
+              'value' => array( 'bullets', 'lines' ),
+            ),
+            "group" => esc_html__('Slider settings', 'xstore'),
+            "value" => '#e6e6e6',
+          ),
+          array(
+            "type" => "colorpicker",
+            "heading" => __( "Pagination active color", "xstore" ),
+            "param_name" => "active_color",
+            'dependency' => array(
+              'element' => 'pagination_type',
+              'value' => array( 'bullets', 'lines' ),
+            ),
+            "group" => esc_html__('Slider settings', 'xstore'),
+            "value" => '#b3a089',
+          ),
+	      ),   
 	    );  
-	
 	    vc_map($params);
 	}
 }

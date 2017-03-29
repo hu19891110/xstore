@@ -57,8 +57,8 @@ if( ! function_exists( 'etheme_register_menu' ) ) {
 	function etheme_register_menu() {
 		if( ! function_exists( 'vc_map' ) ) return;
 		$menus = wp_get_nav_menus();
-		$menu_params ='';
-		foreach ($menus as $menu) {
+		$menu_params = array();
+		foreach ( $menus as $menu ) {
 			$menu_params[$menu->name] = $menu->term_id;
 		}
 

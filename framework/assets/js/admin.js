@@ -88,12 +88,19 @@ jQuery(document).ready(function($){
         return false;
     });
 
-    setTimeout(function() {
-    	$('.et-tab-label.vc_tta-section-append').removeClass('vc_tta-section-append').addClass('et-tab-append');
-    }, 1000);
+    $(document).ready(function(){
+		setTimeout(function() {
+			$('.et-tab-label.vc_tta-section-append').removeClass('vc_tta-section-append').addClass('et-tab-append');
+		}, 1000);
+	});
+
+	$(document).on('click', '#et_tabs', function(event) {
+		setTimeout(function() {
+			$('.et-tab-label.vc_tta-section-append').removeClass('vc_tta-section-append').addClass('et-tab-append');
+		}, 1000);
+	});
 
     $(document).on('click', '.et-tab-label.et-tab-append', function(event) {
-
     	if( typeof vc == 'undefined' ) return;
 
         var newTabTitle = 'Tab', 

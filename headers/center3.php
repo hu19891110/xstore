@@ -4,7 +4,7 @@
     $menu_class = 'menu-align-' . etheme_get_option('menu_align');
 ?>
 
-<div class="header-wrapper header-<?php echo esc_attr( $ht ); ?> header-color-<?php echo esc_attr( $color ); ?>">
+<div class="header-wrapper header-bg-block header-<?php echo esc_attr( $ht ); ?> header-color-<?php echo esc_attr( $color ); ?>">
     <header class="header main-header">
         <div class="container">
             <div class="container-wrapper">

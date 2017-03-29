@@ -1441,14 +1441,14 @@ Once imported, this content can be managed from the WordPress dashboard.  </p>
 
 	                </p>
 	            </form>
-				<p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation.', 'xstore'); ?></p>
+				<p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation. A purchase code (license) is only valid for One Project. Do you want to use this theme for one more project? Purchase a <a href="https://themeforest.net/item/xstore-responsive-woocommerce-theme/15780546?license=regular&open_purchase_for_item_id=15780546&purchasable=source&ref=8theme" target="_blank">new license here</a> to get a new purchase code.', 'xstore'); ?></p>
 				<h3><?php _e('To find your Purchase code', 'xstore'); ?></h3>
 				<img src="<?php echo ETHEME_BASE_URI . ETHEME_CODE .'assets/images/'; ?>purchase-code-bc.png">
 				<br><br>
 				<p><?php _e('Activate XStore template and get lifetime updates, 6 months of free top-notch support, 24/7 live support and much more.', 'xstore'); ?></p>
 	            
 
-	            <p><img src="http://image.prntscr.com/image/015c40d900444c31a3873ce9cf7c2e2a.png" alt=""></p>
+	            <p><img src="<?php echo ETHEME_CODE_IMAGES . 'purchase.jpg'; ?>" alt="purchase"></p>
 			<?php endif ?>
 			<?php
 		}
@@ -1699,6 +1699,7 @@ Once imported, this content can be managed from the WordPress dashboard.  </p>
 	    public function activate( $purchase, $api_key ) {
 	        update_option( 'xstore_api_key', $api_key );
 	        update_option( 'xtheme_is_activated', true );
+	        update_option( 'xtheme_activated_theme', ETHEME_PREFIX );
 	        update_option( 'xtheme_purchase_code', $purchase );
 	    }
 
@@ -1728,8 +1729,9 @@ Once imported, this content can be managed from the WordPress dashboard.  </p>
 	               echo  '<p class="error">Enter the purchase code</p>';
 	                return;
 	            }
-        		$response = wp_remote_get( $this->api_url . 'activate/' . $code . '?domain=' .$this->domain() );
-	            $response_code = wp_remote_retrieve_response_code( $response );
+				$theme_id = 15780546;
+				$response = wp_remote_get( $this->api_url . 'activate/' . $code . '?envato_id='. $theme_id .'&domain=' .$this->domain() );
+				$response_code = wp_remote_retrieve_response_code( $response );
 
 	            if( $response_code != '200' ) {
 	                echo  '<p class="error">API request call error. Contact your server providers and ask to update OpenSSL system library to the 1.0 version.</p>';

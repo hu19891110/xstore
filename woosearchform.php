@@ -3,11 +3,23 @@
  * The template for displaying search forms
  *
  */
-$ajax 	= etheme_get_option('search_ajax');
+$ajax['enable'] = etheme_get_option('search_ajax');
+$ajax['taxonomy'] = $ajax['name'] = 'product_cat';
+$ajax['product'] = etheme_get_option( 'search_ajax_product' );
+$ajax['post'] = etheme_get_option( 'search_ajax_post' );
 $class 	= '';
 
-if($ajax) {
+if( $ajax['enable'] ) {
 	$class .= 'ajax-search-form';
+	if ( $ajax['post'] && $ajax['product'] ) {
+		$class .= ' all-results-on';
+	} elseif ( $ajax['product'] ) {
+		$class .= ' product-results-on';
+	} elseif ( $ajax['post'] ) {
+		$class .= ' post-results-on';
+		$ajax['taxonomy'] = 'category';
+		$ajax['name'] = 'cat';
+	}
 }
 
 ?>
@@ -19,10 +31,10 @@ if($ajax) {
 			<?php if ( defined( 'ICL_LANGUAGE_CODE' ) ) : ?>
 				<input type="hidden" name="lang" value="<?php echo ICL_LANGUAGE_CODE; ?>"/>
 			<?php endif ?>
-			<?php wp_dropdown_categories(array( 'show_option_all' => __('All categories', 'xstore') ,'taxonomy' => 'product_cat', 'hierarchical' => true, 'name' => 'product_cat', 'value_field' => 'slug')) ?>
+			<?php wp_dropdown_categories(array( 'show_option_all' => __('All categories', 'xstore') ,'taxonomy' => $ajax['taxonomy'], 'hierarchical' => true, 'name' => $ajax['name'], 'value_field' => 'slug')) ?>
 			<button type="submit" class="btn filled"><?php esc_html_e( 'Search', 'xstore' ); ?><i class="fa fa-search"></i></button>
 		</div>
-		<?php if($ajax): ?>
+		<?php if($ajax['enable']): ?>
 			<div class="ajax-results-wrapper"><div class="ajax-results"></div></div>
 		<?php endif ?>
 	</form>

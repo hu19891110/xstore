@@ -41,6 +41,7 @@ class ETheme_Socials_Widget extends WP_Widget {
         $vimeo = (!empty($instance['vimeo'])) ? $instance['vimeo'] : '';
         $rss = (!empty($instance['rss'])) ? $instance['rss'] : '';
         $vk = (!empty($instance['vk'])) ? $instance['vk'] : '';
+        $houzz = (!empty($instance['houzz'])) ? $instance['houzz'] : '';
         $colorfull = (!empty($instance['colorfull'])) ? $instance['colorfull'] : '';
 
 
@@ -66,6 +67,7 @@ class ETheme_Socials_Widget extends WP_Widget {
             'vimeo' => $vimeo,
             'rss' => $rss,
             'vk' => $vk,
+            'houzz' => $houzz,
             'colorfull' => $colorfull,
         ));
 
@@ -82,7 +84,6 @@ class ETheme_Socials_Widget extends WP_Widget {
         $instance['number'] = (int) $new_instance['number'];
         $instance['slider'] = (int) $new_instance['slider'];
         $instance['image'] = (int) $new_instance['image'];
-
         $instance['facebook'] = strip_tags($new_instance['facebook']);
         $instance['twitter'] = strip_tags($new_instance['twitter']);
         $instance['instagram'] = strip_tags($new_instance['instagram']);
@@ -94,9 +95,8 @@ class ETheme_Socials_Widget extends WP_Widget {
         $instance['vimeo'] = strip_tags($new_instance['vimeo']);
         $instance['rss'] = strip_tags($new_instance['rss']);
         $instance['vk'] = strip_tags($new_instance['vk']);
+        $instance['houzz'] = strip_tags($new_instance['houzz']);
         $instance['colorfull'] = (int) ($new_instance['colorfull']);
-
-
 
         return $instance;
     }
@@ -118,6 +118,7 @@ class ETheme_Socials_Widget extends WP_Widget {
         $vimeo = @esc_attr($instance['vimeo']);
         $rss = @esc_attr($instance['rss']);
         $vk = @esc_attr($instance['vk']);
+        $houzz = @esc_attr($instance['houzz']);
 
 
         $slider = (int) @$instance['slider'];
@@ -147,7 +148,9 @@ class ETheme_Socials_Widget extends WP_Widget {
         etheme_widget_input_text(__('YouTube link', 'xstore'), $this->get_field_id('youtube'),$this->get_field_name('youtube'), $youtube);
         etheme_widget_input_text(__('Vimeo link', 'xstore'), $this->get_field_id('vimeo'),$this->get_field_name('vimeo'), $vimeo);
         etheme_widget_input_text(__('RSS link', 'xstore'), $this->get_field_id('rss'),$this->get_field_name('rss'), $rss);
-        etheme_widget_input_text(__('Vk link', 'xstore'), $this->get_field_id('vk'),$this->get_field_name('vk'), $vk);
+        etheme_widget_input_text(__('VK link', 'xstore'), $this->get_field_id('vk'),$this->get_field_name('vk'), $vk);
+        etheme_widget_input_text(__('Houzz link', 'xstore'), $this->get_field_id('vk'),$this->get_field_name('houzz'), $houzz);
+        
         etheme_widget_input_checkbox(__('Colorfull icons', 'xstore'), $this->get_field_id('colorfull'),$this->get_field_name('colorfull'), checked( 1, $colorfull, false ), 1);
 
         etheme_widget_input_dropdown(__('Link Target', 'xstore'), $this->get_field_id('target'),$this->get_field_name('target'), $target, array(

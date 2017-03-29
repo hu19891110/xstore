@@ -117,7 +117,7 @@ if(!function_exists('etheme_init')) {
                 $bread_bg = etheme_get_option('breadcrumb_bg');
                 $post_id = etheme_get_page_id( true );
 
-                if( in_array($post_id['type'], array('page', 'shop', 'blog', 'portfolio')) && has_post_thumbnail($post_id['id']) ) {
+                if( in_array($post_id['type'], array('page', 'shop', 'blog', 'portfolio')) && has_post_thumbnail($post_id['id']) && ! is_tax( 'portfolio_category' ) ) {
                     $bread_bg['background-image'] = wp_get_attachment_url( get_post_thumbnail_id($post_id['id']), 'large');
                 }
 
@@ -126,6 +126,17 @@ if(!function_exists('etheme_init')) {
 
                     if( $term_id && $image = get_term_meta( $term_id, '_et_page_heading', true ) ) {
                         $bread_bg['background-image'] = $image;
+                    }
+                }
+
+                if ( is_tax( 'portfolio_category' ) ) {
+
+                    $portfolio_pages = get_pages(array(
+                        'meta_key' => '_wp_page_template',
+                        'meta_value' => 'portfolio.php'
+                    ));
+                    if ( ! empty( $portfolio_pages[0]->ID ) && has_post_thumbnail( $portfolio_pages[0]->ID ) ) {
+                       $bread_bg['background-image'] = get_the_post_thumbnail_url( $portfolio_pages[0]->ID, 'large' );
                     }
                 }
             ?>

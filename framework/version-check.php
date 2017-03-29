@@ -67,7 +67,8 @@ class ETheme_Version_Check {
                     <p>Now you have lifetime updates, 6 months of free top-notch support, 24/7 live support and much more.</p>
                 </div>
             <?php else: ?>
-                <p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation.', 'xstore'); ?></p>
+                <p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation.', 'xstore'); ?></p>     
+                <p><?php _e('A purchase code (license) is only valid for One Project. Do you want to use this theme for one more project? Purchase a <a href="https://themeforest.net/item/xstore-responsive-woocommerce-theme/15780546?license=regular&open_purchase_for_item_id=15780546&purchasable=source&ref=8theme" target="_blank">new license here</a> to get a new purchase code.', 'xstore'); ?></p>
                 <p><?php _e('To find your Purchase code, please, enter your ThemeForest account > Downloads tab > choose XStore > Download > License Certificate & Purchase code', 'xstore'); ?> <a href="http://prntscr.com/d23p2c" target="_blank">http://prntscr.com/d23p2c</a></p>
                 <p><?php _e('Activate XStore template and get lifetime updates, 6 months of free top-notch support, 24/7 live support and much more.', 'xstore'); ?></p>
                 <form action="" class="xstore-form" method="post">
@@ -81,7 +82,7 @@ class ETheme_Version_Check {
                     </p>
                 </form>
 
-                <p><img src="http://image.prntscr.com/image/015c40d900444c31a3873ce9cf7c2e2a.png" alt=""></p>
+                <p><img src="<?php echo ETHEME_CODE_IMAGES . 'purchase.jpg'; ?>" alt="purchase"></p>
             <?php endif ?>
         <?php 
     }
@@ -147,12 +148,10 @@ class ETheme_Version_Check {
     public function update_notice() {
         if( isset( $_GET['_wpnonce'] )) return;
         $this->notices['_update'] = array(
-            'message' => sprintf('
-                    <p>There is a new version of %1$s Theme available.</p>
+            'message' => '
+                    <p>There is a new version of ' . ETHEME_THEME_NAME . ' Theme available.</p>
                     <p class="submit"><a href="' . admin_url( 'update-core.php?force-check=1&theme_force_check=1' ) . '" class="button-primary">Update now</a> <a class="button-secondary skip" href="' . esc_url( wp_nonce_url( add_query_arg( 'et-hide-notice', 'update' ), 'etheme_hide_notices_nonce', '_et_notice_nonce' ) ). '">Dismiss</a></p>
                 ',
-                ETHEME_THEME_NAME
-            )
         );
     }
 
@@ -287,6 +286,7 @@ class ETheme_Version_Check {
     public function activate( $purchase, $api_key ) {
         update_option( 'xstore_api_key', $api_key );
         update_option( 'xtheme_is_activated', true );
+        update_option( 'xtheme_activated_theme', ETHEME_PREFIX );
         update_option( 'xtheme_purchase_code', $purchase );
     }
 
@@ -298,7 +298,9 @@ class ETheme_Version_Check {
                echo  '<p class="error">Enter the purchase code</p>';
                 return;
             }
-            $response = wp_remote_get( $this->api_url . 'activate/' . $code . '?domain=' .$this->domain() );
+
+            $theme_id = 15780546;
+            $response = wp_remote_get( $this->api_url . 'activate/' . $code . '?envato_id='. $theme_id .'&domain=' .$this->domain() );
             $response_code = wp_remote_retrieve_response_code( $response );
 
             if( $response_code != '200' ) {

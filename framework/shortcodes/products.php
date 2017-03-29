@@ -279,8 +279,9 @@ if(!function_exists('etheme_register_vc_products')) {
               "value" => array( "",
                 'Inherit' => '',
                 'Default' => 'default',
-                'Buttons on hover' => 'mask',
-                'Buttons on hover 2' => 'mask2',
+                'Buttons on hover middle ' => 'mask3',
+                'Buttons on hover bottom' => 'mask',
+                'Buttons on hover right' => 'mask2',
                 'Information mask' => 'info',
                 'Booking' => 'booking',
                 'Disable' => 'Disable',
@@ -335,7 +336,8 @@ if(!function_exists('etheme_register_vc_products')) {
             array(
               "type" => "textfield",
               "heading" => esc_html__("Limit", 'xstore'),
-              "param_name" => "limit"
+              "param_name" => "limit",
+              "description" => sprintf( esc_html__( 'Use "-1" to show all products.', 'xstore' ) )
             ),
           array(
               'type' => 'autocomplete',

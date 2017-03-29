@@ -56,8 +56,11 @@ function etheme_the_look_shortcode($atts, $content) {
     }
 
 
-    if(!empty( $taxonomies )) {
-      $terms = get_terms( array('product_cat', 'product_tag'), array(
+    if( ! empty( $taxonomies ) ) {
+
+      $get_taxonomies = get_taxonomies( array( 'public' => true ) );
+
+      $terms = get_terms( array_keys( $get_taxonomies ), array(
         'orderby' => 'name',
         'include' => $taxonomies
       ));
@@ -66,10 +69,10 @@ function etheme_the_look_shortcode($atts, $content) {
         $args['tax_query'] = array('relation' => 'OR');
         foreach ($terms as $key => $term) {
           $args['tax_query'][] = array(
-                'taxonomy' => $term->taxonomy,                //(string) - Taxonomy.
-                'field' => 'slug',                    //(string) - Select taxonomy term by ('id' or 'slug')
-                'terms' => array( $term->slug ),    //(int/string/array) - Taxonomy term(s).
-                'include_children' => true,           //(bool) - Whether or not to include children for hierarchical taxonomies. Defaults to true.
+                'taxonomy' => $term->taxonomy,        // (string) - Taxonomy.
+                'field' => 'slug',                    // (string) - Select taxonomy term by ('id' or 'slug')
+                'terms' => array( $term->slug ),      // (int/string/array) - Taxonomy term(s).
+                'include_children' => true,           // (bool) - Whether or not to include children for hierarchical taxonomies. Defaults to true.
                 'operator' => 'IN'  
           );
         }

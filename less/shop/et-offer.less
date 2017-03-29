@@ -71,6 +71,44 @@
 			}
 		}
 	}
+	&.owl-carousel{
+		.owl-buttons{
+			.owl-prev,
+			.owl-next{
+				width: 40px;
+			    height: 40px;
+			    background-color: #fff;
+			    font-size: 0;
+			    position: absolute;
+			    color: #000;
+			    -webkit-transition: all 0.2s linear;
+			    transition: all 0.2s linear;
+			    text-align: center;
+			    &:before{
+			    	color: #000;
+					font-size: 1.6rem;
+				    line-height: 39px;
+					margin-left: 16px;
+    				display: block;
+				    -webkit-transition: all 0.2s linear;
+				    transition: all 0.2s linear;
+			    }
+			    &:hover{
+			    	background-color: #d64444;
+			    	color: #fff;
+			    	&:before{
+			    		color: #fff;
+			    	}
+			    }
+			}
+			.owl-prev{
+				left: 30px;
+			}
+			.owl-next{
+				right: 30px;
+			}
+		}
+	}
 }
 
 .vc_col-sm-6, .vc_col-sm-7, .vc_col-sm-8, .vc_col-sm-9, .vc_col-sm-10, .vc_col-sm-11, .vc_col-sm-12,

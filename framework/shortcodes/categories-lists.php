@@ -28,6 +28,7 @@ function etheme_categories_lists_shortcode($atts) {
         'active_color' => '#b3a089',
         'hide_fo' => '',
         'hide_buttons' => false,
+        'quantity' => '',
         'class'      => ''
     ), $atts ) );
 
@@ -87,7 +88,9 @@ function etheme_categories_lists_shortcode($atts) {
             $class .= ' categories-lists-grid';
             $class .= ' categories-columns-' . $columns;
         }
-
+        
+        if ( ! empty( $quantity ) ) $class .= ' limit-enable';
+        
         echo '<div class="'.$class.' slider-'.$box_id.'">';
 
         foreach ( $product_categories as $category ) {
@@ -99,7 +102,7 @@ function etheme_categories_lists_shortcode($atts) {
                     <?php woocommerce_subcategory_thumbnail( $category ); ?>
                   </a>
                   <ul>
-                    <?php etheme_show_category_in_the_list( $category, $orderby, $order, $exclude, $hide_empty ) ?>
+                    <?php etheme_show_category_in_the_list( $category, $orderby, $order, $exclude, $hide_empty, $quantity ) ?>
                    </ul>
                 </div>
               </div>
@@ -156,7 +159,7 @@ function etheme_categories_lists_shortcode($atts) {
 }
 
 if( ! function_exists( 'etheme_show_category_in_the_list' ) ) {
-  function etheme_show_category_in_the_list( $category, $orderby, $order, $exclude, $hide_empty ) {
+  function etheme_show_category_in_the_list( $category, $orderby, $order, $exclude, $hide_empty, $quantity ) {
     ?>
       <li>
         <a href="<?php echo get_term_link( $category, 'product_cat' ); ?>" class="category-name"><?php echo $category->name; ?>
@@ -165,6 +168,7 @@ if( ! function_exists( 'etheme_show_category_in_the_list' ) ) {
               echo ' <mark class="count">(' . $category->count . ')</mark>';
           ?>
         </a>
+
         <?php 
           $subcategories =  get_terms( 'product_cat', array(
             'orderby'    => $orderby,
@@ -174,15 +178,22 @@ if( ! function_exists( 'etheme_show_category_in_the_list' ) ) {
             'pad_counts' => true,
             'parent' => $category->term_id
           ) );
-
+          $i=0;
          ?>
     
          <?php if( ! empty( $subcategories ) && ! is_wp_error( $subcategories ) ) {
             echo '<ul>';
             foreach ($subcategories as $category) {
-              etheme_show_category_in_the_list( $category, $orderby, $order, $exclude, $hide_empty );
+              $i++;
+              if ( $i > $quantity && ! empty( $quantity ) ) {
+                echo '<a href="' . get_category_link( $category->parent ) . '" class="limit-link"><span class="read-more">' . esc_html__( 'View All', 'xstore' ) . '</span></a>';
+                return;
+              } 
+
+              etheme_show_category_in_the_list( $category, $orderby, $order, $exclude, $hide_empty, $quantity );
             }
             echo '</ul>';
+
          } ?>
        </li>
     <?php
@@ -242,6 +253,11 @@ if(!function_exists('etheme_register_etheme_categories_lists')) {
               ),
               'save_always' => true,
               'description' => esc_html__( 'List of product categories', 'xstore' ),
+            ),
+            array(
+              "type" => "textfield",
+              "heading" => esc_html__("Subcategories limit", 'xstore'),
+              "param_name" => "quantity"
             ),
             array(
               'type' => 'autocomplete',

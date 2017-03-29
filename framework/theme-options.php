@@ -322,7 +322,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'header_bg',
                     'type' => 'background',
                     'title' => __( 'Header background', 'xstore' ),
-                    'output' => array('.main-header,.navigation-wrapper')
+                    'output' => array('.header-bg-block')
                 ),
                 array (
                     'id' => 'fixed_header_color',
@@ -420,6 +420,24 @@ if(!function_exists('etheme_redux_init')) {
                     )
                 ),
                 array (
+                    'id' => 'search_ajax_post',
+                    'type' => 'switch',
+                    'title' => __( 'Search by posts', 'xstore' ),
+                    'default' => true,
+                    'required' => array(
+                        array( 'search_ajax', 'equals', true)
+                    )
+                ),
+                array (
+                    'id' => 'search_ajax_product',
+                    'type' => 'switch',
+                    'title' => __( 'Search by products', 'xstore' ),
+                    'default' => true,
+                    'required' => array(
+                        array( 'search_ajax', 'equals', true)
+                    )
+                ),
+                array (
                     'id' => 'top_panel',
                     'type' => 'switch',
                     'title' => __( 'Enable top panel', 'xstore' ),
@@ -500,7 +518,10 @@ if(!function_exists('etheme_redux_init')) {
                         'on_click' => __( 'Opened by click', 'xstore' ),
                         'on_hover' => __( 'Opened on hover', 'xstore' ),
                     ),
-                    'default' => 'on_hover'
+                    'default' => 'on_hover',
+                    'required' => array(
+                        array( 'secondary_menu', 'equals', true )
+                    )
                 ),
                 array (
                     'id' => 'secondary_menu_home',
@@ -523,8 +544,11 @@ if(!function_exists('etheme_redux_init')) {
                 array (
                     'id' => 'all_departments_text',
                     'type' => 'text',
-                    'title' => __( 'All departaments text', 'xstore' ),
-                    'default' => __( 'All departaments', 'xstore' )
+                    'title' => __( 'All departments text', 'xstore' ),
+                    'default' => __( 'All departments', 'xstore' ),
+                    'required' => array(
+                        array( 'secondary_menu', 'equals', true )
+                    )
                 ),
             ),
         ) );
@@ -1017,7 +1041,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'menu_level_1',
                     'type' => 'typography',
                     'title' => __( 'Menu first level font', 'xstore' ),
-                    'output' => '.menu-wrapper .menu > li > a, .mobile-menu-wrapper .menu > li > a, .mobile-menu-wrapper .links li a, .secondary-menu-wrapper .menu > li > a, .secondary-title, .fullscreen-menu .menu > li > a, .fullscreen-menu .menu > li .inside > a',
+                    'output' => '.menu-wrapper .menu > li > a, .mobile-menu-wrapper .menu > li > a, .mobile-menu-wrapper .links li a, .secondary-menu-wrapper .menu > li > a, .secondary-title, .fullscreen-menu .menu > li > a, .fullscreen-menu .menu > li .inside > a, .header-wrapper.header-advanced .menu-wrapper .menu > li > a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),

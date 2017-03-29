@@ -28,14 +28,18 @@ if(!function_exists('etheme_add_body_classes')) {
         $classes[] = (etheme_get_option('site_preloader')) ? 'et-preloader-on' : 'et-preloader-off';
         $classes[] = (etheme_get_option('just_catalog')) ? 'et-catalog-on' : 'et-catalog-off';
         $classes[] = ( ( etheme_get_option('footer_fixed') || etheme_get_custom_field('footer_fixed', $id) == 'yes' ) && etheme_get_custom_field('footer_fixed', $id) != 'no' ) ? 'et-footer-fixed-on' : 'et-footer-fixed-off';
-        $classes[] = (etheme_get_option('secondary_menu')) ? 'et-secondary-menu-on' : 'et-secondary-menu-off';
-        $classes[] = 'et-secondary-visibility-' . etheme_get_option('secondary_menu_visibility');
 
-        if( etheme_get_option('secondary_menu_visibility') == 'opened' ) {
-            $classes[] = (etheme_get_option('secondary_menu_home')) ? 'et-secondary-on-home' : '';
-            $classes[] = (etheme_get_option('secondary_menu_subpages')) ? 'et-secondary-on-subpages' : '';
+        if ( etheme_get_option( 'secondary_menu' ) ) {
+            $classes[] = 'et-secondary-menu-on';
+            $classes[] = 'et-secondary-visibility-' . etheme_get_option('secondary_menu_visibility');
+            if( etheme_get_option('secondary_menu_visibility') == 'opened' ) {
+                $classes[] = (etheme_get_option('secondary_menu_home')) ? 'et-secondary-on-home' : '';
+                $classes[] = (etheme_get_option('secondary_menu_subpages')) ? 'et-secondary-on-subpages' : '';
+            } else {
+                $classes[] = (etheme_get_option('secondary_menu_darkening')) ? 'et-secondary-darkerning-on' : 'et-secondary-darkerning-off';
+            }
         } else {
-            $classes[] = (etheme_get_option('secondary_menu_darkening')) ? 'et-secondary-darkerning-on' : 'et-secondary-darkerning-off';
+            $classes[] = 'et-secondary-menu-off';
         }
 
         $classes[] = 'global-post-template-' . $post_template;
@@ -872,23 +876,20 @@ if(!function_exists('etheme_ajax_search_action')) {
                 )
             );
 
-            if ( isset( $_REQUEST['product_cat'] ) ) {
+            if ( $_REQUEST['cat'] ) {
                 $args['tax_query'] = array(
                     'relation' => 'AND',
                     array(
                         'taxonomy' => 'product_cat',
                         'field'    => 'slug',
-                        'terms'    => $_REQUEST['product_cat']
+                        'terms'    => $_REQUEST['cat']
                     ) );
             }
 
-
-            $products = get_posts( $args );
+            $products = ( etheme_get_option( 'search_ajax_product' ) ) ? get_posts( $args ) : '' ;
 
             if ( ! empty($products) ) {
                 ob_start();
-
-                echo '<h3 class="search-results-title">' . esc_html__('Products found', 'xstore') . '<a href="' . esc_url( home_url() ) . '/?s='. $s .'&post_type=product">' . esc_html__('View all', 'xstore' ) . '</a></h3>';
 
                 foreach ( $products as $post ) {
                     setup_postdata( $post );
@@ -896,10 +897,14 @@ if(!function_exists('etheme_ajax_search_action')) {
                 }
 
                 $result['status'] = 'success';
-                $result['html'] .= '<ul class="product-ajax-list">' . ob_get_clean() . '</ul>';
+                $result['html'] .= '<div class="product-ajax-list">';
+                $result['html'] .= '<h3 class="search-results-title">' . esc_html__('Products found', 'xstore') . '<a href="' . esc_url( home_url() ) . '/?s='. $s .'&post_type=product">' . esc_html__('View all', 'xstore' ) . '</a></h3>';
+                $result['html'] .= '<ul>' . ob_get_clean() . '</ul>';
+                $result['html'] .= '</div>';
             }
 
             wp_reset_postdata();
+
 
             /* get posts results */
 
@@ -911,12 +916,12 @@ if(!function_exists('etheme_ajax_search_action')) {
                 'posts_per_page'      => 8,
             );
 
-            $posts = get_posts( $args );
+            if ( $_REQUEST['cat'] && ! etheme_get_option( 'search_ajax_product' ) ) $args['category_name'] = $_REQUEST['cat'];
+
+            $posts = ( etheme_get_option( 'search_ajax_post' ) ) ? get_posts( $args ) : '' ;
 
             if ( !empty( $posts ) ) {
                 ob_start();
-
-                echo '<h3 class="search-results-title">' . esc_html__('Posts found', 'xstore') . '<a href="' . esc_url( home_url() ) . '/?s='. $s .'&post_type=post">' . esc_html__('View all', 'xstore' ) . '</a></h3>';
 
                 foreach ( $posts as $post ) {
                     setup_postdata( $post );
@@ -934,14 +939,20 @@ if(!function_exists('etheme_ajax_search_action')) {
                 }
 
                 $result['status'] = 'success';
-                $result['html'] .= '<ul class="posts-ajax-list">' . ob_get_clean() . '</ul>';
+                $result['html'] .= '<div class="posts-ajax-list">';
+                $result['html'] .= '<h3 class="search-results-title">' . esc_html__('Posts found', 'xstore') . '<a href="' . esc_url( home_url() ) . '/?s='. $s .'&post_type=post">' . esc_html__('View all', 'xstore' ) . '</a></h3>';
+                $result['html'] .= '<ul>' . ob_get_clean() . '</ul>';
+                $result['html'] .= '</div>';
             }
 
             wp_reset_postdata();
 
             if ( empty( $products ) && empty( $posts ) ) {
                 $result['status'] = 'error';
-                $result['html'] = esc_html__( 'No results', 'xstore' );
+                $result['html'] = '<div class="empty-category-block">';
+                $result['html'] .= '<h3>' . esc_html__( 'No results were found', 'xstore' ) . '</h3>';
+                $result['html'] .= '<p class="not-found-info">' . esc_html__( 'We invite you to get acquainted with an assortment of our site. Surely you can find something for yourself!', 'xstore' ). '</p>';
+                $result['html'] .= '</div>';
             }
         }
 
@@ -1109,14 +1120,29 @@ if( ! function_exists('etheme_faceboook_login_button') ) {
 
 
 // **********************************************************************//
+// ! Get activated theme
+// **********************************************************************//
+
+if(!function_exists('etheme_is_activated')) {
+    function etheme_activated_theme() {
+        return get_option( 'xtheme_activated_theme', false );
+    }
+
+}
+
+
+// **********************************************************************//
 // ! Is theme activatd
 // **********************************************************************//
 
 if(!function_exists('etheme_is_activated')) {
     function etheme_is_activated() {
+        //if ( etheme_activated_theme() != ETHEME_PREFIX ) return false;
+        if ( ! etheme_activated_theme() ) update_option( 'xtheme_activated_theme', ETHEME_PREFIX );
         return get_option( 'xtheme_is_activated', false );
     }
 }
+
 
 // **********************************************************************// 
 // ! http://codex.wordpress.org/Function_Reference/wp_nav_menu#How_to_add_a_parent_class_for_menu_item

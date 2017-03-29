@@ -3,7 +3,7 @@
     $color = etheme_get_header_color();
     $menu_class = 'menu-align-' . etheme_get_option('menu_align');
 ?>
-<div class="header-wrapper header-<?php echo esc_attr( $ht ); ?> header-color-<?php echo esc_attr( $color ); ?>">
+<div class="header-wrapper header-bg-block header-<?php echo esc_attr( $ht ); ?> header-color-<?php echo esc_attr( $color ); ?>">
     <header class="header main-header">
         <div class="header-top topbar-color-<?php echo etheme_get_option('top_bar_color'); ?>">
             <div class="container">

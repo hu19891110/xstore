@@ -39,9 +39,9 @@ $read_more 		= etheme_get_read_more();
 
 ?>
 
-<article <?php post_class($postClass); ?> id="post-<?php the_ID(); ?>" >
+<article <?php post_class( $postClass ); ?> id="post-<?php the_ID(); ?>" >
     <div>
-        <?php if ( $et_loop['slide_view'] == 'timeline2' ): ?>
+        <?php if ( ! empty( $et_loop['slide_view'] ) && $et_loop['slide_view'] == 'timeline2' ): ?>
             <div class="meta-post-timeline">
                 <span class="time-day"><?php the_time('d'); ?></span>
                 <span class="time-mon"><?php the_time('M'); ?></span>

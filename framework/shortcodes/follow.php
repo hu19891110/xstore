@@ -21,6 +21,7 @@ if(!function_exists('etheme_follow_shortcode')) {
         'vimeo' => '',
         'rss' => '',
         'vk' => '',
+        'houzz' => '',
         'colorfull' => '',
         'icons_bg' => '',
         'icons_color' => '',
@@ -91,6 +92,10 @@ if(!function_exists('etheme_follow_shortcode')) {
 
         if( $vk ) {
             $output .= '<a href="'. esc_url( $vk ) .'" class="follow-vk" '.$target.'><i class="fa fa-vk"></i></a>';
+        }
+
+        if( $houzz ) {
+            $output .= '<a href="'. esc_url( $houzz ) .'" class="follow-houzz" '.$target.'><i class="fa fa-houzz"></i></a>';
         }
 
         $output .= '</div>';
@@ -182,8 +187,13 @@ if(!function_exists('etheme_register_follow')) {
             ),
             array(
                 "type" => "textfield",
-                "heading" => esc_html__("Vk link", 'xstore'),
+                "heading" => esc_html__("VK link", 'xstore'),
                 "param_name" => "vk"
+            ),
+            array(
+                "type" => "textfield",
+                "heading" => esc_html__("Houzz link", 'xstore'),
+                "param_name" => "houzz"
             ),
             array(
                 "type" => "dropdown",

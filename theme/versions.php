@@ -160,7 +160,7 @@ return array(
     ),
     'landing' => array(
         'title' => 'Landing',
-        'preview_url' => $main_domain . 'landing/',
+        'preview_url' => $main_domain . 'landing-watch/',
         'to_import' => array(
             'content' => true,
             'slider' => 2,
@@ -290,6 +290,32 @@ return array(
     'flowers' => array(
         'title' => 'Flowers',
         'preview_url' => $main_domain . 'flowers/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
+    'handmade' => array(
+        'title' => 'Handmade',
+        'preview_url' => $main_domain . 'handmade/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 2,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
+    'medical' => array(
+        'title' => 'Medical',
+        'preview_url' => $main_domain . 'medical/',
         'to_import' => array(
             'content' => true,
             'slider' => 1,
@@ -935,6 +961,42 @@ return array(
     'flowers-contacts' => array(
         'title' => 'Flowers contacts',
         'preview_url' => $main_domain . 'flowers/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'handmade-instruction' => array(
+        'title' => 'Handmade instruction',
+        'preview_url' => $main_domain . 'handmade/instruction',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'medical-doctors' => array(
+        'title' => 'Medical doctors',
+        'preview_url' => $main_domain . 'medical/our-doctors',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'medical-offers' => array(
+        'title' => 'Medical offers',
+        'preview_url' => $main_domain . 'medical/offers',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'medical-contacts' => array(
+        'title' => 'Medical contacts',
+        'preview_url' => $main_domain . 'medical/contact-us/',
         'to_import' => array(
             'content' => true,
             'slider' => false

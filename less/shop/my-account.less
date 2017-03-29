@@ -6,13 +6,14 @@
 .woocommerce-account {
 	.woocommerce {
 		h2 {
-			padding: 1.79em 0;
-			border-top: 1px solid #e6e6e6;
-			border-bottom: 1px solid #e6e6e6;
-			text-transform: uppercase;
 			font-size: 1.14rem;
-			margin-bottom: 0;
-			border-bottom: 2px solid #1e1e1e;
+			font-weight: @bolder;
+			padding-bottom: 1.25em;
+			margin-bottom: 1.25em;
+			padding-top: 0;
+			border-top: none;
+			text-transform: uppercase;
+			border-bottom: 1px solid @borderColor;
 		}
 	}
 
@@ -44,16 +45,12 @@
 		border: 1px solid @borderColor;
 	}
 	
-	h2 {
-		font-size: 1.14rem;
-		font-weight: @bolder;
-		padding-bottom: 1.25em;
-		margin-bottom: 1.25em;
-		padding-top: 0;
-		border-top: none;
-		text-transform: uppercase;
-		border-bottom: 1px solid @borderColor;
-	}
+
+
+}
+
+form.login,
+form.register{
 	input{
 		max-width: 500px;
 	}
@@ -85,7 +82,7 @@
 	}
 
 	[for='rememberme'] {
-		margin-top: 10px;
+		margin-top: 0;
 		font-weight: @light;
 		cursor: pointer;
 	}
@@ -128,6 +125,9 @@ table.order_details{
 		.col-1{
 			padding:2.5em;
 		}
+	}
+	form.login,
+	form.register{
 		.form-row{
 			width:100%;
 		}

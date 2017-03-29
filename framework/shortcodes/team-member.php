@@ -59,7 +59,7 @@ function etheme_team_member_shortcode($atts, $content = null) {
 	                            $html .= '<li><a href="'.$a['facebook'].'"><i class="fa fa-facebook"></i></a></li>';
 	                        }
 	                        if ($a['skype'] != '') {
-	                            $html .= '<li><a href="'.$a['skype'].'"><i class="fa fa-skype"></i></a></li>';
+	                            $html .= '<li><a href="skype:'.$a['skype'].'?chat"><i class="fa fa-skype"></i></a></li>';
 	                        }
 	                        if ($a['instagram'] != '') {
 	                            $html .= '<li><a href="'.$a['instagram'].'"><i class="fa fa-instagram"></i></a></li>';

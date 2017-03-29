@@ -20,7 +20,7 @@ if(!function_exists('etheme_theme_setup')) {
 	
 	function etheme_theme_setup(){
         add_theme_support( 'post-formats', array( 'video', 'quote', 'gallery', 'audio' ) );
-        add_theme_support( 'post-thumbnails', array('post') );
+        add_theme_support( 'post-thumbnails', array('post', 'page', 'product') );
         add_theme_support( 'automatic-feed-links' );
         add_theme_support( "title-tag" );
 	}

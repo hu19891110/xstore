@@ -70,7 +70,6 @@ if( ! function_exists( 'etheme_countdown_shortcode' ) ) {
                 <span class="seconds"></span>
                 ' . __( 'secs', 'xstore' ) . '
             </div>
-            <div class="clear"></div>
         </div>';
     }
 }

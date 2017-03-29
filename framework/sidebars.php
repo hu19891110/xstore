@@ -394,7 +394,7 @@ if(!function_exists('etheme_register_stored_sidebar')) {
 	        foreach($et_custom_sidebars as $name){
 	            register_sidebar( array(
 	                'name' => ''.$name.'',
-	                'id' => $name,
+	                'id' => str_replace( ' ', '-', $name ),
 	                'class' => 'etheme_custom_sidebar',
 	                'before_widget' => '<div id="%1$s" class="sidebar-widget widget-container %2$s">',
 	                'after_widget' => '</div>',

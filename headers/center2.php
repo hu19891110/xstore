@@ -24,7 +24,7 @@
             </div>
         </div>
     <?php endif; ?>
-    <header class="header main-header">
+    <header class="header main-header header-bg-block">
         <div class="container">
             <div class="container-wrapper">
                 <div class="header-logo"><?php etheme_logo(); ?></div>

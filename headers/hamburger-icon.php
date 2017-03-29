@@ -19,7 +19,7 @@
 </div>
 
 <div class="header-wrapper header-<?php echo esc_attr( $ht ); ?> header-color-<?php echo esc_attr( $color ); ?>">
-    <header class="header main-header">
+    <header class="header main-header header-bg-block">
         <div class="container">
             <div class="container-wrapper">
                 <div class="header-logo"><?php etheme_logo(); ?></div>

@@ -635,9 +635,11 @@
 	}
 
 	.redux-main {
-		margin-left: 331px;
+		margin-left: 330px!important;
 	}
-
+	.redux-container .redux-main {
+		margin-left: 330px!important;
+	}
 	.admin-color-fresh .redux-sidebar .redux-group-menu li.active.hasSubSections ul.subsection li a, 
 	.admin-color-fresh .redux-sidebar .redux-group-menu li.activeChild.hasSubSections ul.subsection li a {
 		padding: 20px!important;
@@ -771,7 +773,7 @@
 
 
 .redux_field_th {
-	font-weight: normal;
+	font-weight: normal!important;
 	color:#646464;
 }
 

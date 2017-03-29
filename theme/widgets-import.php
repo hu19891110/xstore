@@ -848,4 +848,90 @@ Phone: <mark>+1 408 996 1010</mark>'
 			),
 		),	
 	),
+	'handmade' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 5837
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
+	'medical' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+					'etheme-socials' => array(
+						'size' => 'small',
+						'align' => 'right',
+						'facebook' => '#',
+						'twitter' => '#',
+					),
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+					'text' => array(
+						'text' => 'ORDER ONLINE OR CALL US (+1800) 000 8808'
+					),
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 5973
+					)
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 5970
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
 );

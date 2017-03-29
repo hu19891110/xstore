@@ -342,6 +342,10 @@ textarea {
 .my-account-link > ul > li > a {
   text-align: right;
 }
+.my-account-link > ul {
+  left: auto;
+  right: -10px;
+}
 .quick-view-popup .add_to_cart_button {
   margin-right: 0;
   margin-left: 1em;
@@ -477,9 +481,13 @@ div.fancy-select ul.options {
   float: right;
 }
 .shopping-container.ico-design-2 .cart-bag .badge-number {
-  right: auto;
+  right: auto !important;
   left: -3px;
   top: -2px;
+}
+.shopping-container.ico-design-3 .cart-bag .badge-number {
+  right: auto;
+  left: -1px;
 }
 .content-product .out-of-stock {
   padding-top: 28px;
@@ -526,12 +534,24 @@ select {
   right: auto;
   left: 0;
 }
+.read-more:after {
+  content: "\f177";
+  right: auto;
+  left: -15px;
+}
+.read-more:hover:after {
+  right: auto;
+  left: -23px;
+}
 .post .post-heading h2 {
   text-align: right;
 }
 .post .meta-post {
   display: inline-block;
   width: 100%;
+}
+.post .meta-post .entry-date {
+  display: inline-block;
 }
 .post .meta-post .entry-date:before {
   float: right;
@@ -708,6 +728,11 @@ article.content-timeline .meta-post-timeline {
 }
 .product-type-variable .yith-wcwl-add-to-wishlist {
   vertical-align: sub;
+}
+.product-information .products-page-cats,
+.product-info-wrapper .products-page-cats {
+  direction: ltr;
+  text-align: right;
 }
 #lang_sel li {
   width: auto;
@@ -963,6 +988,13 @@ ul.arrow > li:before {
   left: auto;
   right: 100%;
 }
+#review_form .stars {
+  display: inline-block;
+  width: 100%;
+}
+#review_form .stars a {
+  float: right;
+}
 @media only screen and (max-width: 1200px) {
   .navbar-header .et-wishlist-widget {
     margin-right: 0 !important;
@@ -1038,6 +1070,144 @@ ul.arrow > li:before {
     margin-left: 0;
   }
 }
-.category-list-item{direction:rtl;}
-.category-list-item ul{padding-right:0;}
+.category-grid .categories-mask {
+  direction: rtl;
+}
+.left-bar .left-titles {
+  float: right;
+}
+.left-bar .left-titles li {
+  border-right: 1px solid #e6e6e6;
+  border-left: none;
+  margin-right: 0;
+  margin-left: -1px;
+}
+.left-bar .left-titles li:after {
+  right: auto;
+  left: 0;
+}
+.left-bar .left-titles .wc-tabs {
+  padding-right: 0;
+}
+.product-ajax-list {
+  float: right;
+}
+.product-ajax-list .search-results-title {
+  text-align: right;
+}
+.product-ajax-list .search-results-title a {
+  float: left;
+  margin-top: 3px;
+}
+.product-ajax-list li {
+  float: right;
+}
+.product-ajax-list img {
+  margin-right: 0;
+  margin-left: 20px;
+}
+.product-ajax-list .product-title,
+.product-ajax-list .price {
+  text-align: right;
+}
+.product-ajax-list .product-list-image {
+  float: right;
+}
+.posts-ajax-list .search-results-title {
+  text-align: right;
+}
+.posts-ajax-list .search-results-title a {
+  float: left;
+  margin-top: 3px;
+}
+.posts-ajax-list li {
+  float: right;
+}
+.posts-ajax-list img {
+  margin-right: 0;
+  margin-left: 20px;
+}
+.posts-ajax-list .post-list-image {
+  float: right;
+}
+.posts-ajax-list li h4,
+.posts-ajax-list li span {
+  text-align: right;
+  display: block;
+}
+.read-more:hover:after:hover:after {
+  right: inherit;
+  left: -23px;
+}
+.read-more:hover:after:after {
+  content: '\f177';
+  right: inherit;
+  left: -15px;
+}
+.et-follow-buttons.icons-filled a:last-child {
+  margin-right: 10 !important;
+}
+.et-follow-buttons.icons-filled a:first-child {
+  margin-right: 0;
+}
+.view-switcher .switch-list,
+.view-switcher .switch-grid {
+  float: right;
+}
+.quick-view-popup .quick-view-excerpts .excerpt-content .excerpt-content-inner {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 0;
+}
+.quick-view-popup .product-information .products-page-cats {
+  text-align: right;
+}
+.shop-filters-area .nano-pane {
+  right: inherit;
+  left: -30px;
+}
+table.cart .product-details {
+  text-align: right;
+}
+.woocommerce table.wishlist_table .product-name {
+  text-align: right;
+}
+.excerpt-content > .nano-pane {
+  right: initial;
+  left: 0px;
+}
+#review_form .stars a {
+  margin-right: 0;
+  margin-left: 15px;
+}
+#review_form .stars a:last-child {
+  margin-right: 0;
+}
+#reviews .commentlist .star-rating {
+  margin-left: 5px;
+}
+.commentlist {
+  padding-right: 0 !important;
+}
+.commentlist .avatar {
+  float: right;
+}
+.commentlist .comment-text {
+  padding-left: 0;
+  padding-right: 110px;
+}
+.commentlist .star-rating {
+  float: left;
+}
+.commentlist .meta {
+  margin-bottom: 0;
+}
+@media only screen and (min-width: 992px) {
+  #reviews #comments {
+    float: left;
+  }
+  #reviews #review_form_wrapper {
+    float: right;
+  }
+}
 /*=====  End of RTL Styling  ======*/

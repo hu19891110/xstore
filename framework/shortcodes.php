@@ -242,12 +242,66 @@ $a = shortcode_atts(array(
 
 
 // **********************************************************************// 
-// ! Project links
-// **********************************************************************// 
+// ! Visibility of next/prev pruduct
+// **********************************************************************//
 
-function etheme_project_links($atts, $content = null) {
-    $next_post = get_next_post();
-    $prev_post = get_previous_post();
+function et_visible_pruduct( $id, $valid ){
+    $product = wc_get_product( $id );
+
+    if ( $product->visibility != 'hidden' && $product->visibility != 'search' ) {
+        return $product->post;
+    }
+
+    $the_query = new WP_Query( array( 'post_type' => 'product', 'p' => $id ) );
+
+    if ( $the_query->have_posts() ) {
+        while ( $the_query->have_posts() ) {
+            $the_query->the_post();
+            $valid_post = ( $valid == 'next' ) ? get_adjacent_post( 1, '', 0, 'product_cat' ) : get_adjacent_post( 1, '', 1, 'product_cat' );
+            if ( empty( $valid_post ) ) return;
+            $next_post_id = $valid_post->ID;
+            $visibility = wc_get_product( $next_post_id );
+            $visibility = $visibility->visibility;
+        }
+        // Restore original Post Data
+        wp_reset_postdata();
+    }
+
+    if ( $visibility == 'visible' || $visibility == 'catalog' ) {
+        return $valid_post;
+    } else {
+        return et_visible_pruduct( $next_post_id, $valid );
+    }
+        
+}
+
+
+// **********************************************************************// 
+// ! Project links
+// **********************************************************************//
+
+function etheme_project_links( $atts, $content = null ) {
+
+    global $post;
+
+    if ( $post->post_type == 'product' ) {
+
+        $next_post = get_adjacent_post( 1, '', 0, 'product_cat' );
+        $prev_post = get_adjacent_post( 1, '', 1, 'product_cat' );
+
+        if ( ! empty( $next_post ) && $next_post->post_type == 'product' ) {
+            $next_post = et_visible_pruduct( $next_post->ID, 'next' );
+        }
+
+        if ( ! empty( $prev_post ) && $prev_post->post_type == 'product' ) {
+            $prev_post = et_visible_pruduct( $prev_post->ID, 'prev' );
+        }
+
+    } else {
+        $next_post = get_next_post();
+        $prev_post = get_previous_post();
+    }
+
     ?>
         <div class="posts-navigation">
             <?php if(!empty($prev_post)) : ?>
@@ -318,8 +372,9 @@ function etheme_share_shortcode($atts, $content = null) {
 		$tooltip_class = 'title-toolip';
 	}
 	$image =  wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'small' );
-    $image = $image[0];
-	$post_title = rawurlencode(get_the_title($post->ID)); 
+	$image = $image[0];
+	$post_title = rawurlencode(get_the_title($post->ID));
+	$post_title = ( ! empty( $text ) ) ? $text : $post_title;
 	if($title) $html .= '<span class="share-title">'.$title.'</span>';
     $html .= '
         <ul class="menu-social-icons '.$class.'">
@@ -347,7 +402,7 @@ function etheme_share_shortcode($atts, $content = null) {
     if($vk == 1) {
         $html .= '
                 <li>
-                    <a href="http://vk.com/share.php?url='.$permalink.'&image='.$image.'" class="'.$tooltip_class.'" title="'.__('VK', 'xstore').'" target="_blank">
+                    <a href="http://vk.com/share.php?url='.$permalink.'&image='.$image.'?&title='.$post_title.'" class="'.$tooltip_class.'" title="'.__('VK', 'xstore').'" target="_blank">
                         <i class="fa fa-vk"></i>
                     </a>
                 </li>

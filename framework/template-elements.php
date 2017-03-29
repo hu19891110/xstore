@@ -1197,10 +1197,10 @@ if(!function_exists('etheme_breadcrumbs')) {
         if ( is_category() ) {
           $thisCat = get_category(get_query_var('cat'), false);
           if ($thisCat->parent != 0) echo get_category_parents($thisCat->parent, TRUE, ' ' . $delimiter . ' ');
-          echo $before . 'Archive by category "' . single_cat_title('', false) . '"' . $after;
+          echo $before . esc_html__('Archive by category ', 'xstore') . '"' . single_cat_title('', false) . '"' . $after;
 
         } elseif ( is_search() ) {
-          echo $before . 'Search results for "' . get_search_query() . '"' . $after;
+          echo $before . esc_html__('Search results for ', 'xstore') . '"' . get_search_query() . '"' . $after;
 
         } elseif ( is_day() ) {
           echo '<a href="' . get_year_link(get_the_time('Y')) . '">' . get_the_time('Y') . '</a> ' . $delimiter . ' ';
