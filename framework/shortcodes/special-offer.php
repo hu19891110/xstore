@@ -111,7 +111,7 @@ function etheme_offer_shortcode($atts, $content) {
 
     $class = $title_output = $images_class = '';
 
-    $shop_url = get_permalink(woocommerce_get_page_id('shop'));
+    $shop_url = get_permalink(wc_get_page_id('shop'));
 
     $woocommerce_loop['columns'] = $columns;
     //$woocommerce_loop['size'] = 'shop_catalog_alt';

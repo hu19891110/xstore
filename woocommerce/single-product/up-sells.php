@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 global $product, $woocommerce_loop;
 
-$upsells = $product->get_upsells();
+$upsells = $product->get_upsell_ids();
 
 if ( sizeof( $upsells ) == 0 ) return;
 
@@ -34,7 +34,7 @@ if(etheme_get_option('upsell_location') == 'sidebar') {
 	etheme_create_slider_widget($args, esc_html__('Our offers', 'xstore'), false, true);
 } else {
 	$slider_args = array(
-		'title' =>__('Our offers', 'xstore')
+		'title' => esc_html__('Our offers', 'xstore')
 	);
 	etheme_create_slider($args, $slider_args);
 }

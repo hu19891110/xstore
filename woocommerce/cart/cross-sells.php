@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     1.6.4
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -28,9 +28,9 @@ $args = array(
 );
 
 $slider_args = array(
-	'title' =>__('You may be interested in&hellip;', 'xstore')
+	'title' => esc_html__( 'You may be interested in&hellip;', 'xstore' )
 );
 
-etheme_create_slider($args, $slider_args);
+etheme_create_slider( $args, $slider_args );
 
 wp_reset_query();

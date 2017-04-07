@@ -28,7 +28,7 @@ if( $ajax['enable'] ) {
 		<div class="input-row">
 			<input type="text" value="" placeholder="<?php esc_attr_e( 'Type here...', 'xstore' ); ?>" autocomplete="off" class="form-control" name="s" id="s" />
 			<input type="hidden" name="post_type" value="product" />
-			<?php if ( defined( 'ICL_LANGUAGE_CODE' ) ) : ?>
+			<?php if ( defined( 'ICL_LANGUAGE_CODE' ) && ! defined( 'LOCO_LANG_DIR' ) ) : ?>
 				<input type="hidden" name="lang" value="<?php echo ICL_LANGUAGE_CODE; ?>"/>
 			<?php endif ?>
 			<?php wp_dropdown_categories(array( 'show_option_all' => __('All categories', 'xstore') ,'taxonomy' => $ajax['taxonomy'], 'hierarchical' => true, 'name' => $ajax['name'], 'value_field' => 'slug')) ?>

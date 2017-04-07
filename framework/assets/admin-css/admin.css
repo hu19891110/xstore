@@ -683,6 +683,9 @@
 		display: none;
 	}
 
+	.wp-customizer .redux-main {
+    	margin-left: auto !important;
+	}
 }
 
 @media only screen and (max-width: 767px) {

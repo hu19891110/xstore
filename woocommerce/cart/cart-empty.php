@@ -38,7 +38,7 @@ $empty_cart_content = etheme_get_option('empty_cart_content');
 		<?php echo do_shortcode( $empty_cart_content ); ?>
 	<?php endif; ?>
 	<?php if ( wc_get_page_id( 'shop' ) > 0 ) : ?>
-		<p><a class="btn" href="<?php echo get_permalink(woocommerce_get_page_id('shop')); ?>"><span><?php esc_html_e('Return To Shop', 'xstore') ?></span></a></p>
+		<p><a class="btn" href="<?php echo get_permalink(wc_get_page_id('shop')); ?>"><span><?php esc_html_e('Return To Shop', 'xstore') ?></span></a></p>
 	<?php endif; ?>
 
 </div>

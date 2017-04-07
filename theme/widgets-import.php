@@ -934,4 +934,44 @@ Phone: <mark>+1 408 996 1010</mark>'
 			),
 		),	
 	),
+	'minimal' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6014
+					)
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6028
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
 );

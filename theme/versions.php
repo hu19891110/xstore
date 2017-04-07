@@ -326,6 +326,19 @@ return array(
         'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
         'type' => 'demo'
     ),
+    'minimal' => array(
+        'title' => 'Minimal',
+        'preview_url' => $main_domain . 'minimal/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
     'dark' => array(
         'title' => 'Dark',
         'preview_url' => $main_domain . 'dark/',
@@ -422,7 +435,7 @@ return array(
         ),
         'type' => 'page'
     ),
-    'minimal' => array(
+    'home-minimal' => array(
         'title' => 'Home minimal',
         'preview_url' => $main_domain . 'home-minimal/?preset=header6',
         'to_import' => array(
@@ -997,6 +1010,33 @@ return array(
     'medical-contacts' => array(
         'title' => 'Medical contacts',
         'preview_url' => $main_domain . 'medical/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'minimal-contacts' => array(
+        'title' => 'Minimal contacts',
+        'preview_url' => $main_domain . 'minimal/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'minimal-about' => array(
+        'title' => 'Minimal about',
+        'preview_url' => $main_domain . 'minimal/about-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'minimal-lookbook' => array(
+        'title' => 'Minimal lookbook',
+        'preview_url' => $main_domain . 'minimal/lookbook/',
         'to_import' => array(
             'content' => true,
             'slider' => false

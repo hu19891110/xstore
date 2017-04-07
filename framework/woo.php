@@ -100,7 +100,7 @@ if( ! function_exists('etheme_additional_information')) {
 		global $product;
 		?>
 	        <div class="product-attributes">
-	            <?php $product->list_attributes(); ?>
+	            <?php do_action( 'woocommerce_product_additional_information', $product ); ?>
 	        </div>
 		<?php
 	}
@@ -402,14 +402,14 @@ if(!function_exists('etheme_size_guide')) {
 	}
 }
 
-if(!function_exists('etheme_product_cats')) {
+if( ! function_exists( 'etheme_product_cats' ) ) {
 	function etheme_product_cats() {
 		global $post, $product;
-		$cat = etheme_get_custom_field('primary_category');
+		$cat = etheme_get_custom_field( 'primary_category' );
 		?>
 		<div class="products-page-cats">
 			<?php
-		        if(!empty($cat) && $cat != 'auto') {
+		        if( ! empty( $cat ) && $cat != 'auto' ) {
 		            $primary = get_term_by( 'slug', $cat, 'product_cat' );
 		            if( ! is_wp_error( $primary ) ) {
 			            $term_link = get_term_link( $primary );
@@ -418,7 +418,8 @@ if(!function_exists('etheme_product_cats')) {
 			            }
 		            }
 		        } else {
-					echo $product->get_categories( ', ' );
+		        	// updated for woocommerce v3.0
+					echo wc_get_product_category_list( $product->get_id(), ', ' );
 		        }
 			?>
 		</div>
@@ -435,7 +436,7 @@ if(!function_exists('etheme_get_image_list')) {
 		global $post, $product, $woocommerce;
 		$images_string = '';
 
-		$attachment_ids = $product->get_gallery_attachment_ids();
+		$attachment_ids = $product->get_gallery_image_ids();
 
 		$_i = 0;
 		if(count($attachment_ids) > 0) {
@@ -469,7 +470,7 @@ if(!function_exists('etheme_get_image_list')) {
 if(!function_exists('etheme_get_second_image')) {
 	function etheme_get_second_image($size = 'shop_catalog' ) {
 		global $product, $woocommerce_loop;
-		$attachment_ids = $product->get_gallery_attachment_ids();
+		$attachment_ids = $product->get_gallery_image_ids();
 
 		$image = '';
 

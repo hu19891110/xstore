@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     1.6.4
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -13,7 +13,8 @@ global $product, $woocommerce_loop;
 
 $posts_per_page = etheme_get_option('related_limit');
 
-$related = $product->get_related( $posts_per_page );
+// updated for woocommerce v3.0
+$related = array_map( 'absint', array_values( wc_get_related_products( $product->get_id(), $posts_per_page ) ) );
 
 if ( sizeof( $related ) == 0 ) return;
 
@@ -24,13 +25,13 @@ $args = apply_filters( 'woocommerce_related_products_args', array(
 	'posts_per_page'       => $posts_per_page,
 	'orderby'              => $orderby,
 	'post__in'             => $related,
-	'post__not_in'         => array( $product->id )
+	'post__not_in'         => array( $product->get_id() )
 ) );
 
 $slider_args = array(
-	'title' =>__('Related Products', 'xstore')
+	'title' => esc_html__( 'Related Products', 'xstore' )
 );
 
-etheme_create_slider($args, $slider_args);
+etheme_create_slider( $args, $slider_args );
 
 wp_reset_postdata();

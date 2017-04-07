@@ -265,6 +265,10 @@ if(!function_exists('etheme_redux_init')) {
                             'title' => __( 'Variant hamburger', 'xstore' ),
                             'img' => ETHEME_CODE_IMAGES . 'headers/hamburger-icon.jpg',
                         ),
+                        'vertical' => array (
+                            'title' => __( 'Variant vertical', 'xstore' ),
+                            'img' => ETHEME_CODE_IMAGES . 'headers/vertical-icon.jpg',
+                        ),
                     ),
                     'default' => 'xstore'
                 ),
@@ -481,7 +485,7 @@ if(!function_exists('etheme_redux_init')) {
                     'type' => 'color_rgba',
                     'title' => __( 'Background color for cart number label', 'xstore' ),
                     'output' => array(
-                        'background-color' => '.header-color-inherit .et-wishlist-widget .wishlist-count, .header-color-dark .et-wishlist-widget .wishlist-count, .header-color-white .et-wishlist-widget .wishlist-count, .cart-bag .badge-number, .shopping-container.ico-design-2 .cart-bag .badge-number, .shopping-container.ico-design-3 .cart-bag .badge-number, .shopping-container.ico-design-1.ico-bg-yes .badge-number'
+                        'background-color' => '.header-color-inherit .et-wishlist-widget .wishlist-count, .header-color-dark .et-wishlist-widget .wishlist-count, .header-color-white .et-wishlist-widget .wishlist-count, .cart-bag .badge-number, .shopping-container.ico-design-2 .cart-bag .badge-number, .shopping-container.ico-design-3 .cart-bag .badge-number, .shopping-container.ico-design-1.ico-bg-yes .badge-number,.badge-number, .shopping-container.ico-design-1.ico-bg-yes .badge-number'
                     )
                 ),
                 array (
@@ -638,7 +642,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'bc_breadcrumbs_font',
                     'type' => 'typography',
                     'title' => __( 'Breadcrumbs font', 'xstore' ),
-                    'output' => '.woocommerce-breadcrumb, #breadcrumb, .bbp-breadcrumb, .woocommerce-breadcrumb a, #breadcrumb a, .bbp-breadcrumb a, .woocommerce-breadcrumb .delimeter, #breadcrumb .delimeter, .bbp-breadcrumb .delimeter, .page-heading.bc-type-left2 .back-history, .page-heading.bc-type-left2 .title, .page-heading.bc-type-left2 .woocommerce-breadcrumb a, .page-heading.bc-type-left2 .breadcrumbs a',
+                    'output' => '.woocommerce-breadcrumb, #breadcrumb, .bbp-breadcrumb, .woocommerce-breadcrumb a, #breadcrumb a, .bbp-breadcrumb a, .woocommerce-breadcrumb .delimeter, #breadcrumb .delimeter, .bbp-breadcrumb .delimeter, .page-heading.bc-type-left2 .back-history, .page-heading.bc-type-left2 .title, .page-heading.bc-type-left2 .woocommerce-breadcrumb a, .page-heading.bc-type-left .woocommerce-breadcrumb a, .page-heading.bc-type-left2 .breadcrumbs a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -646,7 +650,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'bc_return_font',
                     'type' => 'typography',
                     'title' => __( '"Return to previous page" font', 'xstore' ),
-                    'output' => '.page-heading .back-history',
+                    'output' => '.page-heading .back-history, .page-heading a.back-history',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -1496,6 +1500,12 @@ Surely you can find something for yourself!</p> ',
                         'id' => 'product_photoswipe',
                         'type' => 'switch',
                         'title' => __( 'Lightbox for product images', 'xstore' ),
+                        'default' => true,
+                    ),
+                    array (
+                        'id' => 'product_zoom',
+                        'type' => 'switch',
+                        'title' => __( 'Zoom for product images', 'xstore' ),
                         'default' => true,
                     ),
                     array (

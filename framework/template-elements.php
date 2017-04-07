@@ -727,7 +727,7 @@ if(!function_exists('etheme_create_slider')) {
 	                            global $product;
 	                            if (!$product->is_visible()) continue;
 	                            echo '<div class="slide-item product-slide '. esc_attr( $slide_class ) . '">';
-	                                woocommerce_get_template_part( 'content', 'product-slider' );
+	                                wc_get_template_part( 'content', 'product-slider' );
 	                            echo '</div><!-- slide-item -->';
 	                        }
 
@@ -849,7 +849,7 @@ if(!function_exists('etheme_products')) {
 
                 <?php while ( $products->have_posts() ) : $products->the_post(); ?>
 
-                    <?php woocommerce_get_template_part( 'content', 'product' ); ?>
+                   <?php wc_get_template_part( 'content', 'product' ); ?>
 
                 <?php endwhile; // end of the loop. ?>
                 
@@ -1029,7 +1029,7 @@ if(!function_exists('etheme_create_slider_widget')) {
                             if(class_exists('Woocommerce')) {
                                 global $product;
                                 if (!$product->is_visible()) continue;
-                                    woocommerce_get_template_part( 'content', 'widget-product' );
+                                    wc_get_template_part( 'content', 'widget-product' );
 
                                     if($_i%$per_view == 0 && $_i != $multislides->post_count) {
                                         echo '</ul></div><!-- slide-item -->';
@@ -1301,7 +1301,7 @@ if(!function_exists('etheme_breadcrumbs')) {
 
 if(!function_exists('etheme_back_to_page')) {
     function etheme_back_to_page() {
-        echo '<a class="back-history" href="javascript: history.go(-1)">'.__('Return to Previous Page','xstore').'</a>';
+        echo '<a class="back-history" href="javascript: history.go(-1)">' . esc_html__( 'Return to previous page', 'xstore' ) . '</a>';
     }
 }
 

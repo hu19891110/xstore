@@ -67,8 +67,7 @@ class ETheme_Version_Check {
                     <p>Now you have lifetime updates, 6 months of free top-notch support, 24/7 live support and much more.</p>
                 </div>
             <?php else: ?>
-                <p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation.', 'xstore'); ?></p>     
-                <p><?php _e('A purchase code (license) is only valid for One Project. Do you want to use this theme for one more project? Purchase a <a href="https://themeforest.net/item/xstore-responsive-woocommerce-theme/15780546?license=regular&open_purchase_for_item_id=15780546&purchasable=source&ref=8theme" target="_blank">new license here</a> to get a new purchase code.', 'xstore'); ?></p>
+                <p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation.', 'xstore'); ?></p>
                 <p><?php _e('To find your Purchase code, please, enter your ThemeForest account > Downloads tab > choose XStore > Download > License Certificate & Purchase code', 'xstore'); ?> <a href="http://prntscr.com/d23p2c" target="_blank">http://prntscr.com/d23p2c</a></p>
                 <p><?php _e('Activate XStore template and get lifetime updates, 6 months of free top-notch support, 24/7 live support and much more.', 'xstore'); ?></p>
                 <form action="" class="xstore-form" method="post">

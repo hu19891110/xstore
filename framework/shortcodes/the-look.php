@@ -99,7 +99,7 @@ function etheme_the_look_shortcode($atts, $content) {
 
     $class = $title_output = $images_class = '';
 
-    $shop_url = get_permalink(woocommerce_get_page_id('shop'));
+    $shop_url = get_permalink(wc_get_page_id('shop'));
 
     $woocommerce_loop['columns'] = $columns;
     $woocommerce_loop['isotope'] = true;
@@ -131,7 +131,7 @@ function etheme_the_look_shortcode($atts, $content) {
                         echo etheme_banner_shortcode( $atts, $content );
                       echo '</div></div>';
                     } 
-                    woocommerce_get_template_part( 'content', 'product' );
+                    wc_get_template_part( 'content', 'product' );
                 ?>
             <?php endwhile; // end of the loop. ?>
         <?php woocommerce_product_loop_end(); ?>

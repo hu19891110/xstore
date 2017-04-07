@@ -4,15 +4,16 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/single-product/product-thumbnails.php.
  *
- * HOWEVER, on occasion WooCommerce will need to update template files and you (the theme developer).
- * will need to copy the new files to your theme to maintain compatibility. We try to do this.
- * as little as possible, but it does happen. When this occurs the version of the template file will.
- * be bumped and the readme will list any important changes.
+ * HOWEVER, on occasion WooCommerce will need to update template files and you
+ * (the theme developer) will need to copy the new files to your theme to
+ * maintain compatibility. We try to do this as little as possible, but it does
+ * happen. When this occurs the version of the template file will be bumped and
+ * the readme will list any important changes.
  *
- * @see 	    http://docs.woothemes.com/document/template-structure/
+ * @see 	    https://docs.woocommerce.com/document/template-structure/
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     2.6.3
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,7 +26,7 @@ $zoom_plugin = etheme_is_zoom_activated();
 
 $gallery_slider = etheme_get_option('thumbs_slider');
 
-if( etheme_get_custom_field('disable_gallery', $product->id) ) {
+if( etheme_get_custom_field('disable_gallery', $product->get_id()) ) {
 	$gallery_slider = false;
 }
 
@@ -46,7 +47,7 @@ if( $zoom_plugin ) {
 }
 
 if( empty( $attachment_ids ) ) {
-	$attachment_ids = $product->get_gallery_attachment_ids();
+	$attachment_ids = $product->get_gallery_image_ids();
 }
 
 if ( $attachment_ids ) {

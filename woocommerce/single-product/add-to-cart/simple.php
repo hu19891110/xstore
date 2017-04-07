@@ -12,7 +12,7 @@
  * @see 	    http://docs.woothemes.com/document/template-structure/
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     2.1.0
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,16 +53,27 @@ $btn_class = apply_filters( 'et_single_add_to_cart_btn_class', $btn_class );
 	 	<?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
 	 	<?php
 	 		if ( ! $product->is_sold_individually() ) {
-	 			printf( '<span class="qty-span">%1s</span>', __( 'quantity', 'xstore' ) );
+	 			printf( '<span class="qty-span">%1s</span>', esc_html__( 'quantity', 'xstore' ) );
+
+	 			do_action( 'woocommerce_before_add_to_cart_button' );
+				/**
+				 * @since 3.0.0.
+				 */
+
 	 			woocommerce_quantity_input( array(
 	 				'min_value'   => apply_filters( 'woocommerce_quantity_input_min', 1, $product ),
 	 				'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $product->backorders_allowed() ? '' : $product->get_stock_quantity(), $product ),
 	 				'input_value' => $qty_val
 	 			) );
+
+	 			/**
+				 * @since 3.0.0.
+				 */
+				do_action( 'woocommerce_after_add_to_cart_quantity' );
 	 		}
 	 	?>
 
-	 	<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->id ); ?>" />
+	 	<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); // updated for woocommerce v3.0 ?>" />
 
 	 	<button type="submit" data-quantity="<?php echo esc_attr( $qty_val ); ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" class="<?php echo esc_attr( $btn_class ); ?> single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
 

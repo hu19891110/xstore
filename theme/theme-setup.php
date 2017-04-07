@@ -16,6 +16,12 @@ if(!function_exists('etheme_theme_setup')) {
 
 	add_action('after_setup_theme', 'etheme_theme_setup', 1);
     add_theme_support( 'woocommerce' );
+
+    // add support for woocommerce v3.0
+    // we need only zoom part
+    add_theme_support( 'wc-product-gallery-zoom' );
+    //add_theme_support( 'wc-product-gallery-lightbox' );
+    //add_theme_support( 'wc-product-gallery-slider' );
 	
 	
 	function etheme_theme_setup(){

@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     2.3.8
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -13,11 +13,11 @@ wc_print_notices();
 
 do_action( 'woocommerce_before_cart' ); ?>
 
-<form action="<?php echo esc_url( WC()->cart->get_cart_url() ); ?>" method="post">
+<form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 
 <?php do_action( 'woocommerce_before_cart_table' ); ?>
 <div class="table-responsive">
-<table class="shop_table cart" cellspacing="0">
+<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents"" cellspacing="0">
 	<thead>
 		<tr>
 			<th class="product-name">&nbsp;</th>
@@ -37,6 +37,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 			$product_id   = apply_filters( 'woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key );
 
 			if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
+				$product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
 				?>
 				<tr class="<?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
 
@@ -46,20 +47,20 @@ do_action( 'woocommerce_before_cart' ); ?>
                             <?php
                                     $thumbnail = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
 
-                                    if ( ! $_product->is_visible() )
+                                    if ( ! $_product->is_visible() || ! $product_permalink)
                                             echo $thumbnail;
                                     else
-                                            printf( '<a href="%s">%s</a>', $_product->get_permalink(), $thumbnail );
+                                            printf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $thumbnail );
                             ?>
                         </div>
 					</td>
 					<td class="product-details">
                         <div class="cart-item-details">
                             <?php
-                                    if ( ! $_product->is_visible() )
-                                            echo apply_filters( 'woocommerce_cart_item_name', $_product->get_title(), $cart_item, $cart_item_key );
+                                    if ( ! $_product->is_visible() || ! $product_permalink  )
+                                           echo apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key );
                                     else
-                                           echo apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $_product->get_permalink( $cart_item ) ) , $_product->get_title() ), $cart_item, $cart_item_key );
+                                           echo apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ) , $_product->get_name() ), $cart_item, $cart_item_key );
 
                                     // Meta data
                                     echo WC()->cart->get_item_data( $cart_item );
@@ -141,7 +142,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 		</div>
 	<?php endif ?>
 
-	<?php if ( WC()->cart->coupons_enabled() ) { ?>
+	<?php if ( wc_coupons_enabled() ) { ?>
 		<div class="col-md-<?php echo esc_attr( $cols ); ?>">
 			<h3 class="block-title"><?php esc_html_e( 'Have a coupon?', 'xstore' ); ?> <span class="label"><?php esc_html_e('Promotion', 'xstore'); ?></span></h3>
 				<form class="checkout_coupon" method="post">

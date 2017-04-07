@@ -38,6 +38,11 @@ if(!function_exists('etheme_enqueue_scripts')) {
 
             if (class_exists('WooCommerce')) {
                 $etConf['checkoutUrl'] = esc_url( WC()->cart->get_checkout_url() );
+
+                // dequeue woocommerce zoom scripts
+                if ( ! etheme_get_option( 'product_zoom' ) ) {
+                    wp_dequeue_script( 'zoom' );
+                }
             }
 
             wp_localize_script( 'etheme', 'etConfig', $etConf);

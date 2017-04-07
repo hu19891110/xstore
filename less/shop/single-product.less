@@ -419,7 +419,6 @@ a.add_to_wishlist{
 }
 .woocommerce-variation-price{
 	width: 100%;
-	display: inline-block;
 	margin: 10px 0 15px;
 	.woocommerce-Price-amount{
 		font-size: 22px;
@@ -439,6 +438,11 @@ a.add_to_wishlist{
 .single-product{
 	.carousel-area{
 		margin-top: 10px;
+	}
+	.product-images{
+		.onsale{
+			z-index: 999;
+		}
 	}
 }
 
@@ -633,12 +637,8 @@ a.add_to_wishlist{
 		padding-top: 0;
 	}
 	.product-information-inner{
-		min-height: 75vh;
 		display: table;
 		width: 100%;
-		&.is_stuck{
-
-		}
 	}
 }
 

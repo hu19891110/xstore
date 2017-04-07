@@ -248,8 +248,11 @@ $a = shortcode_atts(array(
 function et_visible_pruduct( $id, $valid ){
     $product = wc_get_product( $id );
 
-    if ( $product->visibility != 'hidden' && $product->visibility != 'search' ) {
-        return $product->post;
+    // updated for woocommerce v3.0
+    $visibility = $product->get_catalog_visibility();
+
+    if (  $visibility  != 'hidden' &&  $visibility  != 'search' ) {
+        return get_post( $id );
     }
 
     $the_query = new WP_Query( array( 'post_type' => 'product', 'p' => $id ) );
@@ -261,7 +264,7 @@ function et_visible_pruduct( $id, $valid ){
             if ( empty( $valid_post ) ) return;
             $next_post_id = $valid_post->ID;
             $visibility = wc_get_product( $next_post_id );
-            $visibility = $visibility->visibility;
+            $visibility = $visibility->get_catalog_visibility();
         }
         // Restore original Post Data
         wp_reset_postdata();

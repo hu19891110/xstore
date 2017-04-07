@@ -367,6 +367,14 @@ textarea {
 .topbar-widget.etheme_widget_socials .et-follow-buttons a:first-child {
   border-right: none;
 }
+.no-csstransforms3d .mobile-menu-wrapper {
+  left: auto;
+  right: -270px;
+}
+.no-csstransforms3d .mobile-menu-opened .mobile-menu-wrapper {
+  left: auto;
+  right: 0;
+}
 .et-header-full-width .header-logo {
   padding-left: 0;
   padding-right: 1.14em;

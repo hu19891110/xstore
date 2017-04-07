@@ -17,6 +17,7 @@ if(!function_exists('etheme_add_body_classes')) {
         if(etheme_get_option('fixed_nav') != 'disable') $classes[] = 'fixed-' . etheme_get_option('fixed_nav');
         if(etheme_get_option('promo_auto_open')) $classes[] = 'open-popup ';
         if(etheme_get_option('promo_open_scroll')) $classes[] = 'scroll-popup ';
+        if(etheme_get_header_type() == 'vertical') $classes[] = 'et-vertical-fixed';
         $classes[] = 'breadcrumbs-type-'.$l['breadcrumb'];
         $classes[] = etheme_get_option('main_layout');
         $classes[] = (etheme_get_option('cart_widget')) ? 'cart-widget-on' : 'cart-widget-off';

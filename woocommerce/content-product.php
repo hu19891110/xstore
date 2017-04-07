@@ -156,7 +156,7 @@ if( etheme_get_option( 'hide_buttons_mobile' ) ) {
                     <?php echo do_shortcode(get_the_excerpt()); ?>
                 </div>
                 <div class="product-excerpt">
-                    <?php $product->list_attributes(); ?>
+                    <?php do_action( 'woocommerce_product_additional_information', $product ); ?>
                 </div>
                 <?php 
                     if (etheme_get_option('product_page_addtocart') ) {

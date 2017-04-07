@@ -1441,7 +1441,7 @@ Once imported, this content can be managed from the WordPress dashboard.  </p>
 
 	                </p>
 	            </form>
-				<p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation. A purchase code (license) is only valid for One Project. Do you want to use this theme for one more project? Purchase a <a href="https://themeforest.net/item/xstore-responsive-woocommerce-theme/15780546?license=regular&open_purchase_for_item_id=15780546&purchasable=source&ref=8theme" target="_blank">new license here</a> to get a new purchase code.', 'xstore'); ?></p>
+				<p><?php _e('Use your purchase code to activate XStore template. Please, note, that you won’t be able to use it without activation.', 'xstore'); ?></p>
 				<h3><?php _e('To find your Purchase code', 'xstore'); ?></h3>
 				<img src="<?php echo ETHEME_BASE_URI . ETHEME_CODE .'assets/images/'; ?>purchase-code-bc.png">
 				<br><br>

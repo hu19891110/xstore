@@ -12,7 +12,7 @@
  * @see 	    http://docs.woothemes.com/document/template-structure/
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     2.6.3
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -48,23 +48,17 @@ if( defined('DOING_AJAX') && DOING_AJAX && ! isset($etheme_global['quick_view'])
 	}
 
 } else {
-	$attachment_ids = $product->get_gallery_attachment_ids();
+	$attachment_ids = $product->get_gallery_image_ids();
 	$main_attachment_id = get_post_thumbnail_id( $post_id );
 }
 
-$zoom_plugin = etheme_is_zoom_activated();
 
-$zoom_class = 'zoom';
-
-if( $zoom_plugin ) {
-	$zoom_class = 'yith_magnifier_zoom';
-}
 
 $has_video = false;
 
 $gallery_slider = etheme_get_option('thumbs_slider');
 
-if( etheme_get_custom_field('disable_gallery', $product->id) ) {
+if( etheme_get_custom_field('disable_gallery', $product->get_id()) ) {
 	$gallery_slider = false;
 }
 
@@ -73,7 +67,7 @@ if( defined('DOING_AJAX') && DOING_AJAX ) {
 }
 
 $video_attachments = array();
-$videos = etheme_get_attach_video($product->id);
+$videos = etheme_get_attach_video($product->get_id());
 if(isset($videos[0]) && $videos[0] != '') {
 	$video_attachments = get_posts( array(
 		'post_type' => 'attachment',
@@ -81,17 +75,18 @@ if(isset($videos[0]) && $videos[0] != '') {
 	) );
 }
 
-if(count($video_attachments)>0 || etheme_get_external_video($product->id) != '') {
+if(count($video_attachments)>0 || etheme_get_external_video($product->get_id()) != '') {
 	$has_video = true;
 }
 
-$main_slider_on = ( ! $zoom_plugin && ( count( $attachment_ids ) > 0 || $has_video ) );
 
-$class = $zoom_btn = '';
 
-if ( $zoom_plugin ) {
-	$class .= ' zoom-on';
-}
+
+$main_slider_on = ( count( $attachment_ids ) > 0 || $has_video );
+
+$class = '';
+
+
 
 if ( $main_slider_on ) {
 	$class .= ' main-slider-on';
@@ -112,7 +107,20 @@ if ( $is_IE ) {
 	$class .= ' ie';
 }
 
+$et_zoom = etheme_get_option( 'product_zoom' );
+$et_zoom_class = 'woocommerce-product-gallery__image';
+
+if ( $et_zoom ) {
+	$class .= ' zoom-on';
+}
+
+if ( ! $gallery_slider ) {
+	$wrapper_classes = array();
+}
+
 ?>
+
+
 <?php if ( ! defined('DOING_AJAX') && ! isset($etheme_global['quick_view']) ): ?>
 <div class="images-wrapper">
 <?php endif; ?>
@@ -124,76 +132,77 @@ if ( $is_IE ) {
 
 				$index = 1;
 
-				$image_title 	= esc_attr( get_the_title( $main_attachment_id ) );
-				$image_caption 	= get_post( $main_attachment_id )->post_excerpt;
-				$image_link  	= wp_get_attachment_image_src( $main_attachment_id, 'full' );
-				$image       	= wp_get_attachment_image( $main_attachment_id, apply_filters( 'single_product_large_thumbnail_size', 'shop_single' ), array(
-					'title'	=> $image_title,
-					'alt'	=> $image_title
-					) );
+				$columns           = apply_filters( 'woocommerce_product_thumbnails_columns', 4 );
+				$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
+				$full_size_image   = wp_get_attachment_image_src( $post_thumbnail_id, 'full' );
+				$thumbnail_post    = get_post( $post_thumbnail_id );
+				$image_title       = $thumbnail_post->post_content;
+				$placeholder       = has_post_thumbnail() ? 'with-images' : 'without-images';
 
-				$attachment_count = count( $product->get_gallery_attachment_ids() );
 
-				if ( $attachment_count > 0 ) {
-					$gallery = '[product-gallery]';
-				} else {
-					$gallery = '';
-				}
+				// **********************************************************************************************
+				// ! Main product image
+				// **********************************************************************************************
 
-				if ( $zoom_plugin ) {
-					//$zoom_btn = sprintf( '<span href="%s" data-width="%s" data-height="%s" itemprop="image" class="et-enlarge-btn zoom" title="%s">Enlarge</span>', $image_link[0], $image_link[1], $image_link[2], $zoom_class, $image_caption );
-				}
-
-				echo apply_filters( 'woocommerce_single_product_image_html', sprintf( '
-						<div>
-							<a href="%s" data-width="%s" data-height="%s" itemprop="image" class="woocommerce-main-image pswp-main-image %s" title="%s" data-rel="prettyPhoto' . $gallery . '">%s</a>
-							%s
-						</div>',
-						$image_link[0],
-						$image_link[1],
-						$image_link[2],
-						$zoom_class,
-						$image_caption,
-						$image,
-						$zoom_btn
-					),
-					$post_id
+				$attributes = array(
+					'title'                   => $image_title,
+					'data-src'                => $full_size_image[0],
+					'data-large_image'        => $full_size_image[0],
+					'data-large_image_width'  => $full_size_image[1],
+					'data-large_image_height' => $full_size_image[2],
 				);
 
+				if ( ! $et_zoom && ! $product_photoswipe ) {
+					$et_zoom_class = '';
+				}
+
+				$html  = '<div class="images woocommerce-product-gallery woocommerce-product-gallery__wrapper"><div data-thumb="' . get_the_post_thumbnail_url( $post->ID, 'shop_thumbnail' ) . '" class="'. $et_zoom_class .'"><a class="woocommerce-main-image pswp-main-image zoom" href="' . esc_url( $full_size_image[0] ) . '" data-width="' . esc_attr( $full_size_image[1] ) . '" data-height="' . esc_attr( $full_size_image[2] ) . '">';
+				$html .= get_the_post_thumbnail( $post->ID, 'shop_single', $attributes );
+				$html .= '</a></div></div>';
+
+				echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, get_post_thumbnail_id( $post->ID ) );
+
+
+				// **********************************************************************************************
+				// ! Product slider
+				// **********************************************************************************************
+				if ( ! $et_zoom ) {
+					$et_zoom_class = '';
+				}
+
 				if( $main_slider_on ){
+
 					if( count( $attachment_ids ) > 0 ) {
 						foreach ( $attachment_ids as $attachment_id ) {
-							$image_title 	= esc_attr( get_the_title( $attachment_id ) );
-							$image_caption 	= get_the_title( $attachment_id );
-							$image_link  	= wp_get_attachment_image_src( $attachment_id, 'full' );
-				            $image          = wp_get_attachment_image( $attachment_id, apply_filters( 'single_product_large_thumbnail_size', 'shop_single' ) );
 
-							echo apply_filters( 'woocommerce_single_product_image_html', sprintf( '
-									<div>
-										<a href="%s" data-large="%s" data-width="%s" data-height="%s" data-index="%d" itemprop="image" class="woocommerce-main-image %s" title="%s" data-width="1000" data-height="1000" data-rel="prettyPhoto' . $gallery . '">%s</a>
-									</div>',
-									$image_link[0],
-									$image_link[0],
-									$image_link[1],
-									$image_link[2],
-									$index,
-									$zoom_class,
-									$image_caption,
-									$image
-								),
-								$attachment_id
-							);
+						$full_size_image = wp_get_attachment_image_src( $attachment_id, 'full' );
 
-							$index++;
+						$image_title = esc_attr( get_the_title( $attachment_id ) );
+
+						$attributes = array(
+							'title'                   => $image_title,
+							'data-src'                => $full_size_image[0],
+							'data-large_image'        => $full_size_image[0],
+							'data-large_image_width'  => $full_size_image[1],
+							'data-large_image_height' => $full_size_image[2],
+						);
+
+						$html  = '<div class="images woocommerce-product-gallery woocommerce-product-gallery__wrapper"><div data-thumb="' . get_the_post_thumbnail_url( $attachment_id, 'shop_thumbnail' ) . '" class="' . $et_zoom_class . '"><a href="' . esc_url( $full_size_image[0] ) . '"  data-large="'.esc_url( $full_size_image[0] ).'" data-width="' . esc_attr( $full_size_image[1] ) . '"  data-height="' . esc_attr( $full_size_image[2] ) . '" data-index="'. $index .'" itemprop="image" class="woocommerce-main-image zoom" >';
+
+
+						$html .= wp_get_attachment_image( $attachment_id, apply_filters( 'single_product_large_thumbnail_size', 'shop_single' ), false, $attributes );
+						$html .= '</a></div></div>';
+
+						echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, get_post_thumbnail_id( $attachment_id ) );
+
+						$index++;
+
 						}
 					}
-
 				}
 
 			} else {
-
 				echo apply_filters( 'woocommerce_single_product_image_html', sprintf( '<img src="%s" alt="%s" />', wc_placeholder_img_src(), esc_html__( 'Placeholder', 'xstore' ) ), $post_id );
-
 			}
 		?>
 	</div>
@@ -202,10 +211,10 @@ if ( $is_IE ) {
 		<a href="#" class="zoom-images-button" data-index="0"><?php esc_html_e('Zoom images', 'xstore'); ?></a>
 	<?php endif ?>
 
-	<?php if(etheme_get_external_video($product->id)): ?>
+	<?php if(etheme_get_external_video($product->get_id())): ?>
 		<a href="#product-video-popup" class="open-video-popup"><?php esc_html_e('Open Video', 'xstore'); ?></a>
 		<div id="product-video-popup" class="product-video-popup mfp-hide">
-			<?php echo etheme_get_external_video($product->id); ?>
+			<?php echo etheme_get_external_video($product->get_id()); ?>
 		</div>
 	<?php endif; ?>
 
@@ -260,45 +269,6 @@ if ( $is_IE ) {
 	        }
 	    });
     </script>
-<?php endif; ?>
-
-<?php if( $zoom_plugin ): ?>
-	<script type="text/javascript" charset="utf-8">
-
-		var yith_magnifier_options = {
-			enableSlider: false,
-			showTitle: false,
-			zoomWidth: '<?php echo get_option('yith_wcmg_zoom_width') ?>',
-			zoomHeight: '<?php echo get_option('yith_wcmg_zoom_height') ?>',
-			position: '<?php echo get_option('yith_wcmg_zoom_position') ?>',
-			//tint: <?php //echo get_option('yith_wcmg_tint') == '' ? 'false' : "'".get_option('yith_wcmg_tint')."'" ?>,
-			//tintOpacity: <?php //echo get_option('yith_wcmg_tint_opacity') ?>,
-			lensOpacity: <?php echo get_option('yith_wcmg_lens_opacity') ?>,
-			softFocus: <?php echo get_option('yith_wcmg_softfocus') == 'yes' ? 'true' : 'false' ?>,
-			//smoothMove: <?php //echo get_option('yith_wcmg_smooth') ?>,
-			adjustY: 0,
-			disableRightClick: false,
-			phoneBehavior: '<?php echo get_option('yith_wcmg_zoom_mobile_position') ?>',
-			loadingLabel: '<?php echo stripslashes(get_option('yith_wcmg_loading_label')) ?>'
-			<?php if ( defined('DOING_AJAX') ): ?>
-			,elements: {
-				zoom: jQuery('.yith_magnifier_zoom'),
-				zoomImage: jQuery('.yith_magnifier_zoom img'),
-				gallery: jQuery('.yith_magnifier_gallery li a')
-			}
-			<?php endif; ?>
-		};
-
-		<?php if ( defined('DOING_AJAX') ): ?>
-			var yith_wcmg = jQuery('.images');
-
-			if (yith_wcmg.data('yith_magnifier')) {
-				yith_wcmg.yith_magnifier('destroy');
-			}
-
-			yith_wcmg.yith_magnifier(yith_magnifier_options);
-		<?php endif; ?>
-	</script>
 <?php endif; ?>
 
 <?php if ( ! defined('DOING_AJAX') && ! isset($etheme_global['quick_view']) ): ?>
