@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: XStore\n"
-"POT-Creation-Date: 2017-04-05 12:31+0300\n"
-"PO-Revision-Date: 2017-04-05 12:31+0300\n"
+"POT-Creation-Date: 2017-04-07 11:18+0300\n"
+"PO-Revision-Date: 2017-04-07 11:17+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1781,7 +1781,7 @@ msgid "Page"
 msgstr ""
 
 #: framework/template-elements.php:1304
-msgid "Return to Previous Page"
+msgid "Return to previous page"
 msgstr ""
 
 #: framework/theme-functions.php:174
@@ -4675,11 +4675,11 @@ msgstr ""
 msgid "Billing Details"
 msgstr ""
 
-#: woocommerce/checkout/form-billing.php:38
+#: woocommerce/checkout/form-billing.php:42
 msgid "Create an account?"
 msgstr ""
 
-#: woocommerce/checkout/form-billing.php:49
+#: woocommerce/checkout/form-billing.php:53
 msgid ""
 "Create an account by entering the information below. If you are a returning "
 "customer please login at the top of the page."

@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     1.6.4
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -24,7 +24,7 @@ $args = array(
 	'posts_per_page'      => $posts_per_page,
 	'orderby'             => $orderby,
 	'post__in'            => $upsells,
-	'post__not_in'        => array( $product->id ),
+	'post__not_in'        => array( $product->get_id() ),
 	'meta_query'          => $meta_query
 );
 

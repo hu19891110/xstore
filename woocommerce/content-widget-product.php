@@ -23,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $product; ?>
 
 <li>
-	<a href="<?php echo esc_url( get_permalink( $product->id ) ); ?>" title="<?php echo esc_attr( $product->get_title() ); ?>" class="product-list-image">
+	<a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" title="<?php echo esc_attr( $product->get_title() ); ?>" class="product-list-image">
 		<?php echo $product->get_image(); ?>
 	</a>
 
-	<p class="product-title"><a href="<?php echo esc_url( get_permalink( $product->id ) ); ?>" title="<?php echo esc_attr( $product->get_title() ); ?>"><?php echo $product->get_title(); ?></a></p>
+	<p class="product-title"><a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" title="<?php echo esc_attr( $product->get_title() ); ?>"><?php echo $product->get_title(); ?></a></p>
 
 	<?php if ( ! empty( $show_rating ) ) : ?>
-		<?php echo $product->get_rating_html(); ?>
+		<?php echo wc_get_rating_html( $product->get_average_rating() ); ?>
 	<?php endif; ?>
 	
 	<div class="price">
