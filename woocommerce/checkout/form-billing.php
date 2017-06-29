@@ -4,13 +4,13 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @version     3.0.9
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 ?>
 <div class="woocommerce-billing-fields">
-	<?php if ( WC()->cart->ship_to_billing_address_only() && WC()->cart->needs_shipping() ) : ?>
+	<?php if ( wc_ship_to_billing_address_only() && WC()->cart->needs_shipping() ) : ?>
 
 		<h3 class="step-title"><span><?php esc_html_e( 'Billing &amp; Shipping', 'xstore' ); ?></span></h3>
 
@@ -23,8 +23,15 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	<?php do_action( 'woocommerce_before_checkout_billing_form', $checkout ); ?>
 
 	<div class="woocommerce-billing-fields__field-wrapper">
+		
+		<?php $fields = $checkout->get_checkout_fields( 'billing' ); ?>
+		<?php foreach ( $fields as $key => $field ) : ?>
 
-		<?php foreach ( $checkout->get_checkout_fields( 'billing' ) as $key => $field ) : ?>
+			<?php
+				if ( isset( $field['country_field'], $fields[ $field['country_field'] ] ) ) {
+					$field['country'] = $checkout->get_value( $field['country_field'] );
+				}
+			 ?>
 
 			<?php woocommerce_form_field( $key, $field, $checkout->get_value( $key ) ); ?>
 
@@ -41,7 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 				<p class="form-row form-row-wide create-account">
 					<label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
-						<input class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" id="createaccount" <?php checked( ( true === $checkout->get_value( 'createaccount' ) || ( true === apply_filters( 'woocommerce_create_account_default_checked', false ) ) ), true ) ?> type="checkbox" name="createaccount" value="1" /> <span><?php esc_html_e( 'Create an account?', 'woocommerce' ); ?></span>
+						<input class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" id="createaccount" <?php checked( ( true === $checkout->get_value( 'createaccount' ) || ( true === apply_filters( 'woocommerce_create_account_default_checked', false ) ) ), true ) ?> type="checkbox" name="createaccount" value="1" /> <span><?php esc_html_e( 'Create an account?', 'xstore' ); ?></span>
 					</label>
 				</p>
 

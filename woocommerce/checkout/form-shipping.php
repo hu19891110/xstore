@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @version     3.0.9	
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -30,7 +30,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			<?php do_action( 'woocommerce_before_checkout_shipping_form', $checkout ); ?>
 
 			<div class="woocommerce-shipping-fields__field-wrapper">
-				<?php foreach ( $checkout->get_checkout_fields( 'shipping' )  as $key => $field ) : ?>
+				<?php $fields = $checkout->get_checkout_fields( 'shipping' ); ?>
+				<?php foreach ( $fields as $key => $field ) : ?>
+					<?php 
+						if ( isset( $field['country_field'], $fields[ $field['country_field'] ] ) ) {
+							$field['country'] = $checkout->get_value( $field['country_field'] );
+						}
+					?>
 					<?php woocommerce_form_field( $key, $field, $checkout->get_value( $key ) ); ?>
 				<?php endforeach; ?>
 			</div>
@@ -45,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 	<?php if ( apply_filters( 'woocommerce_enable_order_notes_field', get_option( 'woocommerce_enable_order_comments', 'yes' ) === 'yes' ) ) : ?>
 
-		<?php if ( ! WC()->cart->needs_shipping() || WC()->cart->ship_to_billing_address_only() ) : ?>
+		<?php if ( ! WC()->cart->needs_shipping() || wc_ship_to_billing_address_only() ) : ?>
 
 			<h3 class="step-title"><span><?php esc_html_e( 'Additional Information', 'xstore' ); ?></span></h3>
 

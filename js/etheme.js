@@ -680,7 +680,7 @@ var etTheme;
         },
         resizeVideo: function() {
 
-            $(document).find('.single-product iframe[src*="youtube.com"], .single-product iframe[src*="vimeo.com"]').each(function() {
+            $(document).find('.single-product .product-video-popup iframe[src*="youtube.com"], .single-product .product-video-popup iframe[src*="vimeo.com"]').each(function() {
                 var video = $(this);
                 video.attr('width', '100%');
                 var videoWidth = video.width();
