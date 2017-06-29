@@ -60,10 +60,16 @@
 									name: 'title',
 									label: 'Title',
 									value: 'BUTTON TEXT'
+								},
+								{
+									type: 'textbox',
+									name: 'class',
+									label: 'Custom class',
+									value: ''
 								}
 							],
 							onsubmit: function( e ) {
-								editor.insertContent( '[button target="' + e.data.target + '" style="' + e.data.style + '" url="' + e.data.url + '" icon="' + e.data.icon + '" title="' + e.data.title + '"]');
+								editor.insertContent( '[button et_class="' + e.data.class + '" target="' + e.data.target + '" style="' + e.data.style + '" url="' + e.data.url + '" icon="' + e.data.icon + '" title="' + e.data.title + '"]');
 							}
 						});
 					}

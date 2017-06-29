@@ -127,7 +127,9 @@ if(!function_exists('etheme_portfolio')) {
 				$limit = etheme_get_option('portfolio_count');
 			}
 
-			$spacing = etheme_get_option('portfolio_margin');
+			$order = etheme_get_option( 'portfolio_order' );
+			$orderby = etheme_get_option( 'portfolio_orderby' );
+			$spacing = etheme_get_option( 'portfolio_margin' );
 
 			if(is_array($categories) && !empty($categories)) {
 				$tax_query = array(
@@ -152,7 +154,9 @@ if(!function_exists('etheme_portfolio')) {
 				'post_type' => 'etheme_portfolio',
 				'paged' => $paged,	
 				'posts_per_page' => $limit,
-				'tax_query' => $tax_query
+				'tax_query' => $tax_query,
+				'order' => $order,
+				'orderby' => $orderby,
 			);
 
 			$loop = new WP_Query($args);

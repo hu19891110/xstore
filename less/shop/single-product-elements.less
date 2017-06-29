@@ -7,11 +7,24 @@
 		margin:2.86em 0;
 	}
 }
-#reviews .comment-reply-title{
-	text-transform: uppercase;
+#reviews{
+	.comment-reply-title{
+		text-transform: uppercase;
+	}
+	.meta{
+		strong{
+			display: inline-block;
+		}
+		time{
+			display: block;
+		}
+	}
+	.verified{
+	    font-size: 1.2rem;
+		display: inline-block;
+		padding-left: 5px;
+	}
 }
-
-
 /* Product Images Slider */
 .main-images {
 	margin-bottom: 1.43em;
@@ -293,9 +306,19 @@
 		font-weight: bold;
 		text-transform: uppercase;
 		border-top: 1px solid @borderColor;
-		padding-top: 20px;
-		margin: 20px 0 0;
-		font-size: 12px;
+		padding: 1.429rem 0;
+		margin: 1.429rem 0 0;
+		font-size:  0.8571rem;
+	}
+	.view-products-title{
+		font-weight: normal;
+		text-transform: uppercase;
+		padding: 1.429rem 0;
+		margin: 0;
+		font-size:  0.8571rem;
+	}
+	img {
+		margin-top: 0;
 	}
 }
 

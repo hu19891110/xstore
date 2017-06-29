@@ -8,12 +8,39 @@
 		h2 {
 			font-size: 1.14rem;
 			font-weight: @bolder;
-			padding-bottom: 1.25em;
-			margin-bottom: 1.25em;
 			padding-top: 0;
 			border-top: none;
 			text-transform: uppercase;
-			border-bottom: 1px solid @borderColor;
+		}
+		form.login{
+			border-top: 1px solid @borderColor;
+			margin-top: 1.25em;
+			padding-top: 1.25em;
+		}
+		.u-columns{
+			display: flex;
+			flex-direction: row;
+			h2{
+				border-bottom: 1px solid @borderColor;
+				margin-bottom: 1.25em;
+				padding-bottom: 1.25em;
+			}
+			form.login{
+				border-top: none;
+				margin-top: 0;
+				padding-top: 0;
+			}
+			form.register{
+				input{
+					max-width: 100%;
+				}
+			}
+			.u-column2{
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding-left: 50px;
+			}
 		}
 	}
 
@@ -120,7 +147,6 @@ table.order_details{
 }
 
 @media only screen and (max-width: 480px) {
-
 	#customer_login{
 		.col-1{
 			padding:2.5em;
@@ -134,6 +160,16 @@ table.order_details{
 		.lost_password{
 			width:100%;
 			text-align: left;
+		}
+	}
+	.woocommerce-account{
+		.woocommerce{
+			.u-columns{
+				flex-direction: column;
+				.u-column2{
+					padding-left: 0;
+				}
+			}
 		}
 	}
 }

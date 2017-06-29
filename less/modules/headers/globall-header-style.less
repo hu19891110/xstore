@@ -1,0 +1,81 @@
+/*===========================================
+=            Global Header Style            =
+===========================================*/
+.menu-wrapper{
+	.menu-main-container{
+		.type-img{
+			display: flex;
+			&.position-center-center{
+			    align-items: center;
+			    flex-direction: column-reverse;
+				img{
+					padding-bottom: 10px;
+				}
+			}
+			&.position-center-bottom{
+				align-items: center;
+				flex-direction: column;
+				img{
+					padding-top: 10px;
+				}
+			}
+			&.position-right-top{
+				align-items: baseline;
+			}
+			&.position-right-center{
+			    align-items: center;
+			}
+			&.position-right-bottom{
+				align-items: flex-start;
+			}
+			&.position-left-top{
+				flex-direction: row-reverse;
+					align-items: baseline;
+			}
+			&.position-left-center{
+				align-items: center;
+				flex-direction: row-reverse;
+				img{
+					float: left;
+				}
+			}
+			&.position-left-bottom{
+				flex-direction: row-reverse;
+					align-items: flex-start;
+			}
+			&.position-left-top,
+			&.position-left-center,
+			&.position-left-bottom{
+				img{
+					padding-right: 15px;
+				}
+			}
+			&.position-right-top,
+			&.position-right-center,
+			&.position-right-bottom{
+				img{
+					padding-left: 15px;
+				}
+			}
+			&:after{
+				display: none;
+			}
+		}
+	}
+	.menu-item.item-design-mega-menu{
+		.nav-sublist-dropdown >{
+			.container{
+				overflow: hidden;
+    			max-height: 625px;
+			}
+		}
+	}
+}
+@media (max-width: 1025px){
+	.nav-sublist-dropdown{
+		&:before{
+			display: none;
+		}
+	}	
+}
+/*=====  End of Global Header Style  ======*/

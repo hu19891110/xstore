@@ -18,18 +18,12 @@
 			</div>
 
 			 <div class="navbar-toggle">
-                    <span class="sr-only"><?php esc_html_e('Menu', 'xstore'); ?></span>
+                    <span class="sr-only"><?php esc_html_e( 'Menu', 'xstore' ); ?></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </div>
-
-			<div class="navbar-header">
-               	<?php if(etheme_woocommerce_installed() && current_theme_supports('woocommerce') && !etheme_get_option('just_catalog') && etheme_get_option('cart_widget')): ?>
-                    <?php etheme_top_cart(); ?>
-                <?php endif ;?>
-            </div>
-
+            <?php etheme_shop_navbar( 'header', array( 'search' ) ); ?>
         </div>
     </header>
 </div>

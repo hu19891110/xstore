@@ -68,6 +68,67 @@ article.content-timeline{
 		}
 	}
 }
+/* Content Grid2 */
+.content-grid2{
+	position: relative;
+    padding-top: 30px;
+    &:hover{
+    	.meta-post-timeline{
+    	    background-color: #d64444;
+    	    border-color: #d64444;
+    	    .time-day,
+    	    .time-mon{
+    	    	color: #fff;
+    	    }
+    	}
+    }
+	.meta-post-timeline{
+	    position: absolute;
+	    border: 2px solid #8a8a8a;
+	    z-index: 10;
+	    left: 50%;
+	    top: 0;
+	    -webkit-transform: translateX(-50%);
+	    -ms-transform: translateX(-50%);
+	    transform: translateX(-50%);
+	    background-color: #FFF;
+	    width: 60px;
+	    height: 60px;
+	    text-align: center;
+	    -webkit-transition: all 0.2s linear;
+	    transition: all 0.2s linear;
+	    .time-day{
+		    display: block;
+		    font-size: 23px;
+		    margin-bottom: 0;
+		    line-height: 1;
+		    margin-top: 7px;
+		    -webkit-transition: all 0.2s linear;
+		    transition: all 0.2s linear;
+		}
+		.time-mon{
+			display: block;
+		    font-size: 13px;
+		    text-transform: uppercase;
+		    -webkit-transition: all 0.2s linear;
+		    transition: all 0.2s linear;
+		}
+	}
+	.post-categories{
+		display: none;
+	}
+	.grid-post-body{
+		text-align: center;
+	}
+	.post-heading{
+		h2{
+			font-size: 18px;
+		}
+	}
+	.read-more{
+		margin:auto;
+	}
+}
 
 /* Small */
 article.content-small,
@@ -950,5 +1011,5 @@ article.content-timeline2{
 		}
 	}
 }
+/* --- Cat Matroskin --*/
 /*-----  End of Blog Types  ------*/
-

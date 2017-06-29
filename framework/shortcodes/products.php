@@ -44,7 +44,6 @@ function etheme_products_shortcode($atts, $content) {
         'product_view_color' => '',
     ), $atts)); 
 
-
     $args = array(
         'post_type'             => 'product',
         'ignore_sticky_posts'   => 1,
@@ -52,27 +51,28 @@ function etheme_products_shortcode($atts, $content) {
         'posts_per_page'        => $limit,
         'orderby'               => $orderby,
         'order'                 => $order,
-        'meta_query' => array(
-            array(
-                'key'       => '_visibility',
-                'value'     => array('catalog', 'visible'),
-                'compare'   => 'IN'
-            )
-        )
     );
+
+    $args['tax_query'][] = array(
+        'taxonomy' => 'product_visibility',
+        'field'    => 'name',
+        'terms'    => 'hidden',
+        'operator' => 'NOT IN',
+    );
+
+    if ( $products == 'featured' ) {
+      $args['tax_query'][] = array(
+          'taxonomy' => 'product_visibility',
+          'field'    => 'name',
+          'terms'    => 'featured',
+          'operator' => 'IN',
+      );
+    }
 
     $woocommerce_loop['hover'] = $hover;
 
-    if ($products == 'featured') {
-        $args['meta_query'][] = array(
-            'key'       => '_featured',
-            'value'     => 'yes',
-            'compare'   => '='
-        );
-    }
-
     if ($products == 'sale') {
-        $product_ids_on_sale = woocommerce_get_product_ids_on_sale();
+        $product_ids_on_sale = wc_get_product_ids_on_sale();
         $args['post__in'] = array_merge( array( 0 ), $product_ids_on_sale );
     }
 

@@ -3,6 +3,7 @@
 		<div class="container">
 			<div>
 				<div class="languages-area">
+					<?php etheme_shop_navbar( 'tb-left' ); ?>
 					<?php if((!function_exists('dynamic_sidebar') || !dynamic_sidebar('languages-sidebar'))): ?>
 					<?php endif; ?>
 				</div>
@@ -12,6 +13,7 @@
 				<?php endif ?>
 					
 				<div class="top-links">
+					<?php etheme_shop_navbar( 'tb-right' ); ?>
 					<?php etheme_top_links(); ?>
 					<?php if((!function_exists('dynamic_sidebar') || !dynamic_sidebar('top-bar-right'))): ?>
 					<?php endif; ?>	

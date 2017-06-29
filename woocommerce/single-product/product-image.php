@@ -12,7 +12,7 @@
  * @see 	    http://docs.woothemes.com/document/template-structure/
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @version     3.0.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -135,8 +135,7 @@ if ( ! $gallery_slider ) {
 				$columns           = apply_filters( 'woocommerce_product_thumbnails_columns', 4 );
 				$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
 				$full_size_image   = wp_get_attachment_image_src( $post_thumbnail_id, 'full' );
-				$thumbnail_post    = get_post( $post_thumbnail_id );
-				$image_title       = $thumbnail_post->post_content;
+				$image_title       = get_post_field( 'post_excerpt', $post_thumbnail_id );
 				$placeholder       = has_post_thumbnail() ? 'with-images' : 'without-images';
 
 
@@ -153,7 +152,7 @@ if ( ! $gallery_slider ) {
 				);
 
 				if ( ! $et_zoom && ! $product_photoswipe ) {
-					$et_zoom_class = '';
+					//$et_zoom_class = '';
 				}
 
 				$html  = '<div class="images woocommerce-product-gallery woocommerce-product-gallery__wrapper"><div data-thumb="' . get_the_post_thumbnail_url( $post->ID, 'shop_thumbnail' ) . '" class="'. $et_zoom_class .'"><a class="woocommerce-main-image pswp-main-image zoom" href="' . esc_url( $full_size_image[0] ) . '" data-width="' . esc_attr( $full_size_image[1] ) . '" data-height="' . esc_attr( $full_size_image[2] ) . '">';
@@ -167,7 +166,7 @@ if ( ! $gallery_slider ) {
 				// ! Product slider
 				// **********************************************************************************************
 				if ( ! $et_zoom ) {
-					$et_zoom_class = '';
+					//$et_zoom_class = '';
 				}
 
 				if( $main_slider_on ){

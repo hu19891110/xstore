@@ -123,5 +123,56 @@ jQuery(document).ready(function($){
 
     });
 
-});
 
+	// **********************************************************************//
+	// ! Actions for expired support
+	// **********************************************************************//
+
+	if ( $( '#et_options-support_chat .switch-options .cb-enable' ).hasClass( 'selected' ) ) {
+		$( '#et_options-support_chat .et-expired-support' ).removeClass( 'hidden' );
+	}
+
+	$( '#et_options-support_chat' ).on( 'click', '.cb-disable, .cb-enable', function() {
+		if ( $(this).is( '.cb-disable' ) ){
+			$( '#et_options-support_chat .et-expired-support' ).addClass( 'hidden' );
+		} else {
+			$( '#et_options-support_chat .et-expired-support' ).removeClass( 'hidden' );
+		}
+	});
+
+
+	// **********************************************************************//
+	// ! Theme deactivating action
+	// **********************************************************************//
+
+	$( '.theme-deactivator' ).on( 'click', 'label', function(event) {
+		event.preventDefault();
+
+		var confirmIt = confirm( 'Are you sure?' );
+		if( ! confirmIt ) return;
+
+		var data =  {
+			'action':'etheme_deactivate_theme',
+		};
+
+		var redirect = window.location.href;
+
+		redirect = redirect.replace( '_options&tab=1', 'xstore_activation_page' );
+		redirect = redirect.replace( '_options', 'xstore_activation_page' );
+
+		jQuery.ajax({
+			url: ajaxurl,
+			data: data,
+			success: function(data){
+				console.log('111111111');
+				console.log(data);
+			},
+			error: function(data) {
+				alert('Error while deactivating');
+			},
+			complete: function(){
+                window.location.href=redirect;
+			}
+		});
+	});
+});

@@ -38,6 +38,12 @@ class ETheme_QRCode_Widget extends WP_Widget {
         $instance['lightbox'] = (bool) $new_instance['lightbox'];
         $instance['currlink'] = (bool) $new_instance['currlink'];
 
+        if (function_exists ( 'icl_register_string' )){
+            icl_register_string('Widgets', 'ETheme_QRCode_Widget - title', $instance['title']);
+            icl_register_string('Widgets', 'ETheme_QRCode_Widget - info', $instance['info']);
+            icl_register_string('Widgets', 'ETheme_QRCode_Widget - text', $instance['text']);
+        }
+
         return $instance;
     }
 

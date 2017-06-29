@@ -339,6 +339,71 @@ return array(
         'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
         'type' => 'demo'
     ),
+    'concert' => array(
+        'title' => 'Concert',
+        'preview_url' => $main_domain . 'concert/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
+    'animals' => array(
+        'title' => 'animals',
+        'preview_url' => $main_domain . 'animals/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
+    'underwear' => array(
+        'title' => 'underwear',
+        'preview_url' => $main_domain . 'underwear/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
+    'books' => array(
+        'title' => 'books',
+        'preview_url' => $main_domain . 'books/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 3,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
+    'makeup' => array(
+        'title' => 'makeup',
+        'preview_url' => $main_domain . 'makeup/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => true,
+            'options' => true,
+            'widgets' => true,
+            'home_page' => true,
+        ),
+        'plugins' => array( 'mpc-massive', 'wwp-vc-gmaps', 'contact-form-7', 'mailchimp-for-wp' ),
+        'type' => 'demo'
+    ),
     'dark' => array(
         'title' => 'Dark',
         'preview_url' => $main_domain . 'dark/',
@@ -1037,6 +1102,141 @@ return array(
     'minimal-lookbook' => array(
         'title' => 'Minimal lookbook',
         'preview_url' => $main_domain . 'minimal/lookbook/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'concert-gallery' => array(
+        'title' => 'Concert gallery',
+        'preview_url' => $main_domain . 'concert/gallery/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'concert-contactus' => array(
+        'title' => 'Concert contacts',
+        'preview_url' => $main_domain . 'concert/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'concert-introduction' => array(
+        'title' => 'Concert introduction',
+        'preview_url' => $main_domain . 'concert/place-introduction/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'animals-about' => array(
+        'title' => 'Animals about',
+        'preview_url' => $main_domain . 'animals/about-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'animals-contactus' => array(
+        'title' => 'Animals contacts',
+        'preview_url' => $main_domain . 'animals/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'underwear-about' => array(
+        'title' => 'Underwear about',
+        'preview_url' => $main_domain . 'underwear/about-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'underwear-contacts' => array(
+        'title' => 'Underwear contacts',
+        'preview_url' => $main_domain . 'underwear/contacts/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'books-store' => array(
+        'title' => 'Books store',
+        'preview_url' => $main_domain . 'books/store/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'books-author' => array(
+        'title' => 'Books author',
+        'preview_url' => $main_domain . 'books/author/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'books-contacts' => array(
+        'title' => 'Books contacts',
+        'preview_url' => $main_domain . 'books/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'books-about' => array(
+        'title' => 'Books about',
+        'preview_url' => $main_domain . 'books/about/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => 1
+        ),
+        'type' => 'page'
+    ),
+    'about-wedding' => array(
+        'title' => 'Wedding about',
+        'preview_url' => $main_domain . 'wedding/about/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'contact-wedding' => array(
+        'title' => 'Wedding contact',
+        'preview_url' => $main_domain . 'wedding/contact/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'makeup-contacts' => array(
+        'title' => 'Makeup contacts',
+        'preview_url' => $main_domain . 'makeup/contact-us/',
+        'to_import' => array(
+            'content' => true,
+            'slider' => false
+        ),
+        'type' => 'page'
+    ),
+    'makeup-about' => array(
+        'title' => 'Makeup about',
+        'preview_url' => $main_domain . 'makeup/about/',
         'to_import' => array(
             'content' => true,
             'slider' => false

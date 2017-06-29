@@ -477,7 +477,7 @@ class ETheme_Blog_Shortcodes {
 				'value' => array(
 					'Vertical' => 'vertical',
 					'Horizontal' => 'horizontal',
-					'Timeline2' => 'timeline2',
+					'Grid 2' => 'timeline2',
 				),
 			),
 			array(

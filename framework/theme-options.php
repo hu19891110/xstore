@@ -18,7 +18,7 @@ if ( ! class_exists( 'Redux' ) || ! etheme_is_activated() ) {
         'top_bar_color' => 'white',
         'logo_width' => '200',
         'top_links' => '1',
-        'search_form' => '1',
+        'search_form' => 'header',
         'breadcrumb_type' => 'default',
         'breadcrumb_size' => 'small',
         'breadcrumb_effect' => 'none',
@@ -34,8 +34,12 @@ if ( ! class_exists( 'Redux' ) || ! etheme_is_activated() ) {
         'views_counter' => '1',
         'blog_sidebar' => 'right',
         'excerpt_length' => '25',
+        'excerpt_words' => '...',
         'post_template' => 'default',
         'blog_featured_image' => '1',
+        'search_form' => 'header',
+        'top_wishlist_widget' => 'header', 
+        'cart_widget' => 'header' 
     );
     return;
 }
@@ -55,11 +59,13 @@ if(!function_exists('etheme_redux_init')) {
 
         $theme = wp_get_theme(); // For use with some settings. Not necessary.
 
+        $activated_data = get_option( 'etheme_activated_data' );
+        $activated_data = ( isset( $activated_data['purchase'] ) && ! empty( $activated_data['purchase'] ) ) ? $activated_data['purchase'] : '';
         $args = array(
             // TYPICAL -> Change these values as you need/desire
             'opt_name'             => $opt_name,
             // This is where your data is stored in the database and also becomes your global variable name.
-            'display_name'         => ETHEME_THEME_NAME . ' <span>' . esc_html__('Theme Activated', 'xstore') . ' - <small>' . get_option( 'xtheme_purchase_code', '' ) .'</small></span>',
+            'display_name'         => ETHEME_THEME_NAME . ' <span>' . esc_html__('Theme Activated', 'xstore') . ' - <small>' . $activated_data .'</small></span>',
             // Name that appears at the top of your panel
             'display_version'      => $theme->get( 'Version' ),
             // Version that appears at the top of your panel
@@ -182,7 +188,9 @@ if(!function_exists('etheme_redux_init')) {
                     'type' => 'switch',
                     'title' => __( 'Support chat', 'xstore' ),
                     'default' => true,
+                    'description' => ( ! etheme_support_date() ) ? '<p class="et-expired-support hidden">' . __( 'You support expired. To renew go to ', 'xstore' ) . '<a href="https://help.market.envato.com/hc/en-us/articles/207886473-Extending-and-Renewing-Item-Support" target="_blank">' . __( 'ThemeForest', 'xstore' ) . '</a></p>' : ''
                 ),
+                
                 array (
                     'id' => 'static_blocks',
                     'type' => 'switch',
@@ -326,7 +334,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'header_bg',
                     'type' => 'background',
                     'title' => __( 'Header background', 'xstore' ),
-                    'output' => array('.header-bg-block')
+                    'output' => array('.header-bg-block, .header-vertical')
                 ),
                 array (
                     'id' => 'fixed_header_color',
@@ -398,9 +406,15 @@ if(!function_exists('etheme_redux_init')) {
                 ),
                 array (
                     'id' => 'top_wishlist_widget',
-                    'type' => 'switch',
-                    'title' => __( 'Enable wishlist widget in header', 'xstore' ),
-                    'default' => true,
+                    'type' => 'select',
+                    'title' => __( 'Wishlist icon position', 'xstore' ),
+                    'options' => array (
+                        'header' => __( 'Header', 'xstore' ),
+                        'tb-left' => __( 'Top bar left', 'xstore' ),
+                        'tb-right' => __( 'Top bar right', 'xstore' ),
+                        false => __( 'Disable', 'xstore' ),
+                    ),
+                    'default' => 'header',
                 ),
                 array (
                     'id' => 'top_links',
@@ -410,9 +424,15 @@ if(!function_exists('etheme_redux_init')) {
                 ),
                 array (
                     'id' => 'search_form',
-                    'type' => 'switch',
-                    'title' => __( 'Enable search form in header', 'xstore' ),
-                    'default' => true,
+                    'type' => 'select',
+                    'title' => __( 'Enable search form in', 'xstore' ),
+                    'options' => array (
+                        'header' => __( 'Header', 'xstore' ),
+                        'tb-left' => __( 'Top bar left', 'xstore' ),
+                        'tb-right' => __( 'Top bar right', 'xstore' ),
+                        false => __( 'Disable', 'xstore' ),
+                    ),
+                    'default' => 'header',
                 ),
                 array (
                     'id' => 'search_ajax',
@@ -420,7 +440,7 @@ if(!function_exists('etheme_redux_init')) {
                     'title' => __( 'AJAX Search', 'xstore' ),
                     'default' => true,
                     'required' => array(
-                        array( 'search_form', 'equals', true)
+                        array( 'search_form', 'equals', array( 'header', 'tb-left', 'tb-right' ) )
                     )
                 ),
                 array (
@@ -442,6 +462,15 @@ if(!function_exists('etheme_redux_init')) {
                     )
                 ),
                 array (
+                    'id' => 'search_by_sku',
+                    'type' => 'switch',
+                    'title' => __( 'Search by sku', 'xstore' ),
+                    'default' => true,
+                    'required' => array(
+                        array( 'search_form', 'equals', array( 'header', 'tb-left', 'tb-right' ) ) 
+                    )
+                ),
+                array (
                     'id' => 'top_panel',
                     'type' => 'switch',
                     'title' => __( 'Enable top panel', 'xstore' ),
@@ -456,10 +485,10 @@ if(!function_exists('etheme_redux_init')) {
                             'img' => ETHEME_CODE_IMAGES . 'cart/default.png',
                         ),
                         2 => array (
-                            'img' => ETHEME_CODE_IMAGES . 'cart/additional_1.png',
+                            'img' => ETHEME_CODE_IMAGES . 'cart/additional_2.png',
                         ),
                         3 => array (
-                            'img' => ETHEME_CODE_IMAGES . 'cart/additional_2.png',
+                            'img' => ETHEME_CODE_IMAGES . 'cart/additional_1.png',
                         ),
                         4 => array (
                             'img' => ETHEME_CODE_IMAGES . 'cart/additional_3.png',
@@ -634,7 +663,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'bc_title_font',
                     'type' => 'typography',
                     'title' => __( 'Breadcrumbs title font', 'xstore' ),
-                    'output' => '.page-heading .title, .page-heading.bc-size-small .title',
+                    'output' => '.page-heading .title, .page-heading.bc-size-small .title, .page-heading.bc-type-left2.bc-color-white .title .page-heading.bc-type-left2 .title, .page-heading.bc-type-left2.bc-color-white .title',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -642,7 +671,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'bc_breadcrumbs_font',
                     'type' => 'typography',
                     'title' => __( 'Breadcrumbs font', 'xstore' ),
-                    'output' => '.woocommerce-breadcrumb, #breadcrumb, .bbp-breadcrumb, .woocommerce-breadcrumb a, #breadcrumb a, .bbp-breadcrumb a, .woocommerce-breadcrumb .delimeter, #breadcrumb .delimeter, .bbp-breadcrumb .delimeter, .page-heading.bc-type-left2 .back-history, .page-heading.bc-type-left2 .title, .page-heading.bc-type-left2 .woocommerce-breadcrumb a, .page-heading.bc-type-left .woocommerce-breadcrumb a, .page-heading.bc-type-left2 .breadcrumbs a',
+                    'output' => '.page-heading.bc-type-left2.bc-color-white .woocommerce-breadcrumb a, .woocommerce-breadcrumb, #breadcrumb, .bbp-breadcrumb, .woocommerce-breadcrumb a, #breadcrumb a, .bbp-breadcrumb a, .woocommerce-breadcrumb .delimeter, #breadcrumb .delimeter, .bbp-breadcrumb .delimeter, .page-heading.bc-type-left2 .back-history, .page-heading.bc-type-left2 .title, .page-heading.bc-type-left2 .woocommerce-breadcrumb a, .page-heading.bc-type-left .woocommerce-breadcrumb a, .page-heading.bc-type-left2 .breadcrumbs a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -650,7 +679,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'bc_return_font',
                     'type' => 'typography',
                     'title' => __( '"Return to previous page" font', 'xstore' ),
-                    'output' => '.page-heading .back-history, .page-heading a.back-history',
+                    'output' => '.page-heading .back-history, .page-heading a.back-history, .page-heading.bc-type-left2.bc-color-white .back-history',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -807,6 +836,26 @@ if(!function_exists('etheme_redux_init')) {
         ));
 
         Redux::setSection( $opt_name, array(
+            'title' => __( 'Theme Deactivation', 'xstore' ),
+            'id' => 'general-deactivation',
+            'subsection' => true,
+            'icon' => 'el-ban-circle',
+            'fields' => array (
+                array(
+                    'id' => 'theme_deactivate',
+                    'type' => 'button_set',
+                    'title' => __( 'Deactivate theme', 'xstore' ),
+                    'subtitle' => __( 'Fermentum a gravida penatibus euismod.', 'xstore' ),
+                    'class' => 'theme-deactivator',
+                    'desc' => __( 'Fermentum a gravida penatibus euismod cum a nullam condimentum platea vestibulum hendrerit cum venenatis vestibulum parturient.', 'xstore' ),
+                    'options' => array(
+                        'deactivate' => 'Deactivate', 
+                     ), 
+                ),
+            ),
+        ));
+
+        Redux::setSection( $opt_name, array(
             'title' => __( 'Styling', 'xstore' ),
             'id' => 'style',
             'icon' => 'el-icon-picture',
@@ -842,7 +891,7 @@ if(!function_exists('etheme_redux_init')) {
                     'type' => 'color_rgba',
                     'title' => __( 'Container Background Color', 'xstore' ),
                     'output' => array(
-                        'background-color' =>'.select2-results, .select2-drop, .select2-container .select2-choice, .form-control, .page-wrapper, .cart-popup-container, select, .quantity input[type="number"], .emodal, input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea, #searchModal, .quick-view-popup, #etheme-popup, .et-wishlist-widget .wishlist-dropdown, textarea.form-control, textarea'
+                        'background-color' =>'article.content-timeline2 .timeline-content, .select2-results, .select2-drop, .select2-container .select2-choice, .form-control, .page-wrapper, .cart-popup-container, select, .quantity input[type="number"], .emodal, input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea, #searchModal, .quick-view-popup, #etheme-popup, .et-wishlist-widget .wishlist-dropdown, textarea.form-control, textarea'
                     )
                 ),
                 array (
@@ -851,7 +900,7 @@ if(!function_exists('etheme_redux_init')) {
                     'title' => __( 'Form inputs color', 'xstore' ),
                     'output' => array(
                         'border-color' =>'.select2-results, .select2-drop, .select2-container .select2-choice, .form-control, select, .quantity input[type="number"], .emodal, input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea, textarea.form-control, textarea',
-                        'background-color' =>'.select2-results, .select2-drop, .select2-container .select2-choice, .form-control, select, .quantity input[type="number"], .emodal, input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea, textarea.form-control, textarea, input[type="search"]'
+                        'background-color' =>'.select2-results, .select2-drop, .select2-container .select2-choice, .form-control, select, .quantity input[type="number"], .emodal, input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea, textarea.form-control, textarea, input[type="search"], .select2-container--default .select2-selection--single'
                     )
                 ),
             ),
@@ -1045,7 +1094,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'menu_level_1',
                     'type' => 'typography',
                     'title' => __( 'Menu first level font', 'xstore' ),
-                    'output' => '.menu-wrapper .menu > li > a, .mobile-menu-wrapper .menu > li > a, .mobile-menu-wrapper .links li a, .secondary-menu-wrapper .menu > li > a, .secondary-title, .fullscreen-menu .menu > li > a, .fullscreen-menu .menu > li .inside > a, .header-wrapper.header-advanced .menu-wrapper .menu > li > a',
+                    'output' => '.menu-wrapper .menu > li > a, .mobile-menu-wrapper .menu > li > a, .mobile-menu-wrapper .links li a, .secondary-title, .fullscreen-menu .menu > li > a, .fullscreen-menu .menu > li .inside > a, .header-wrapper.header-advanced .menu-wrapper .menu > li > a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -1053,7 +1102,7 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'menu_level_2',
                     'type' => 'typography',
                     'title' => __( 'Menu second level', 'xstore' ),
-                    'output' => '.item-design-mega-menu .nav-sublist-dropdown .item-level-1 > a, .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children.item-level-1 > a, .secondary-menu-wrapper .nav-sublist-dropdown .menu-widgets .widget-title, .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown li a',
+                    'output' => '.item-design-mega-menu .nav-sublist-dropdown .item-level-1 > a, .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown li a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
@@ -1061,14 +1110,45 @@ if(!function_exists('etheme_redux_init')) {
                     'id' => 'menu_level_3',
                     'type' => 'typography',
                     'title' => __( 'Menu third level', 'xstore' ),
-                    'output' => '.item-design-dropdown .nav-sublist-dropdown ul > li > a, .item-design-mega-menu .nav-sublist-dropdown .item-link, .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children .nav-sublist ul > li > a, .item-design-mega-menu .nav-sublist-dropdown .nav-sublist a, .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown ul > li > a',
+                    'output' => '.item-design-dropdown .nav-sublist-dropdown ul > li > a, .item-design-mega-menu .nav-sublist-dropdown .item-link, .item-design-mega-menu .nav-sublist-dropdown .nav-sublist a, .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown ul > li > a',
                     'text-align' => false,
                     'text-transform' => true,
                 ),
             )
         ));
 
-
+        Redux::setSection( $opt_name, array(
+            'title' => __( 'Secondary Navigation', 'xstore' ),
+            'id' => 'typography-secondary-menu',
+            'icon' => 'el-icon-font',
+            'subsection' => true,
+            'fields' => array(
+                array (
+                    'id' => 'secondary-menu_level_1',
+                    'type' => 'typography',
+                    'title' => __( 'Menu first level font', 'xstore' ),
+                    'output' => '.secondary-menu-wrapper .menu > li > a, .secondary-title',
+                    'text-align' => false,
+                    'text-transform' => true,
+                ),
+                array (
+                    'id' => 'secondary-menu_level_2',
+                    'type' => 'typography',
+                    'title' => __( 'Menu second level', 'xstore' ),
+                    'output' => 'body .secondary-menu-wrapper .item-design-mega-menu .nav-sublist-dropdown .item-level-1 > a, body .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children.item-level-1 > a, body .secondary-menu-wrapper .nav-sublist-dropdown .menu-widgets .widget-title, body .secondary-menu-wrapper .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown li a, body .secondary-menu-wrapper .item-design-mega-menu .nav-sublist-dropdown > .container > ul .item-level-1 > a',
+                    'text-align' => false,
+                    'text-transform' => true,
+                ),
+                array (
+                    'id' => 'secondary-menu_level_3',
+                    'type' => 'typography',
+                    'title' => __( 'Menu third level', 'xstore' ),
+                    'output' => 'body .secondary-menu-wrapper .item-design-dropdown .nav-sublist-dropdown ul > li > a, body .secondary-menu-wrapper .item-design-mega-menu .nav-sublist-dropdown .item-link, body .secondary-menu-wrapper .nav-sublist-dropdown .menu-item-has-children .nav-sublist ul > li > a, body .secondary-menu-wrapper .item-design-mega-menu .nav-sublist-dropdown .nav-sublist a, body .secondary-menu-wrapper .fullscreen-menu .menu-item-has-children .nav-sublist-dropdown ul > li > a',
+                    'text-align' => false,
+                    'text-transform' => true,
+                ),
+            )
+        ));
 
         if( current_theme_supports('woocommerce') ) {
 
@@ -1086,9 +1166,15 @@ if(!function_exists('etheme_redux_init')) {
                 'fields' => array (
                     array (
                         'id' => 'cart_widget',
-                        'type' => 'switch',
-                        'title' => __( 'Enable cart widget in header', 'xstore' ),
-                        'default' => true,
+                        'type' => 'select',
+                        'title' => __( 'Enable cart widget in ', 'xstore' ),
+                        'options' => array (
+                                'header' => __( 'Header', 'xstore' ),
+                                'tb-left' => __( 'Top bar left', 'xstore' ),
+                                'tb-right' => __( 'Top bar right', 'xstore' ),
+                                false => __( 'Disable', 'xstore' ),
+                            ),
+                        'default' => 'header',
                     ),
                     array (
                         'id' => 'just_catalog',
@@ -1366,6 +1452,14 @@ Surely you can find something for yourself!</p> ',
                         'title' => __( 'Show product categories', 'xstore' ),
                     ),
                     array (
+                        'id' => 'product_page_brands',
+                        'type' => 'switch',
+                        'title' => __( 'Show product brands', 'xstore' ),
+                        'required' => array(
+                            array( 'enable_brands', 'equals', true )
+                        )
+                    ),
+                    array (
                         'id' => 'product_page_price',
                         'type' => 'switch',
                         'title' => __( 'Show Price', 'xstore' ),
@@ -1521,6 +1615,39 @@ Surely you can find something for yourself!</p> ',
                         'default' => 10,
                         'required' => array(
                             array('show_related','equals', true),
+                        )
+                    ),
+                    array (
+                        'id' => 'show_brand',
+                        'type' => 'switch',
+                        'title' => __( 'Show brand', 'xstore' ),
+                        'default' => true,
+                    ),
+                    array (
+                        'id' => 'show_brand_image',
+                        'type' => 'switch',
+                        'title' => __( 'Show brand image', 'xstore' ),
+                        'default' => true,
+                        'required' => array(
+                            array('show_brand','equals', true),
+                        )
+                    ),
+                    array (
+                        'id' => 'show_brand_title',
+                        'type' => 'switch',
+                        'title' => __( 'Show brand title', 'xstore' ),
+                        'default' => true,
+                        'required' => array(
+                            array('show_brand','equals', true),
+                        )
+                    ),
+                    array (
+                        'id' => 'show_brand_desc',
+                        'type' => 'switch',
+                        'title' => __( 'Show brand description', 'xstore' ),
+                        'default' => true,
+                        'required' => array(
+                            array('show_brand','equals', true),
                         )
                     ),
                     array (
@@ -1857,6 +1984,10 @@ Surely you can find something for yourself!</p> ',
                             'title' => __( 'Grid', 'xstore' ),
                             'img' => ETHEME_CODE_IMAGES . 'blog/posts2-1.png',
                         ),
+                        'grid2' => array(
+                            'title' => __( 'Grid 2', 'xstore' ),
+                            'img' => ETHEME_CODE_IMAGES . 'blog/posts2-2.png',
+                        ),
                         'timeline' => array(
                             'title' => __( 'Timeline', 'xstore' ),
                             'img' => ETHEME_CODE_IMAGES . 'blog/posts5-1.png',
@@ -1895,7 +2026,7 @@ Surely you can find something for yourself!</p> ',
                     ),
                     'default' => 3,
                     'required' => array(
-                        array('blog_layout','equals', array('grid')),
+                        array( 'blog_layout','equals', array( 'grid', 'grid2' ) ),
                     ),
                 ),
                 array (
@@ -1903,8 +2034,17 @@ Surely you can find something for yourself!</p> ',
                     'type' => 'switch',
                     'title' => __( 'Full width', 'xstore' ),
                     'required' => array(
-                        array('blog_layout','equals', array('grid')),
+                        array( 'blog_layout','equals', array( 'grid', 'grid2' ) ),
                     ),
+                ),
+                array (
+                    'id' => 'blog_masonry',
+                    'type' => 'switch',
+                    'title' => __( 'Masonry', 'xstore' ),
+                    'required' => array(
+                        array( 'blog_layout','equals', array( 'grid', 'grid2' ) ),
+                    ),
+                    'default' => true,
                 ),
                 array (
                     'id' => 'blog_hover',
@@ -1925,9 +2065,14 @@ Surely you can find something for yourself!</p> ',
                 ),
                 array (
                     'id' => 'read_more',
-                    'type' => 'switch',
+                    'type' => 'select',
                     'title' => __( 'Show "Continue reading link"', 'xstore' ),
-                    'default' => true,
+                    'options' => array (
+                        'link' => 'Link',
+                        'btn' => 'Button',
+                        'off' => 'Disable',
+                    ),
+                    'default' => 'link',
                 ),
                 array (
                     'id' => 'views_counter',
@@ -1967,10 +2112,22 @@ Surely you can find something for yourself!</p> ',
                     'default' => 'right'
                 ),
                 array (
+                    'id' => 'blog_pagination_prev_next',
+                    'type' => 'switch',
+                    'title' => __( 'Enable prev/next pagination links', 'xstore' ),
+                    'default' => false,
+                ),
+                array (
                     'id' => 'sticky_sidebar',
                     'type' => 'switch',
                     'title' => __( 'Enable sticky sidebar', 'xstore' ),
                     'default' => false,
+                ),
+                array (
+                    'id' => 'excerpt_words',
+                    'type' => 'text',
+                    'title' => __( 'Excerpt symbols', 'xstore' ),
+                    'default' => '...',
                 ),
                 array (
                     'id' => 'excerpt_length',
@@ -2149,6 +2306,29 @@ Surely you can find something for yourself!</p> ',
                     'desc' => __( 'Use -1 to show all items', 'xstore' ),
                     'title' => __( 'Items per page', 'xstore' ),
                 ),
+
+                array (
+                    'id' => 'portfolio_order',
+                    'type' => 'select',
+                    'title' => __( 'Portfolio order way', 'xstore' ),
+                    'options' => array (
+                        'DESC' => 'Descending',
+                        'ASC' => 'Ascending',
+                    ),
+                    'default' => 'DESC'
+                ),
+                array (
+                    'id' => 'portfolio_orderby',
+                    'type' => 'select',
+                    'title' => __( 'Portfolio order by', 'xstore' ),
+                    'options' => array (
+                        'title' => 'Title',
+                        'date' => 'Date',
+                        'ID' => 'ID',
+                    ),
+                    'default' => 'title'
+                ),
+
             ),
         ));
 

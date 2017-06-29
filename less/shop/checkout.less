@@ -47,7 +47,6 @@
 .form-row-wide {
 	clear: both;
 }
-
 #customer_details {
 	input[type="email"],
 	input[type="tel"],
@@ -90,11 +89,12 @@ table.shop_table_responsive.customer_details{
 			color: #000 ;
 		}
 	}
-
 	.button {
 		.btn-black();
 	}
-
+	.et-facebook-login-wrapper{
+		padding-bottom: 2.5em;
+	}
 	.login {
 		max-width: 100%;
 		border-left: 1px solid @borderColor;
@@ -219,7 +219,7 @@ table.shop_table_responsive.customer_details{
 		display: inline-block !important;
 		margin-left: 0;
 		position: relative;
-		top:12px;
+		top:4px;
 	}
 }
 
@@ -298,6 +298,10 @@ label[for="payment_method_stripe"]{
 .checkout{
 	input[type="checkbox"]{
 		float: left;
+		margin-left: 0;
+		+ span{
+			padding-left: 20px;
+		}
 	}
 }
 
@@ -402,5 +406,32 @@ label[for="payment_method_stripe"]{
 .express_checkout_button a{display:block;height:auto;padding:0 !important;}
 .express_checkout_button a input{min-width:1px;}
 .express_checkout_button a:hover input{background-color:transparent !important;}
+
+
+.select2-container--default{
+	.select2-dropdown{
+		border: none;
+		background-color: #fafafa;
+	}
+	.select2-search--dropdown .select2-search__field{
+		background-color: #fafafa;
+	}
+	.select2-selection--single{ 
+		border-color: #fafafa;
+		background-color: #fafafa;
+		border-radius: 0;
+		height: 2.642rem;
+	    line-height: 2rem;
+		.select2-selection__rendered{
+			line-height: 2.6rem;
+		}
+		.select2-selection__arrow{
+		  top: 5px;
+		}
+	}
+}
+
+
+
 /*-----  End of Checkout Page  ------*/
 

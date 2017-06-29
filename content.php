@@ -61,7 +61,7 @@ if( ! empty( $et_loop['size'] ) ) {
 
             <div class="content-article entry-content">
                 <?php the_excerpt(); ?>
-                <?php if (etheme_get_option('read_more')): ?>
+                <?php if ( etheme_get_option( 'read_more' ) != 'off' ): ?>
                     <a href="<?php the_permalink(); ?>"><?php echo $read_more; ?></a>
                 <?php endif ?>
             </div>

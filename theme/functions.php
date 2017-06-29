@@ -28,8 +28,12 @@ if(!function_exists('etheme_register_required_plugins')) {
 	add_action('tgmpa_register', 'etheme_register_required_plugins');
 	function etheme_register_required_plugins() {
 		if( ! etheme_is_activated() ) return;
-		$key = get_option( 'xstore_api_key', false );
-		if( ! $key ) return;
+
+		$activated_data = get_option( 'etheme_activated_data' );
+
+		$key = $activated_data['api_key'];
+
+		if( ! $key || empty( $key ) ) return;
 
 		$plugins_dir = ETHEME_API . 'files/get/';
 		$token = '?token=' . $key;
@@ -45,7 +49,7 @@ if(!function_exists('etheme_register_required_plugins')) {
 				'slug'     				=> 'et-core-plugin', // The plugin slug (typically the folder name)
 				'source'   				=> $plugins_dir . 'et-core-plugin.zip' . $token, // The plugin source
 				'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-				'version' 				=> '1.0.13', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+				'version' 				=> '1.0.14', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 				'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 				'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 				'external_url' 			=> '', // If set, overrides default API URL and points to an external URL

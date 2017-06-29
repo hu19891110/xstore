@@ -118,9 +118,11 @@ class ETheme_Products_Widget extends WC_Widget {
 
         switch ( $show ) {
             case 'featured' :
-                $query_args['meta_query'][] = array(
-                    'key'   => '_featured',
-                    'value' => 'yes'
+                $query_args['tax_query'][] = array(
+                  'taxonomy' => 'product_visibility',
+                  'field'    => 'name',
+                  'terms'    => 'featured',
+                  'operator' => 'IN',
                 );
                 break;
             case 'onsale' :

@@ -219,13 +219,16 @@ if(!function_exists('etheme_byline')) {
         extract( shortcode_atts( array(
             'author' => 0,
             'time' => 0,
+            'slide_view' => 0,
         ), $atts ) );
         if(!etheme_get_option('blog_byline')) return '';
         $views = etheme_get_views();
         $comment_link_template = '<span>%s</span> <span>%s</span>';
+        $blog_layout = etheme_get_option('blog_layout');
+
 		?>
             <div class="meta-post">
-    	        <?php if(etheme_get_option('blog_byline') && etheme_get_option('blog_layout') != 'timeline' && etheme_get_option('blog_layout') != 'timeline2'): ?>
+    	        <?php if(etheme_get_option('blog_byline') && ! in_array( $blog_layout , array( 'timeline', 'timeline2', 'grid2' ) ) && $slide_view !== 'timeline2' ): ?>
 					<time class="entry-date published updated" datetime="<?php the_time('F j, Y'); ?>"><?php the_time(get_option('date_format')); ?></time>
                     <?php if ( $time ): ?>
 						<?php esc_html_e('at', 'xstore');?>
@@ -249,7 +252,7 @@ if(!function_exists('etheme_byline')) {
                             );
                         }
                      ?>
-    	        <?php elseif(etheme_get_option('blog_byline') && ( etheme_get_option('blog_layout') == 'timeline' || etheme_get_option('blog_layout') == 'timeline2' ) ): ?>
+    	        <?php elseif(etheme_get_option('blog_byline') && ( in_array( $blog_layout , array( 'timeline', 'timeline2', 'grid2' ) ) || $slide_view == 'timeline2' ) ): ?>
                     <?php esc_html_e('Posted by', 'xstore');?> <?php the_author_posts_link(); ?>
                      <span class="meta-divider">/</span>
                      <?php if (etheme_get_option('views_counter')): ?>
@@ -353,10 +356,7 @@ if(!function_exists('etheme_get_main_menu')) {
 
 	        echo $output;
 		} else {
-			?>
-				<br>
-				<h4 class="a-center">Set your main menu in <em>Appearance &gt; Menus</em></h4>
-			<?php
+			printf( '<br><h4 class="a-center">%s <em>%s</em></h4>', esc_html__( 'Set your main menu in', 'xstore' ), esc_html__( 'Appearance &gt; Menus', 'xstore' ) );
 		}
 	}
 }
@@ -424,10 +424,7 @@ if(!function_exists('etheme_get_main_menu_right')) {
 
 	        echo $output;
 		} else {
-			?>
-				<br>
-				<h4 class="a-center">Set your main menu in <em>Appearance &gt; Menus</em></h4>
-			<?php
+			printf( '<br><h4 class="a-center">%s <em>%s</em></h4>', esc_html__( 'Set your main menu in', 'xstore' ), esc_html__( 'Appearance &gt; Menus', 'xstore' ) );
 		}
 	}
 }
@@ -489,10 +486,7 @@ if(!function_exists('etheme_get_mobile_menu')) {
 
 	        echo $output;
 		} else {
-			?>
-				<br>
-				<h4 class="a-center">Set your main menu in <em>Appearance &gt; Menus</em></h4>
-			<?php
+			printf( '<br><h4 class="a-center">%s <em>%s</em></h4>', esc_html__( 'Set your main menu in', 'xstore' ), esc_html__( 'Appearance &gt; Menus', 'xstore' ) );
 		}
 	}
 }
@@ -1130,6 +1124,14 @@ if(!function_exists('etheme_create_posts_slider')) {
 					};
 					jQuery(".slider-'.$box_id.' .slider").owlCarousel(options);
 					jQuery(".slider-'.$box_id.' .owl-pagination").addClass("pagination-type-'.$pagination_type.' hide-for-'.$hide_fo.'");
+					
+					var owl = jQuery(".slider-'.$box_id.' .slider").data("owlCarousel");
+
+					jQuery( window ).bind( "vc_js", function() {
+						owl.reinit(options);
+						jQuery(".slider-'.$box_id.' .owl-pagination").addClass("pagination-type-'.$pagination_type.' hide-for-'.$hide_fo.'");
+					} );
+
                 </script>
             ';
             if ( $pagination_type != 'hide' && ( $default_color != '#e6e6e6' || $active_color !='#b3a089' ) ) {
@@ -1219,8 +1221,9 @@ if(!function_exists('etheme_breadcrumbs')) {
             $portfolioId = etheme_tpl2id('portfolio.php');
             $portfolioLink = get_permalink($portfolioId);
             $post_type = get_post_type_object(get_post_type());
+            $page = get_page( $portfolioId );
             $slug = $post_type->rewrite;
-            echo '<a href="' . $portfolioLink . '">' . $post_type->labels->name . '</a>';
+            echo '<a href="' . $portfolioLink . '">' . $page->post_title . '</a>';
             if ($showCurrent == 1) echo ' ' . $delimiter . ' ' . $before . get_the_title() . $after;
           } elseif ( get_post_type() != 'post' ) {
             $post_type = get_post_type_object(get_post_type());
@@ -1239,7 +1242,10 @@ if(!function_exists('etheme_breadcrumbs')) {
           }
 
         } elseif ( is_tax('portfolio_category') ) {
-			echo $before . esc_html__('Projects category', 'xstore') . $after;
+        	$portfolioId = etheme_tpl2id('portfolio.php');
+        	$post = get_page( $portfolioId );
+        	$portfolioLink = get_permalink($portfolioId);
+        	echo '<a href="' . $portfolioLink . '">' . $post->post_title . '</a>' . $delimiter;
 		} elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
           $post_type = get_post_type_object(get_post_type());
           echo $before . $post_type->labels->singular_name . $after;
@@ -1376,5 +1382,31 @@ if(!function_exists('etheme_qr_code')) {
         }
 
         return $output;
+    }
+}
+
+
+// **********************************************************************//
+// ! Show shop navbar
+// **********************************************************************//
+if( ! function_exists( 'etheme_shop_navbar' ) ) {
+    function etheme_shop_navbar( $location = 'header', $exclude = array() ) {
+
+    	$args['wishlist'] = ( ! in_array( 'wishlist', $exclude ) && etheme_woocommerce_installed() && etheme_get_option( 'top_wishlist_widget' ) == $location ) ? true : false ;
+		$args['search'] = ( ! in_array( 'search', $exclude ) && etheme_get_option( 'search_form' ) == $location ) ? true : false;
+		$args['cart'] = ( ! in_array( 'cart', $exclude ) && etheme_woocommerce_installed() && ! etheme_get_option( 'just_catalog' ) && etheme_get_option( 'cart_widget' ) == $location ) ? true : false ;
+
+    	if ( ! $args['wishlist'] && ! $args['search'] && ! $args['cart'] ) return;
+
+   		do_action( 'etheme_before_shop_navbar' );
+
+		echo '<div class="navbar-header show-in-' . $location . '">';
+			if( $args['search'] ) etheme_search_form();
+			if( $args['wishlist'] ) etheme_wishlist_widget();
+			if( $args['cart'] ) etheme_top_cart();
+		echo '</div>';
+
+		do_action( 'etheme_after_shop_navbar' );
+
     }
 }

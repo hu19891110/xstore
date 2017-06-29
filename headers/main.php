@@ -26,10 +26,10 @@
 					<!-- Header navbar -->
 					<div class="navbar-header">
 						<label for="s" class="header-search-trigger hidden-md hidden-lg"><i class="fa fa-search"></i></label>
-			            <?php if(etheme_get_option('search_form')): ?>
+			            <?php if( etheme_get_option( 'search_form' ) == 'header' ): ?>
 							<?php etheme_search_form(); ?>
 						<?php endif; ?>
-						<?php if(class_exists('Woocommerce') && current_theme_supports('woocommerce') && !etheme_get_option('just_catalog') && etheme_get_option('cart_widget')): ?>
+						<?php if(class_exists('Woocommerce') && current_theme_supports('woocommerce') && !etheme_get_option('just_catalog') && etheme_get_option('cart_widget') == 'header' ): ?>
 		                    <?php etheme_top_cart(); ?>
 			            <?php endif ;?>
 					</div>

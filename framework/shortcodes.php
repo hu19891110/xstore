@@ -27,6 +27,8 @@ etheme_load_shortcode('the-look');
 etheme_load_shortcode('custom-tabs');
 etheme_load_shortcode('menu');
 
+etheme_load_shortcode('brands_list');
+
 
 // Add shortcodes to MCE
 if( ! function_exists('etheme_add_mce_button') ) {
@@ -86,7 +88,7 @@ function etheme_btn_shortcode($atts){
        'icon' => '',
        'size' => '',
        'style' => '',
-       'el_class' => '',
+       'et_class' => '',
        'type' => '',
        'target' => ''
    ), $atts );
@@ -106,8 +108,8 @@ function etheme_btn_shortcode($atts){
     if($a['size'] != '') {
 	    $class .= ' '.$a['size'];
     }
-    if($a['el_class'] != '') {
-	    $class .= ' '.$a['el_class'];
+    if($a['et_class'] != '') {
+	    $class .= ' '.$a['et_class'];
     }
     return '<a target="' . $a['target'] . '" class="btn'. $class .'" href="' . $a['url'] . '"><span>'. $icon . $a['title'] . '</span></a>';
 }
@@ -250,8 +252,9 @@ function et_visible_pruduct( $id, $valid ){
 
     // updated for woocommerce v3.0
     $visibility = $product->get_catalog_visibility();
+    $stock = $product->is_in_stock();
 
-    if (  $visibility  != 'hidden' &&  $visibility  != 'search' ) {
+    if (  $visibility  != 'hidden' &&  $visibility  != 'search' && $stock ) {
         return get_post( $id );
     }
 
@@ -264,13 +267,15 @@ function et_visible_pruduct( $id, $valid ){
             if ( empty( $valid_post ) ) return;
             $next_post_id = $valid_post->ID;
             $visibility = wc_get_product( $next_post_id );
+            $stock = $visibility->is_in_stock();
             $visibility = $visibility->get_catalog_visibility();
+
         }
         // Restore original Post Data
         wp_reset_postdata();
     }
 
-    if ( $visibility == 'visible' || $visibility == 'catalog' ) {
+    if ( $visibility == 'visible' || $visibility == 'catalog' && $stock ) {
         return $valid_post;
     } else {
         return et_visible_pruduct( $next_post_id, $valid );

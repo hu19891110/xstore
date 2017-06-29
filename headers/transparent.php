@@ -32,11 +32,7 @@
 									<?php endif; ?>	
 								</div>
 								<!-- Header navbar -->
-								<div class="navbar-header">
-									<?php if(class_exists('Woocommerce') && current_theme_supports('woocommerce') && !etheme_get_option('just_catalog') && etheme_get_option('cart_widget')): ?>
-					                    <?php etheme_top_cart(); ?>
-						            <?php endif ;?>
-								</div>
+								<?php etheme_shop_navbar( 'header', array( 'search' ) ); ?>
 							</div>
 						</div>
 					</div>
@@ -53,7 +49,7 @@
 				<div class="header-logo"><?php etheme_logo(); ?></div>
 				<!-- Main Menu -->
 				<div class="menu-wrapper"><?php etheme_get_main_menu(); ?></div>
-				<?php if(etheme_get_option('search_form')): ?>
+				<?php if( etheme_get_option( 'search_form' ) == 'header' ): ?>
 					<?php etheme_search_form(); ?>
 				<?php endif; ?>
 			</div>

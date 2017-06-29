@@ -993,7 +993,6 @@ table.cart .product-details{
 	}
 }
 @media only screen and (min-width: 992px){
-
 	#reviews{
 		#comments{
 			float: left;
@@ -1002,7 +1001,23 @@ table.cart .product-details{
 		    float: right;
 		}
 	}
-
+	.header-wrapper{
+		&.header-double-menu{
+			.menu-wrapper{
+				&.menu-wrapper{
+					padding-right: 160px;
+	    			max-width: 480px;
+				}
+				&.menu-wrapper-right{
+					padding-right: 0;
+			    	width: 42%;
+			    	.menu{
+			    		text-align: center !important;
+			    	}
+				}
+			}
+		}
+	}
 }
 /*=====  End of RTL Styling  ======*/
 

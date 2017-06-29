@@ -25,7 +25,7 @@ $hover = etheme_get_option('product_img_hover');
 $view = etheme_get_option('product_view');
 $view_color = etheme_get_option('product_view_color');
 $size = apply_filters( 'single_product_small_thumbnail_size', 'shop_catalog' );
-$view_mode = etheme_get_view_mode();
+
 
 // Store loop count we're currently on
 if ( empty( $woocommerce_loop['loop'] ) ) {
@@ -78,7 +78,7 @@ if(!class_exists('YITH_WCWL')) {
 
 $classes[] = etheme_get_product_class( $woocommerce_loop['columns'] );
 
-if ( ! empty( $woocommerce_loop['isotope'] ) && $woocommerce_loop['isotope'] || etheme_get_option( 'products_masonry' ) ) {
+if ( ! empty( $woocommerce_loop['isotope'] ) && $woocommerce_loop['isotope'] || etheme_get_option( 'products_masonry' ) && is_shop() ) {
     $classes[] = 'et-isotope-item';
 }
 
@@ -189,12 +189,12 @@ if( etheme_get_option( 'hide_buttons_mobile' ) ) {
             <?php endif ?>
 		</div>
 
-        <?php if ( ($view != 'info' || $view_mode == 'list') && $view != 'booking' ): ?>
+        <?php $view_mode = ( $view == 'info' ) ? etheme_get_view_mode() : ''; ?>
+
+        <?php if ( ( $view != 'info' || $view_mode == 'list' ) && $view != 'booking' ): ?>
     		<div class="text-center product-details">
     	        <?php if (etheme_get_option('product_page_cats')): ?>
-                    <?php
-                        etheme_product_cats();
-                    ?>
+                    <?php etheme_product_cats(); ?>
     	        <?php endif ?>
 
     	        <?php if (etheme_get_option('product_page_productname')): ?>
@@ -202,6 +202,10 @@ if( etheme_get_option( 'hide_buttons_mobile' ) ) {
                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                     </p>
     	        <?php endif ?>
+
+                <?php if ( etheme_get_option( 'enable_brands' ) && etheme_get_option( 'product_page_brands' ) ) : ?>
+                    <?php etheme_product_brands(); ?>
+                <?php endif ?>
 
                 <?php
                     /**

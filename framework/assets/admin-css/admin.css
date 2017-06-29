@@ -1724,3 +1724,20 @@ background-color:#FFFFFF}
     max-width: 500px;
     padding: 10px;
 }
+ 
+/* Styles for expired support */
+
+#et_options-support_chat .switch-options{
+	min-height: auto;
+}
+#et_options-support_chat .field-desc{
+	display: inline-block;
+	margin: 10px;
+}
+.theme-deactivator label.ui-button {
+	background: #259bd2!important;
+    border: 1px solid #259bd2!important;
+    color: #ffffff!important;
+    box-shadow: none!important;
+    text-shadow: none!important;
+}

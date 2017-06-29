@@ -35,15 +35,16 @@ function vc_theme_vc_images_carousel($atts, $content) {
 	$pretty_rand = $onclick == 'link_image' ? rand() : '';
 	
 	if ( $images == '' ) $images = '-1,-2,-3';
+	if ( ! isset( $atts['css'] ) ) $atts['css'] = '';
 	
 	if ( 'custom_link' === $onclick ) {
 		$custom_links = vc_value_from_safe( $custom_links );
 		$custom_links = explode( ',', $custom_links );
 	}
-	
+
 	$images = explode( ',', $images );
 	$i = - 1;
-	$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_images_carousel wpb_content_element' . $el_class . ' vc_clearfix', 'vc_images_carousel', $atts );
+	$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_images_carousel wpb_content_element' . $el_class . vc_shortcode_custom_css_class( $atts['css'], ' ' ) . ' vc_clearfix', 'vc_images_carousel', $atts );
 	$carousel_id = rand(1000,9999);
 	?>
 	<div class="<?php echo apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $css_class, 'vc_images_carousel', $atts ) ?>">

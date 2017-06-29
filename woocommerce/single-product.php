@@ -30,7 +30,7 @@ $layout = $l['product_layout'];
 	do_action('woocommerce_before_main_content');
 ?>
 
-<div itemscope itemtype="http://schema.org/Product" id="product-<?php the_ID(); ?>" class="content-page <?php if( $layout != 'wide'):  ?>container<?php endif; ?>">
+<div id="product-<?php the_ID(); ?>" class="content-page <?php if( $layout != 'wide'):  ?>container<?php endif; ?>">
 	<?php while ( have_posts() ) : the_post(); ?>
 
 		<?php wc_get_template_part( 'content', 'single-product' ); ?>

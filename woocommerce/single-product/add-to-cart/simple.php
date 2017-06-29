@@ -50,7 +50,6 @@ $btn_class = apply_filters( 'et_single_add_to_cart_btn_class', $btn_class );
 	<?php do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
 	<form class="cart" method="post" enctype='multipart/form-data'>
-	 	<?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
 	 	<?php
 	 		if ( ! $product->is_sold_individually() ) {
 	 			printf( '<span class="qty-span">%1s</span>', esc_html__( 'quantity', 'xstore' ) );

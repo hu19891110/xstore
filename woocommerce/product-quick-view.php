@@ -64,7 +64,7 @@ if( get_option('yith_wcwl_button_position') == 'shortcode' ) {
 
 					<?php
 						if (etheme_get_option('quick_add_to_cart')) {
-							if( $product->product_type == 'simple' ) {
+							if( $product->get_type() == 'simple' ) {
 								woocommerce_template_single_add_to_cart();
 							} else {
 								woocommerce_template_loop_add_to_cart();

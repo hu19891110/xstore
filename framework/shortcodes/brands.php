@@ -29,12 +29,17 @@ function etheme_brands_shortcode($atts) {
     ), $atts ) );
 
     // get terms and workaround WP bug with parents/pad counts
+
+    if ( $orderby == 'ids_order') {
+        $orderby = 'include';
+    }
+
     $args = array(
         'orderby'    => $orderby,
         'order'      => $order,
         'pad_counts' => true,
         'include'    => $ids,
-        'number' => $number
+        'number' => $number,
     );
 
     $product_brands = get_terms( 'brand', $args );
@@ -122,6 +127,19 @@ if(!function_exists('etheme_register_brands_categories')) {
         add_filter( 'vc_autocomplete_etheme_brands_ids_callback', 'etheme_productBrandBrandAutocompleteSuggester', 10, 1 ); // Get suggestion(find). Must return an array
         add_filter( 'vc_autocomplete_etheme_brands_ids_render', 'etheme_productBrandBrandRenderByIdExact', 10, 1 ); // Render exact category by id. Must return an array (label,value)
         
+        $order_by_values = array(
+            '',
+            esc_html__( 'As IDs provided order', 'xstore' ) => 'ids_order',
+            esc_html__( 'ID', 'xstore' ) => 'ID',
+            esc_html__( 'Title', 'xstore' ) => 'name',
+            esc_html__( 'Quantity', 'xstore' ) => 'count',
+        );
+
+        $order_way_values = array(
+            '',
+            esc_html__( 'Descending', 'xstore' ) => 'DESC',
+            esc_html__( 'Ascending', 'xstore' ) => 'ASC',
+        );
         $params = array(
             'name' => '[8theme] Brands carousel',
             'base' => 'etheme_brands',
@@ -133,6 +151,20 @@ if(!function_exists('etheme_register_brands_categories')) {
                     "type" => "textfield",
                     "heading" => esc_html__("Number of brands", 'xstore'),
                     "param_name" => "number"
+                ),
+                array(
+                  'type' => 'dropdown',
+                  'heading' => esc_html__( 'Order by', 'xstore' ),
+                  'param_name' => 'orderby',
+                  'value' => $order_by_values,
+                  'description' => sprintf( esc_html__( 'Select how to sort retrieved products. More at %s.', 'xstore' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' )
+                ),
+                array(
+                  'type' => 'dropdown',
+                  'heading' => esc_html__( 'Order way', 'xstore' ),
+                  'param_name' => 'order',
+                  'value' => $order_way_values,
+                  'description' => sprintf( esc_html__( 'Designates the ascending or descending order. More at %s.', 'xstore' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' )
                 ),
                 array(
                   'type' => 'autocomplete',

@@ -1696,17 +1696,26 @@ Once imported, this content can be managed from the WordPress dashboard.  </p>
 		}
 
 
-	    public function activate( $purchase, $api_key ) {
-	        update_option( 'xstore_api_key', $api_key );
-	        update_option( 'xtheme_is_activated', true );
-	        update_option( 'xtheme_activated_theme', ETHEME_PREFIX );
-	        update_option( 'xtheme_purchase_code', $purchase );
+	    public function activate( $purchase, $args ) {
+		    $data = array(
+	            'api_key' => $args['token'],
+	            'theme' => ETHEME_PREFIX,
+	            'purchase' => $purchase,
+	        );
+
+	        foreach ( $args as $key => $value ) {
+				$data['item'][$key] = $value;
+	        }
+
+			update_option( 'etheme_activated_data', maybe_unserialize( $data ) );
+        	update_option( 'etheme_is_activated', true );
 	    }
 
 	    public function get_api_key() {
 	        $api_key = false;
-	        $stored = get_option( 'xstore_api_key', false );
-	        if( $stored ) $api_key = $stored;
+	        $activated_data = get_option( 'etheme_activated_data' );
+	        $stored = $activated_data['api_key'];
+	        if( $stored && ! empty( $stored ) ) $api_key = $stored;
 	        return $api_key;
 	    }
 
@@ -1750,24 +1759,10 @@ Once imported, this content can be managed from the WordPress dashboard.  </p>
 	                return;
 	            } 
 
-	            $this->activate( $code, $data['token'] );
-
-                #echo  '<p class="updated">Theme is activated!</p>';
+	            $this->activate( $code, $data );
 
 	        }
 	    }
-
-	    // public function form_purchase_code_value() {
-	    //     $code = '';
-
-	    //     $stored = $this->get_stored_code();
-
-	    //     if( $stored ) $code = $stored;
-
-	    //     if( isset( $_POST['purchase-code'] ) && ! empty( $_POST['purchase-code'] ) ) $code = $_POST['purchase-code'];
-
-	    //     return $code;
-	    // }
 
 	    public function domain() {
 	        $domain = get_option('siteurl'); //or home

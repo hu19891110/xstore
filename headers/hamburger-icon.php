@@ -28,23 +28,23 @@
                 <div class="navbar-header">
                     <div class="header-widget-area">
                         <div class="languages-area">
-                            <?php if((!function_exists('dynamic_sidebar') || !dynamic_sidebar('languages-sidebar'))): ?>
+                            <?php if( ( !function_exists( 'dynamic_sidebar' ) || !dynamic_sidebar( 'languages-sidebar' ) ) ): ?>
                             <?php endif; ?>
                         </div>
 
                         <div class="top-links">
-                            <?php if((!function_exists('dynamic_sidebar') || !dynamic_sidebar('top-bar-right'))): ?>
+                            <?php if( ( !function_exists( 'dynamic_sidebar' ) || !dynamic_sidebar( 'top-bar-right' ) ) ): ?>
                             <?php endif; ?> 
                         </div>
                     </div>
                     <?php etheme_top_links(); ?>
-                    <?php if(etheme_get_option('search_form')): ?>
+                    <?php if( etheme_get_option( 'search_form' ) == 'header'): ?>
                         <?php etheme_search_form(); ?>
                     <?php endif; ?>
 
-                    <?php if( etheme_woocommerce_installed() && etheme_get_option( 'top_wishlist_widget' ) ) etheme_wishlist_widget(); ?>
+                    <?php if( etheme_woocommerce_installed() && etheme_get_option( 'top_wishlist_widget' ) == 'header' ) etheme_wishlist_widget(); ?>
 
-                    <?php if(etheme_woocommerce_installed() && current_theme_supports('woocommerce') && !etheme_get_option('just_catalog') && etheme_get_option('cart_widget')): ?>
+                    <?php if( etheme_woocommerce_installed() && current_theme_supports( 'woocommerce' ) && ! etheme_get_option( 'just_catalog' ) && etheme_get_option( 'cart_widget' ) == 'header' ): ?>
                         <?php etheme_top_cart(); ?>
                     <?php endif ;?>
 

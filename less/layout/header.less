@@ -1,7 +1,6 @@
 /*===================================
 =            Base Header            =
 ===================================*/
-
 @media only screen and (min-width:992px){
 	.header-wrapper{
 		header {
@@ -132,12 +131,45 @@
 	}
 
 }
-
+.fixed-header{
+	&.header-color-dark{
+		.menu{
+			li{
+				a{
+					color: #1a1a1a;
+				}
+			}
+			.nav-sublist{
+				li{
+					a{
+						color: #9b9b9b;
+					}
+				}
+			}
+			.item-design-dropdown{
+				.nav-sublist-dropdown{
+					li{
+						a{
+							color: #9b9b9b;
+						}
+					}
+				}
+			}
+		}
+	}
+}
 .header-color-dark{
 	.et-wishlist-widget{
 		.wishlist-count{
-			background-color: #000;
+			background-color: #1a1a1a;
 			color: #fff;
+		}
+	}
+	.menu{
+		li{
+			a{
+				color: #1a1a1a;
+			}
 		}
 	}
 }
@@ -361,6 +393,7 @@
 	}
 	li{
 		position: relative;
+		width: 100%;
 		.product-title{
 			padding-right: 14px;
 			line-height:1.4;

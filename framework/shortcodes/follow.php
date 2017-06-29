@@ -21,6 +21,7 @@ if(!function_exists('etheme_follow_shortcode')) {
         'vimeo' => '',
         'rss' => '',
         'vk' => '',
+        'tripadvisor' => '',
         'houzz' => '',
         'colorfull' => '',
         'icons_bg' => '',
@@ -96,6 +97,10 @@ if(!function_exists('etheme_follow_shortcode')) {
 
         if( $houzz ) {
             $output .= '<a href="'. esc_url( $houzz ) .'" class="follow-houzz" '.$target.'><i class="fa fa-houzz"></i></a>';
+        }
+        
+        if( $tripadvisor ) {
+            $output .= '<a href="'. esc_url( $tripadvisor ) .'" class="follow-tripadvisor" '.$target.'><i class="fa fa-tripadvisor"></i></a>';
         }
 
         $output .= '</div>';
@@ -194,6 +199,11 @@ if(!function_exists('etheme_register_follow')) {
                 "type" => "textfield",
                 "heading" => esc_html__("Houzz link", 'xstore'),
                 "param_name" => "houzz"
+            ),
+            array(
+                "type" => "textfield",
+                "heading" => esc_html__("Tripadvisor link", 'xstore'),
+                "param_name" => "tripadvisor"
             ),
             array(
                 "type" => "dropdown",

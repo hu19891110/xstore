@@ -202,6 +202,10 @@ if( etheme_get_option( 'hide_buttons_mobile' ) ) {
                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                     </h3>
     	        <?php endif ?>
+
+                <?php if ( etheme_get_option( 'enable_brands' ) && etheme_get_option( 'product_page_brands' ) ) : ?>
+                    <?php etheme_product_brands(); ?>
+                <?php endif ?>
     	
                 <?php
                     /**
@@ -220,7 +224,8 @@ if( etheme_get_option( 'hide_buttons_mobile' ) ) {
     	        </div>
 
     			<?php 
-    				if (etheme_get_option('product_page_addtocart') && $view != 'mask' && $view == 'mask3' ) {
+
+    				if (etheme_get_option('product_page_addtocart') && $view != 'mask' && $view != 'mask3' ) {
     					do_action( 'woocommerce_after_shop_loop_item' ); 
     				}
     			?>

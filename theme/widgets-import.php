@@ -198,7 +198,7 @@ Phone: <mark>+1 408 996 1010</mark>'
 				),
 				'flush' => true
 			),
-			'recent products' => array(
+			'recent-products' => array(
 				'widgets' => array(
 					'woocommerce_products' => array(
 						'title' => 'Latest Products',
@@ -208,7 +208,7 @@ Phone: <mark>+1 408 996 1010</mark>'
 				),
 				'flush' => true
 			),
-			'sale products' => array(
+			'sale-products' => array(
 				'widgets' => array(
 					'woocommerce_products' => array(
 						'title' => 'ON SALE',
@@ -219,7 +219,7 @@ Phone: <mark>+1 408 996 1010</mark>'
 				),
 				'flush' => true
 			),
-			'featured products' => array(
+			'featured-products' => array(
 				'widgets' => array(
 					'woocommerce_products' => array(
 						'title' => 'Featured Products',
@@ -232,9 +232,9 @@ Phone: <mark>+1 408 996 1010</mark>'
 			),
 		),
 		'custom-sidebars' => array(
-			'recent products',
-			'sale products',
-			'featured products'
+			'recent-products',
+			'sale-products',
+			'featured-products'
 		)
 	),
 	'furniture' => array(
@@ -968,6 +968,208 @@ Phone: <mark>+1 408 996 1010</mark>'
 				'widgets' => array(
 					'etheme-static-block' => array(
 						'block_id' => 6028
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
+	'concert' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6123
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
+	'animals' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6230
+					)
+				),
+				'flush' => true
+			),
+			'instagram' => array(
+				'widgets' => array(
+					'null-instagram-feed' => array(
+						'title' => '',
+						'username' => 'sandiegozoo',
+						'number' => 4,
+						'columns' => 4,
+					),
+				),
+				'flush' => true
+			),
+		),
+		'custom-sidebars' => array(
+			'instagram'
+		)	
+	),
+	'underwear' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6285
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
+	'books' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6353
+					)
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6351
+					)
+				),
+				'flush' => true
+			),
+		),	
+	),
+	'makeup' => array(
+		'sidebar-widgets' => array(
+			'top-bar-right' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'languages-sidebar' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-copyrights2' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'prefooter' => array(
+				'widgets' => array(
+				),
+				'flush' => true
+			),
+			'footer-1' => array(
+				'widgets' => array(
+					'etheme-static-block' => array(
+						'block_id' => 6469
 					)
 				),
 				'flush' => true

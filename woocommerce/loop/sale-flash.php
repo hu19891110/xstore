@@ -32,10 +32,10 @@ $sale_value = etheme_get_option( 'sale_percentage' );
 
 	<?php endif; ?>
 
-	<?php if ( $sale_value && $product->product_type == 'simple' ): ?>
+	<?php if ( $sale_value && $product->get_type() == 'simple' ): ?>
 		<?php 
-			$regular_price = $product->regular_price;
-			$sale_price = $product->sale_price;
+			$regular_price = $product->get_regular_price();
+			$sale_price = $product->get_sale_price();
 			$percentage = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
 		    echo '<span class="sale-value">-'. $percentage . '%' .'</span>';
 	   ?>

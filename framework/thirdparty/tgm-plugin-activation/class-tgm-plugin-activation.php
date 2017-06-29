@@ -601,10 +601,12 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 		 */
 		public function filter_plugin_action_links_update( $actions ) {
 			$actions['update'] = sprintf(
-				'<a href="%1$s" title="%2$s" class="edit">%3$s</a>',
+				'<div class="update-message notice inline notice-warning notice-alt">
+				<p>%4$s<a href="%1$s" title="%2$s" class="edit">%3$s</a></p></div>',
 				esc_url( $this->get_tgmpa_status_url( 'update' ) ),
 				esc_attr__( 'This plugin needs to be updated to be compatible with your theme.', 'xstore' ),
-				esc_html__( 'Update Required', 'xstore' )
+				esc_html__( 'Update Now.', 'xstore' ),
+				esc_html__( 'There is a new version of XStore Core available.', 'xstore' )
 			);
 
 			return $actions;

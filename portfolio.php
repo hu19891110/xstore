@@ -28,11 +28,9 @@ if( $full_width ) {
 	<div class="<?php echo esc_attr($class); ?>">
 		<div class="page-content sidebar-position-without">
 			<div class="content">
-
-				<?php if( have_posts() ): while( have_posts() ) : the_post(); ?>
+				<?php if( have_posts() && get_query_var( 'portfolio_category' ) == '' ): while( have_posts() ) : the_post(); ?>
                     <?php the_content(); ?>
                 <?php endwhile; endif; ?>
-
 				<?php etheme_portfolio(); ?>
 			</div>
 		</div>

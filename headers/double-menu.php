@@ -12,17 +12,7 @@
                 <div class="menu-wrapper <?php echo esc_attr($menu_class); ?>"><?php etheme_get_main_menu(); ?></div>
                 <div class="header-logo"><?php etheme_logo(); ?></div>
                 <div class="menu-wrapper menu-wrapper-right <?php echo esc_attr($menu_class); ?>"><?php etheme_get_main_menu_right(); ?></div>
-                <div class="navbar-header">
-                    <?php if(etheme_get_option('search_form')): ?>
-                        <?php etheme_search_form(); ?>
-                    <?php endif; ?>
-
-                    <?php if( etheme_woocommerce_installed() && etheme_get_option( 'top_wishlist_widget' ) ) etheme_wishlist_widget(); ?>
-
-                    <?php if( etheme_woocommerce_installed() && !etheme_get_option('just_catalog') && etheme_get_option('cart_widget')): ?>
-                        <?php etheme_top_cart(); ?>
-                    <?php endif ;?>
-                </div>
+                <?php etheme_shop_navbar( 'header' ); ?>
                 <a href="#" class="navbar-toggle">
                     <span class="sr-only"><?php esc_html_e('Menu', 'xstore'); ?></span>
                     <span class="icon-bar"></span>

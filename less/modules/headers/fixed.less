@@ -92,9 +92,6 @@
 	.secondary-menu-wrapper{
 		display: none;
 	}
-	&.header-color-dark .et-wishlist-widget .wishlist-count{
-		background-color: #000 !important;
-	}
 }
 @media only screen and (min-width:992px){
 	.fixed-header{
@@ -111,6 +108,9 @@
 			> div {
 				flex-grow:1;
 				flex-basis: auto;
+				&.navbar-toggle{
+					flex-grow:0;
+				}
 			}
 		}
 	}

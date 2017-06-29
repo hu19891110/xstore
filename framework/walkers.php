@@ -117,6 +117,9 @@ class ETheme_Navigation extends Walker_Nav_Menu {
         $class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args ) );
         $class_names = ' class="' . esc_attr( $class_names ) . '"';
 
+
+        $use_img = get_post_meta($item_id, '_menu-item-use_img', true );
+
         $id = 'menu-item-'. $item->ID;
         $id = strlen( $id ) ? ' id="' . esc_attr( $id ) . '"' : '';
 
@@ -126,7 +129,16 @@ class ETheme_Navigation extends Walker_Nav_Menu {
         $attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
         $attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
         $attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
-        $attributes .=  ' class="item-link"';
+
+        if ( $use_img == 'img' ) {
+            $bg_position = get_post_meta($item_id, '_menu-item-background_position', true);
+            $bg_position = str_replace( ' ', '-', $bg_position );
+
+            $attributes .=  ' class="item-link type-img position-' . $bg_position . '"';
+        } else {
+            $attributes .=  ' class="item-link"';
+        }
+
         $description = '';
         if($item->description != '') {
         	$description = '<span class="menu-item-descr">'. do_shortcode($item->description) . '</span>';
@@ -138,6 +150,7 @@ class ETheme_Navigation extends Walker_Nav_Menu {
         }
 
         $this->et_enque_styles($item_id, $depth);
+   
 
         $item_output = $args->before;
         $item_output .= '<a'. $attributes .'>';
@@ -146,6 +159,13 @@ class ETheme_Navigation extends Walker_Nav_Menu {
         $item_output .= $description;
         $item_output .= $tooltip;
         $item_output .= $label_text;
+
+        if ( $use_img == 'img' ) {
+            $post_thumbnail = get_post_thumbnail_id( $item_id, 'thumb' );
+            $post_thumbnail_url = wp_get_attachment_url( $post_thumbnail );
+            $item_output .= '<img src="' . $post_thumbnail_url . '" alt="">';
+        }
+
         $item_output .= '</a>';
         $item_output .= $widgets_content;
         $item_output .= $block_html;
@@ -177,6 +197,7 @@ class ETheme_Navigation extends Walker_Nav_Menu {
     }
 
     function et_enque_styles($item_id, $depth) {
+        $use_img = get_post_meta($item_id, '_menu-item-use_img', true );
         $post_thumbnail = get_post_thumbnail_id( $item_id, 'thumb' );
         $post_thumbnail_url = wp_get_attachment_url( $post_thumbnail );
         $bg_position = get_post_meta($item_id, '_menu-item-background_position', true);
@@ -186,19 +207,19 @@ class ETheme_Navigation extends Walker_Nav_Menu {
 
         $bg_pos = $bg_rep = $styles = $styles_sublist = '';
 
-        if($bg_position != '') {
+        if( $bg_position != '' && $use_img != 'img' ) {
             $bg_pos = "background-position: ".$bg_position.";";
         }
 
-        if($bg_repeat != '') {
+        if( $bg_repeat != '' && $use_img != 'img' ) {
             $bg_rep = "background-repeat: ".$bg_repeat.";";
         }
 
-        if(!empty($post_thumbnail_url)) {
+        if( ! empty( $post_thumbnail_url ) && $use_img != 'img' ) {
             $styles_sublist .= $bg_pos.$bg_rep." background-image: url(".$post_thumbnail_url.");";
         }
 
-        if(!empty($column_height)) {
+        if( !empty( $column_height ) && $use_img != 'img' ) {
             $styles_sublist .= " background-image: url(".$post_thumbnail_url.");";
         }
 

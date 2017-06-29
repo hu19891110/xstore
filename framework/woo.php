@@ -19,7 +19,10 @@ if(!function_exists('etheme_template_hooks')) {
 	function etheme_template_hooks() {
 		add_action( 'woocommerce_before_shop_loop', 'woocommerce_pagination', 40 ); // add pagination above the products
 		remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
-		add_action( 'woocommerce_after_shop_loop', 'woocommerce_result_count', 5 );
+
+		if ( ! class_exists( 'SB_WooCommerce_Infinite_Scroll' ) ) {
+			add_action( 'woocommerce_after_shop_loop', 'woocommerce_result_count', 5 );
+		}
 
 		//add_action( 'woocommerce_single_product_summary', 'etheme_email_btn', 36 );
 		remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
@@ -169,17 +172,13 @@ if(! function_exists('etheme_360_view_block')) {
 	function etheme_360_view_block() {
 			global $post;
 			$post_id = $post->ID;
+
 			if ( ! class_exists( 'SmartProductPlugin' ) ) return;
 
 			$smart_product = get_post_meta( $post_id, "smart_product_meta", true );
 
-			// Check if show options is turn on
-			if ( ! isset( $smart_product['show'] ) || $smart_product['show'] != 'true' )
-				return '';
-
 			// Check if id set
-			if ( ! isset( $smart_product['id'] ) || $smart_product['id'] == "" )
-				return '';
+			if ( ! isset( $smart_product['id'] ) || $smart_product['id'] == "" ) return '';
 
 			// Create slider instance
 			$slider = new ThreeSixtySlider( $smart_product );
@@ -190,7 +189,10 @@ if(! function_exists('etheme_360_view_block')) {
 				<div id="product-360-popup" class="product-360-popup mfp-hide">
 					<?php echo $slider->show(); ?>
 				</div>
+
 			<?php
+
+			
 	}
 }
 
@@ -428,6 +430,27 @@ if( ! function_exists( 'etheme_product_cats' ) ) {
 }
 
 // **********************************************************************// 
+// ! Get list of all product brands
+// **********************************************************************// 
+if( ! function_exists( 'etheme_product_brands' ) ) :
+	function etheme_product_brands() {
+		global $post;
+		$terms = wp_get_post_terms( $post->ID, 'brand' );
+		if ( count( $terms ) < 1 ) return;
+		$_i = 0;
+
+		?>
+			<div class="products-page-brands">
+				<?php foreach( $terms as $brand ) : $_i++;?>
+					<a href="<?php echo get_term_link( $brand ); ?>" id="test-slyle-less" class="view-products"><?php echo $brand->name; ?></a>
+					<?php if ( count( $terms ) > $_i ) echo ", "; ?>
+				<?php endforeach; ?>
+			</div>
+		<?php
+	}
+endif;
+
+// **********************************************************************// 
 // ! Get list of all product images
 // **********************************************************************// 
 
@@ -546,18 +569,23 @@ if(!function_exists('etheme_grid_list_switcher')) {
 }
 
 
-if(!function_exists('etheme_get_view_mode')) {
+// **********************************************************************// 
+// ! Get view mode
+// **********************************************************************// 
+
+if( ! function_exists( 'etheme_get_view_mode' ) ) {
 	function etheme_get_view_mode() {
 		if( ! class_exists('WC_Session_Handler') ) return;
-		$s = new WC_Session_Handler(); // WC()->session
 
-		$mode = etheme_get_option('view_mode');
+		$s = WC()->session->get( 'view_mode', 0 );
+
+		$mode = etheme_get_option( 'view_mode' );
 		$current = 'grid';
 
 		if ( isset( $_REQUEST['view_mode'] ) ) :
 			$current = ( $_REQUEST['view_mode'] );
-		elseif ( $s->__isset( 'view_mode' ) &&  (is_shop() || is_product_category() || is_product_tag())) :
-			$current = ( $s->__get( 'view_mode' ) );
+		elseif ( isset( $s ) && !empty( $s ) &&  (is_shop() || is_product_category() || is_product_tag())) :
+			$current = ( $s );
 		elseif ($mode == 'list_grid' || $mode == 'list') :
 			$current = 'list';
 		endif;
@@ -695,18 +723,17 @@ if(!function_exists('etheme_set_customer_session')) {
 // **********************************************************************// 
 // ! Category thumbnail
 // **********************************************************************// 
-if(!function_exists('etheme_category_header')){
+if( ! function_exists( 'etheme_category_header' ) ){
 	function etheme_category_header() {
 		global $wp_query;
 		$cat = $wp_query->get_queried_object();
-		if(!property_exists($cat, "term_id") && !is_search() && etheme_get_option('product_bage_banner') != ''){
+
+		if( ! property_exists( $cat, 'term_id' ) && !is_search() && etheme_get_option( 'product_bage_banner' ) != '' ){
 			echo '<div class="category-description">';
-			echo do_shortcode(etheme_get_option('product_bage_banner'));
+			echo do_shortcode( etheme_get_option( 'product_bage_banner' ) );
 			echo '</div>';
-		} else if( property_exists($cat, "taxonomy") && $cat->taxonomy == 'brand' ) {
-			echo '<div class="category-description">';
-			echo do_shortcode( $cat->description );
-			echo '</div>';
+		} else {;
+			return;
 		}
 	}
 }
@@ -994,7 +1021,7 @@ if(!function_exists('etheme_cart_items')) {
 
 					if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_widget_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
 
-						$product_name  = apply_filters( 'woocommerce_cart_item_name', $_product->get_title(), $cart_item, $cart_item_key );
+						$product_name  = apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key );
 						$thumbnail     = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
 						$product_price = apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
 						?>

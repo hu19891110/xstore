@@ -8,7 +8,7 @@ $custom_footer = etheme_get_custom_field('custom_footer', $page_id);
 $custom_prefooter = etheme_get_custom_field('custom_prefooter', $page_id);
 $disable_copyrights = etheme_get_custom_field('remove_copyrights', $page_id);
 ?>
-	<?php if( ( ( function_exists('is_checkout') && ! is_checkout() ) || ! function_exists('is_checkout') ) && $custom_prefooter != 'without' && is_active_sidebar('prefooter') ): ?>
+	<?php if( $custom_prefooter != 'without' || ( $custom_prefooter == '' && is_active_sidebar('prefooter') ) ): ?>
 		<footer class="prefooter">
 			<div class="container">
 				<?php if(empty($custom_prefooter) && is_active_sidebar('prefooter')): ?>
@@ -23,7 +23,7 @@ $disable_copyrights = etheme_get_custom_field('remove_copyrights', $page_id);
 </div> <!-- page wrapper -->
 
 <div class="et-footers-wrapper">
-	<?php if( ( function_exists('is_checkout') && ! is_checkout() ) || ! function_exists('is_checkout') ):  ?>
+	<?php //if( ( function_exists('is_checkout') && ! is_checkout() ) || ! function_exists('is_checkout') ):  ?>
 
 		<?php if($custom_footer != 'without' && ( ! empty( $custom_footer ) || is_active_sidebar('footer-1') || is_active_sidebar('footer-2') || is_active_sidebar('footer-3') || is_active_sidebar('footer-4') )): ?>
 			<footer class="footer text-color-<?php echo esc_attr($fcolor); ?>">
@@ -47,7 +47,7 @@ $disable_copyrights = etheme_get_custom_field('remove_copyrights', $page_id);
 				</div>
 			</footer>
 		<?php endif; ?>
-	<?php endif; ?>
+	<?php //endif; ?>
 
 	<?php if( ! $disable_copyrights && ( is_active_sidebar('footer-copyrights') || is_active_sidebar('footer-copyrights2') || $fd )): ?>
 		<div class="footer-bottom text-color-<?php echo esc_attr($copyrights_color); ?>">

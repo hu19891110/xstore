@@ -15,10 +15,11 @@ class ETheme_Version_Check {
 
     function __construct() {
         $theme_data = wp_get_theme('xstore');
+        $activated_data = get_option( 'etheme_activated_data' );
         $this->current_version = $theme_data->get('Version');
         $this->theme_name = strtolower($theme_data->get('Name'));
         $this->api_url = ETHEME_API;
-        $this->api_key = get_option( 'xstore_api_key' );
+        $this->api_key = ( ! empty( $activated_data['api_key'] ) ) ? $activated_data['api_key'] : false;
 
         add_action('admin_init', array($this, 'dismiss_notices'));
         add_action('admin_notices', array($this, 'show_notices'), 50 );
@@ -89,9 +90,11 @@ class ETheme_Version_Check {
     public function old_purchase_code() {
         $code = '';
 
-        $option = get_option( 'xtheme_purchase_code', false );
+        $activated_data = get_option( 'etheme_activated_data' );
 
-        if( $option ) {
+        $option = $activated_data['purchase'];
+
+        if( $option && ! empty( $option ) ) {
             $code = $option;
         }
 
@@ -282,11 +285,20 @@ class ETheme_Version_Check {
     }
 
 
-    public function activate( $purchase, $api_key ) {
-        update_option( 'xstore_api_key', $api_key );
-        update_option( 'xtheme_is_activated', true );
-        update_option( 'xtheme_activated_theme', ETHEME_PREFIX );
-        update_option( 'xtheme_purchase_code', $purchase );
+    public function activate( $purchase, $args ) {
+
+        $data = array(
+            'api_key' => $args['token'],
+            'theme' => ETHEME_PREFIX,
+            'purchase' => $purchase,
+        );
+
+        foreach ( $args as $key => $value ) {
+           $data['item'][$key] = $value;
+        }
+
+        update_option( 'etheme_activated_data', maybe_unserialize( $data ) );
+        update_option( 'etheme_is_activated', true );
     }
 
     public function process_form() {
@@ -317,9 +329,9 @@ class ETheme_Version_Check {
             if( ! $data['verified'] ) {
                echo  '<p class="error">Code is not verified!</p>';
                 return;
-            } 
+            }
 
-            $this->activate( $code, $data['token'] );
+            $this->activate( $code, $data );
 
             $redirect_url = ( class_exists( 'Redux' ) ) ? admin_url( 'admin.php?page=_options' ) : admin_url( 'themes.php?page=install-required-plugins' ) ;
 

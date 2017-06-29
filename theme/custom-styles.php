@@ -39,6 +39,7 @@ ul.active > li:before,
 .page-404 .largest,
 .meta-post-timeline .time-mon,
 .portfolio-filters .active,
+.portfolio-item .firstLetter,
 .tabs .accordion-title.opened-parent:after,
 .item-design-mega-menu .nav-sublist-dropdown .item-level-1:hover > a,
 .text-color-dark .category-grid .categories-mask span,
@@ -87,7 +88,8 @@ table.cart .product-details a:hover,
 .et-timer.product-sale-counter .time-block span,
 .fullscreen-menu .menu > li > a:hover,
 .slide-view-timeline2 .meta-post-timeline .time-day,
-article.content-timeline2 .timeline-content .meta-post-timeline .time-day
+article.content-timeline2 .timeline-content .meta-post-timeline .time-day,
+.content-grid2 .meta-post-timeline .time-day
 ';
 
 $et_selectors['active_bg'] = '
@@ -207,6 +209,7 @@ div.pp_default .pp_content_container a.pp_next:hover, div.pp_default .pp_content
 .product-view-mask3 .footer-product .compare,
 .slide-view-timeline2:hover .meta-post-timeline,
 article.content-timeline2:hover .meta-post-timeline
+.content-grid2:hover .meta-post-timeline
 
 ';
 
@@ -255,8 +258,8 @@ table.cart .remove-item:hover,
 .global-header-simple .header-color-dark .cart-summ:hover .cart-bag:before,
 .team-member.member-type-2:hover .content-section:before,
 .slide-view-timeline2 .meta-post-timeline,
-article.content-timeline2 .timeline-content .meta-post-timeline
-
+article.content-timeline2 .timeline-content .meta-post-timeline,
+.content-grid2 .meta-post-timeline
 ';
 
 $et_selectors['active_stroke'] = '

@@ -17,8 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 $tabs = apply_filters( 'woocommerce_product_tabs', array() );
 
-if ( ! empty( $tabs ) && etheme_get_option('tabs_type') != 'disable' ) : $i=0; ?>
+$et_tabs['custom_tab'] = etheme_get_option( 'custom_tab_title' );
+$et_tabs['custom_tab1'] = etheme_get_custom_field('custom_tab1_title');
+$et_tabs['check'] = ( ! empty( $et_tabs['custom_tab'] ) || ! empty( $et_tabs['custom_tab1'] ) ) ? 1 : 0;
 
+if ( ( ! empty( $tabs ) || $et_tabs['check'] ) && etheme_get_option('tabs_type') != 'disable' ) : $i=0; ?>
 <?php if (etheme_get_option( 'single_layout' ) == 'center' ) : ?>
 <div data-vc-full-width="true" data-vc-full-width-init="false" class="vc_row wpb_row tabs-full-width">
 <?php endif ?>
@@ -31,15 +34,15 @@ if ( ! empty( $tabs ) && etheme_get_option('tabs_type') != 'disable' ) : $i=0; ?
             <?php endforeach; ?>
 
             
-            <?php if (etheme_get_custom_field('custom_tab1_title') && etheme_get_custom_field('custom_tab1_title') != '' ) : ?>
+            <?php if ( $et_tabs['custom_tab1'] && $et_tabs['custom_tab1'] != '' ) : ?>
                 <li>
-                    <a href="#tab_7" id="tab_7" class="tab-title"><span><?php etheme_custom_field('custom_tab1_title'); ?></span></a>
+                    <a href="#tab_7" id="tab_7" class="tab-title <?php if( empty( $tabs ) && ! empty( $et_tabs['custom_tab1'] ) ) echo 'opened'; ?>"><span><?php echo $et_tabs['custom_tab1']; ?></span></a>
                 </li>
             <?php endif; ?>  
         
-            <?php if (etheme_get_option('custom_tab_title') && etheme_get_option('custom_tab_title') != '' ) : ?>
+            <?php if ( $et_tabs['custom_tab'] && $et_tabs['custom_tab'] != '' ) : ?>
                 <li>
-                    <a href="#tab_9" id="tab_9" class="tab-title"><span><?php etheme_option('custom_tab_title'); ?></span></a>
+                    <a href="#tab_9" id="tab_9" class="tab-title <?php if( empty( $tabs ) && empty( $et_tabs['custom_tab1'] ) && ! empty( $et_tabs['custom_tab'] ) ) echo 'opened'; ?>"><span><?php echo $et_tabs['custom_tab']; ?></span></a>
                 </li>                
             <?php endif; ?> 
         </ul>
@@ -55,9 +58,9 @@ if ( ! empty( $tabs ) && etheme_get_option('tabs_type') != 'disable' ) : $i=0; ?
             </div>
         <?php endforeach; ?>
 		
-        <?php if (etheme_get_custom_field('custom_tab1_title') && etheme_get_custom_field('custom_tab1_title') != '' ) : ?>
-            <div class="accordion-title"><a href="#tab_7" id="tab_7" class=" tab-title"><span><?php etheme_custom_field('custom_tab1_title'); ?></span></a></div>
-            <div id="content_tab_7" class="tab-content">
+        <?php if ( $et_tabs['custom_tab1'] && $et_tabs['custom_tab1'] != '' ) : ?>
+            <div class="accordion-title"><a href="#tab_7" id="tab_7" class="tab-title <?php if( empty( $tabs ) && ! empty( $et_tabs['custom_tab1'] ) ) echo 'opened'; ?>"><span><?php echo $et_tabs['custom_tab1']; ?></span></a></div>
+            <div id="content_tab_7" class="tab-content" <?php if( empty( $tabs ) && ! empty( $et_tabs['custom_tab1'] ) ) echo 'style="display:block;"'; ?>>
             	<div class="tab-content-inner">
                     <div class="tab-content-scroll">
 	        		    <?php echo do_shortcode(etheme_get_custom_field('custom_tab1')); ?>
@@ -66,9 +69,9 @@ if ( ! empty( $tabs ) && etheme_get_option('tabs_type') != 'disable' ) : $i=0; ?
             </div>
         <?php endif; ?>	 
         
-        <?php if (etheme_get_option('custom_tab_title') && etheme_get_option('custom_tab_title') != '' ) : ?>
-            <div class="accordion-title"><a href="#tab_9" id="tab_9" class="tab-title"><span><?php etheme_option('custom_tab_title'); ?></span></a></div>
-            <div id="content_tab_9" class="tab-content">
+        <?php if ( $et_tabs['custom_tab'] && $et_tabs['custom_tab'] != '' ) : ?>
+            <div class="accordion-title"><a href="#tab_9" id="tab_9" class="tab-title <?php if( empty( $tabs ) && empty( $et_tabs['custom_tab1'] ) && ! empty( $et_tabs['custom_tab'] ) ) echo 'opened'; ?>"><span><?php echo $et_tabs['custom_tab']; ?></span></a></div>
+            <div id="content_tab_9" class="tab-content" <?php if( empty( $tabs ) && empty( $et_tabs['custom_tab1'] ) && ! empty( $et_tabs['custom_tab'] ) ) echo 'style="display:block;"'; ?>>
             	<div class="tab-content-inner">
                     <div class="tab-content-scroll">
                         <?php echo do_shortcode(etheme_get_option('custom_tab')); ?>

@@ -17,6 +17,19 @@ if($content_layout == 'grid') {
 	$full_width = etheme_get_option('blog_full_width');
 	$content_layout = 'grid';
 }
+
+if ( $content_layout == 'grid2' ) {
+	$full_width = etheme_get_option('blog_full_width');
+	$content_layout = 'grid-2';
+}
+
+$class = 'hfeed';
+
+if ( $content_layout == 'grid' || $content_layout == 'grid-2' ) {
+	$class .= ' row';
+	if ( etheme_get_option( 'blog_masonry' ) ) $class .= ' blog-masonry';
+}
+
 ?>
 
 <?php do_action( 'etheme_page_heading' ); ?>
@@ -28,7 +41,7 @@ if($content_layout == 'grid') {
 					<?php if ( is_category() && category_description() ) : ?>
 						<div class="blog-category-description"><?php echo do_shortcode( category_description() ); ?></div>
 					<?php endif; ?>
-					<div class="hfeed <?php if ($content_layout == 'grid'): ?>blog-masonry row<?php endif ?>">
+					<div class="<?php echo $class; ?>">
 						<?php if(have_posts()):
 							while(have_posts()) : the_post(); ?>
 
@@ -45,8 +58,14 @@ if($content_layout == 'grid') {
 
 						<?php endif; ?>
 					</div>
-
-					<div class="articles-pagination align-<?php echo esc_attr(etheme_get_option('blog_pagination_align')); ?>"><?php echo paginate_links( array( 'prev_next' => false, ) ); ?></div>
+					<?php
+						$paginate_args = array(
+							'prev_text' => esc_html__( 'Prev page' ),
+							'next_text' => esc_html__( 'Next page' ),
+							'prev_next' => etheme_get_option( 'blog_pagination_prev_next' )
+						);
+					?>
+					<div class="articles-pagination align-<?php echo esc_attr( etheme_get_option( 'blog_pagination_align' ) ); ?>"><?php echo paginate_links( $paginate_args ); ?></div>
 
 				</div>
 

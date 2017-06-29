@@ -130,6 +130,37 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+.wpb-js-composer {
+	.vc_tta.vc_general {
+		.vc_tta-tabs-list{
+			margin-bottom: 30px;
+		}
+		.vc_tta-panel {
+			&.vc_animating {
+				display: none;
+				.vc_tta-panel-body {
+					
+					opacity: 0 !important;
+					transition: opacity 0.2s linear;
+					min-height: 100% !important;
+				}
+			}
+			&.vc_active {
+				.vc_tta-panel-body {
+					display: block!important;
+					height:auto!important;
+					opacity: 1 !important;
+					padding:0!important;
+				}
+			}
+			.vc_tta-panel-body{
+				.woocommerce{
+					padding-top: 15px;
+				}
+			}
+		}
+	}
+}
 .vc_tta.vc_general {
 	.vc_tta-tabs-list{
 		margin-bottom: 30px;
@@ -700,7 +731,6 @@
 			border-top: 1px solid @borderColor;
 			text-align: left;
 			padding: 15px 0 !important;
-			color: #1e1e1e;
 			.link-bottom( black );
 			font-size: 20px;
 			img{

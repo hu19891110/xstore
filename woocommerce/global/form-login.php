@@ -13,6 +13,7 @@ if ( is_user_logged_in() )
 	return;
 ?>
 <form method="post" class="login" <?php if ( $hidden ) echo 'style="display:none;"'; ?>>
+<?php etheme_faceboook_login_button() ?>
 
 	<?php do_action( 'woocommerce_login_form_start' ); ?>
 

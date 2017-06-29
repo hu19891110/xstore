@@ -59,17 +59,43 @@ if(!function_exists('etheme_rate_redirect')) {
 	}
 }
 
+
 if(!function_exists('etheme_support_chat')) {
 	function etheme_support_chat() {
-		if( ! etheme_get_option('support_chat') ) return;
+		if( ! etheme_get_option( 'support_chat' ) ) return;
+		$data = get_option( 'etheme_activated_data' );
+		$data = $data['item'];
+		$support_date = strtotime( $data['supported_until'] );
+		$current_date = strtotime( date( "Y-m-d" ) );
+		$remaining = $support_date - $current_date;
+		$days_remaining = floor( $remaining / 86400 );
+		$hours_remaining = floor( ( $remaining % 86400) / 3600 );
 		?>
 		<script>
 			window.intercomSettings = {
 			app_id: 't84fcdk1',
+			"buyer": "<?php echo $data['buyer']; ?>",
+			"support" : "<?php echo ( etheme_support_date() ) ? 'ON' : 'OFF' ?>",
+			"supported_until": "<?php echo $data['supported_until']; ?>",
+			"support_time_left" : "<?php echo $days_remaining . ' days ' . $hours_remaining . ' hours' ; ?>",
+			"theme": "Xstore"
 		};
 		</script>
 		<script data-cfasync="false">(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/t84fcdk1';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
 		</script>
 		<?php
+	}
+}
+
+
+add_action('wp_ajax_etheme_deactivate_theme', 'etheme_deactivate_theme');
+if( ! function_exists( 'etheme_deactivate_theme' ) ) {
+	function etheme_deactivate_theme() {
+		$data = array(
+            'api_key' => 0,
+            'theme' => 0,
+            'purchase' => 0,
+        );
+        update_option( 'etheme_activated_data', maybe_unserialize( $data ) );
 	}
 }

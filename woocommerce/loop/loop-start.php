@@ -26,7 +26,7 @@ if ( empty( $woocommerce_loop['columns'] ) )
         $view_class = 'products-grid';
     }
         
-    if ( ! empty( $woocommerce_loop['isotope'] ) && $woocommerce_loop['isotope'] || etheme_get_option( 'products_masonry' ) ) {
+    if ( ! empty( $woocommerce_loop['isotope'] ) && $woocommerce_loop['isotope'] || etheme_get_option( 'products_masonry' ) && is_shop() ) {
         $view_class .= ' et-isotope';
     }
 ?>

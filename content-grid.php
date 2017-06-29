@@ -1,8 +1,6 @@
 <?php
 global $et_loop;
 
-//print_r($et_loop);
-
 if( empty( $et_loop['columns'] ) ) {
     $et_loop['columns'] = etheme_get_option('blog_columns');
 }
@@ -36,12 +34,13 @@ $et_loop['loop']++;
 $cols 			= etheme_get_cols($et_loop['columns']);
 $postClass 		= etheme_post_class( $cols, $layout );
 $read_more 		= etheme_get_read_more();
-
+$slide_view     = '';
 ?>
 
 <article <?php post_class( $postClass ); ?> id="post-<?php the_ID(); ?>" >
     <div>
         <?php if ( ! empty( $et_loop['slide_view'] ) && $et_loop['slide_view'] == 'timeline2' ): ?>
+            <?php $slide_view = $et_loop['slide_view']; ?>
             <div class="meta-post-timeline">
                 <span class="time-day"><?php the_time('d'); ?></span>
                 <span class="time-mon"><?php the_time('M'); ?></span>
@@ -53,13 +52,13 @@ $read_more 		= etheme_get_read_more();
             <div class="post-heading">
                 <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
                 <?php if(etheme_get_option('blog_byline')): ?>
-                    <?php etheme_byline( array( 'author' => 0 ) );  ?>
+                    <?php etheme_byline( array( 'author' => 0, 'slide_view' => $slide_view ) );  ?>
                 <?php endif; ?>
             </div>
 
             <div class="content-article">
                 <?php the_excerpt();  ?>
-                <?php if (etheme_get_option('read_more')): ?>
+                <?php if ( etheme_get_option( 'read_more' ) != 'off' ): ?>
                     <a href="<?php the_permalink(); ?>"><?php echo $read_more; ?></a>
                 <?php endif ?>
             </div>

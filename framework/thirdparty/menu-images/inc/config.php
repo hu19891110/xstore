@@ -172,5 +172,17 @@ function et_get_menu_fields() {
 			),
 			'levels' => array(0,1,2)
 		),
+
+		array(
+			'id' => 'use_img',
+			'type' => 'select',
+			'title' => 'Use img like',
+			'width' => 'thin',
+			'options' => array(
+				'background' => 'Background',
+				'img' => 'Image',
+			),
+			'levels' => 0
+		),
 	);
 }

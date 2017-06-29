@@ -42,6 +42,7 @@ class ETheme_Socials_Widget extends WP_Widget {
         $rss = (!empty($instance['rss'])) ? $instance['rss'] : '';
         $vk = (!empty($instance['vk'])) ? $instance['vk'] : '';
         $houzz = (!empty($instance['houzz'])) ? $instance['houzz'] : '';
+        $tripadvisor = (!empty($instance['tripadvisor'])) ? $instance['tripadvisor'] : '';
         $colorfull = (!empty($instance['colorfull'])) ? $instance['colorfull'] : '';
 
 
@@ -68,6 +69,7 @@ class ETheme_Socials_Widget extends WP_Widget {
             'rss' => $rss,
             'vk' => $vk,
             'houzz' => $houzz,
+            'tripadvisor' => $tripadvisor,
             'colorfull' => $colorfull,
         ));
 
@@ -96,6 +98,7 @@ class ETheme_Socials_Widget extends WP_Widget {
         $instance['rss'] = strip_tags($new_instance['rss']);
         $instance['vk'] = strip_tags($new_instance['vk']);
         $instance['houzz'] = strip_tags($new_instance['houzz']);
+        $instance['tripadvisor'] = strip_tags($new_instance['tripadvisor']);
         $instance['colorfull'] = (int) ($new_instance['colorfull']);
 
         return $instance;
@@ -119,6 +122,8 @@ class ETheme_Socials_Widget extends WP_Widget {
         $rss = @esc_attr($instance['rss']);
         $vk = @esc_attr($instance['vk']);
         $houzz = @esc_attr($instance['houzz']);
+        $tripadvisor = @esc_attr($instance['tripadvisor']);
+
 
 
         $slider = (int) @$instance['slider'];
@@ -150,6 +155,8 @@ class ETheme_Socials_Widget extends WP_Widget {
         etheme_widget_input_text(__('RSS link', 'xstore'), $this->get_field_id('rss'),$this->get_field_name('rss'), $rss);
         etheme_widget_input_text(__('VK link', 'xstore'), $this->get_field_id('vk'),$this->get_field_name('vk'), $vk);
         etheme_widget_input_text(__('Houzz link', 'xstore'), $this->get_field_id('vk'),$this->get_field_name('houzz'), $houzz);
+        etheme_widget_input_text(__('Tripadvisor link', 'xstore'), $this->get_field_id('tripadvisor'),$this->get_field_name('tripadvisor'), $tripadvisor);
+
         
         etheme_widget_input_checkbox(__('Colorfull icons', 'xstore'), $this->get_field_id('colorfull'),$this->get_field_name('colorfull'), checked( 1, $colorfull, false ), 1);
 

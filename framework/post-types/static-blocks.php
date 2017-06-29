@@ -31,42 +31,38 @@ if(!function_exists('etheme_show_block')) {
 
 if(!function_exists('etheme_get_block')) {
     function etheme_get_block($id = false) {
-        if(!$id) return;
+        if( ! $id ) return;
         global $post;
         
         $output = false;
-        
+
         $output = wp_cache_get( $id, 'etheme_get_block' );
 
-         if ( post_password_required( $id ) ) {
-            
-                echo get_the_password_form( $id );
-
+        if ( post_password_required( $id ) ) {
+            echo get_the_password_form( $id );
             return;
         }
 
-        if ( post_password_required( $post->ID ) || ! post_password_required( $post->ID ) ) {
-            if ( !$output ) {
-           
-                $args = array( 'include' => $id,'post_type' => 'staticblocks', 'posts_per_page' => 1);
-                $output = '';
-                $myposts = get_posts( $args );
-                foreach ( $myposts as $block ) {
-                    setup_postdata($block);
-                    
-                    $output = do_shortcode(get_the_content($block->ID));
-                    
-                    $shortcodes_custom_css = get_post_meta( $block->ID, '_wpb_shortcodes_custom_css', true );
-                    if ( ! empty( $shortcodes_custom_css ) ) {
-                        $output .= '<style type="text/css" data-type="vc_shortcodes-custom-css">';
-                        $output .= $shortcodes_custom_css;
-                        $output .= '</style>';
-                    }
-                } 
-                wp_reset_postdata();
+        if ( ! $output ) {
+       
+            $args = array( 'include' => $id,'post_type' => 'staticblocks', 'posts_per_page' => 1);
+            $output = '';
+            $myposts = get_posts( $args );
+            foreach ( $myposts as $block ) {
+                setup_postdata($block);
+
+                $output = do_shortcode( $block->post_content );
                 
-                wp_cache_add( $id, $output, 'etheme_get_block' );
-            }
+                $shortcodes_custom_css = get_post_meta( $block->ID, '_wpb_shortcodes_custom_css', true );
+                if ( ! empty( $shortcodes_custom_css ) ) {
+                    $output .= '<style type="text/css" data-type="vc_shortcodes-custom-css">';
+                    $output .= $shortcodes_custom_css;
+                    $output .= '</style>';
+                }
+            } 
+            wp_reset_postdata();
+            
+            wp_cache_add( $id, $output, 'etheme_get_block' );
         }
         
         return $output;

@@ -52,6 +52,7 @@
 		display: block;
 		position: relative;
 		z-index: 100;
+		transition: initial;
 		span {
 			display: none;
 		}
@@ -227,10 +228,6 @@
 		}
 	}
 }
-
-@media only screen and (max-width:480px){
-}
-
 .search-no-results{
 	form{
 		.form-control{
@@ -241,7 +238,7 @@
 			margin-bottom: 15px;
 		}
 		button{
-			margin-bottom: 15px;
+			margin-bottom: 0;
 			i{
 				display: none;
 			}

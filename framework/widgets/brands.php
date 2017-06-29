@@ -1,67 +1,158 @@
 <?php  if ( ! defined('ETHEME_FW')) exit('No direct script access allowed');
 
-// **********************************************************************// 
-// ! Brands Filter Widget
-// **********************************************************************// 
-class ETheme_Brands_Widget extends WP_Widget {
+// **********************************************************************//
+// ! Products Widget
+// **********************************************************************//
+if( ! class_exists( 'WC_Widget' ) ) return;
+class ETheme_Brands_Widget extends WC_Widget {
+    /**
+     * Current Brand.
+     *
+     * @var bool
+     */
+     public $current_cat;
 
-	function __construct() {
-		$widget_ops = array('classname' => 'etheme_widget_brands', 'description' => esc_html__( "Products brands list", 'xstore') );
-		parent::__construct('etheme-brands', '8theme - '.__('Brands list', 'xstore'), $widget_ops);
-		$this->alt_option_name = 'etheme_widget_brans';
-	}
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+        $this->widget_cssclass    = 'sidebar-widget etheme etheme_widget_brands';
+        $this->widget_description = __( 'A list or dropdown of product brands.', 'xstore' );
+        $this->widget_id          = 'etheme_widget_brands';
+        $this->widget_name        = __( '8themes brand list', 'xstore' );
+        $this->settings           = array(
+            'title'  => array(
+                'type'  => 'text',
+                'std'   => esc_html__( 'Filter by brand', 'xstore' ),
+                'label' => __( 'Title', 'xstore' )
+            ),
+            'displayType' => array(
+                'type'  => 'select',
+                'std'   => 'name',
+                'label' => __( 'Display type:', 'xstore' ),
+                'options' => array(
+                    'name' => __( 'Name', 'xstore' ),
+                    'image'  => __( 'Image', 'xstore' )
+                )
+            ),
+            'dropdown' => array(
+                'type'  => 'checkbox',
+                'std'   => 0,
+                'label' => __( 'Show as dropdown (Only for Display type: Name)', 'xstore' )
+            ),
+            'count' => array(
+                'type'  => 'checkbox',
+                'std'   => 0,
+                'label' => __( 'Show product counts', 'xstore' )
+            ),
+            'hide_empty' => array(
+                'type'  => 'checkbox',
+                'std'   => 0,
+                'label' => __( 'Hide empty brands', 'xstore' )
+            )
+        );
 
-	function widget($args, $instance) {
-		extract($args);
+        parent::__construct();
+    }
 
-		$title = apply_filters('widget_title', empty($instance['title']) ? false : $instance['title']);
-		echo $before_widget;
-		if(!$title == '' ){
-			echo $before_title;
-			echo $title;
-			echo $after_title;
-		}
-		$current_term = get_queried_object();
-		$args = array( 'hide_empty' => false);
-		$terms = get_terms('brand', $args);
-		$count = count($terms); $i=0;
-		if ( ! is_wp_error( $terms ) && $count > 0) {
-			?>
-			<ul>
-				<?php
-				foreach ($terms as $term) {
-					$i++;
-					$curr = false;
-					$thumbnail_id 	= absint( get_woocommerce_term_meta( $term->term_id, 'thumbnail_id', true ) );
-					if(isset($current_term->term_id) && $current_term->term_id == $term->term_id) {
-						$curr = true;
+    /**
+     * Output widget.
+     *
+     * @see WP_Widget
+     *
+     * @param array $args
+     * @param array $instance
+     */
+    public function widget( $args, $instance ) {
+
+        $count              = isset( $instance['count'] ) ? $instance['count'] : $this->settings['count']['std'];
+        $title              = isset( $instance['title'] ) ? $instance['title'] : $this->settings['title']['std'];
+        $dropdown           = isset( $instance['dropdown'] ) ? $instance['dropdown'] : $this->settings['dropdown']['std'];
+        $displayType        = isset( $instance['displayType'] ) ? $instance['displayType'] : $this->settings['displayType']['std'];
+        $hide_empty         = isset( $instance['hide_empty'] ) ? $instance['hide_empty'] : $this->settings['hide_empty']['std'];
+
+        // Setup Current Category
+        $this->current_cat   = false;
+        $hide_empty = ($hide_empty == 1) ? true : false;
+        $args = array(
+            'taxonomy' => 'brand',
+            'hide_empty' => $hide_empty,
+        );
+        $terms = get_terms($args);
+
+        // Dropdown
+        echo '<div class="sidebar-widget etheme etheme_widget_brands">
+                <h4 class="widget-title"><span>'.$title.'</span></h4>
+                ';
+
+        if ( $dropdown ) { ?>
+                <select name="product_brand" class="dropdown_product_brand">
+                    <option value="" selected="selected">Select a brand</option>
+                    <?php foreach ($terms as $brand) {
+
+                        $stock = $brand->count;
+
+                        if ( $hide_empty && 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
+                            $stock  = etheme_stock_taxonomy( $brand->term_id, 'brand' );
+                            if ( $stock < 1 ) continue;
+                        }
+
+                        $countProd = ($count == 1) ? "({$stock})" : '';
+                        ?>
+                        <option class="level-0" value="<?php echo esc_html($brand->name); ?>"><?php echo esc_html($brand->name .' '. $countProd); ?></option>
+                    <?php } ?>
+                </select>
+            <?php
+            wc_enqueue_js( "
+				jQuery( '.dropdown_product_brand' ).change( function() {
+					if ( jQuery(this).val() != '' ) {
+						var this_page = '';
+						var home_url  = '" . esc_js( home_url( '/' ) ) . "';
+						if ( home_url.indexOf( '?' ) > 0 ) {
+							this_page = home_url + '&brand=' + jQuery(this).val();
+						} else {
+							this_page = home_url + '?brand=' + jQuery(this).val();
+						}
+						location.href = this_page;
 					}
-					?>
-					<li>
-						<a href="<?php echo get_term_link( $term ); ?>" title="<?php echo sprintf(__('View all products from %s', 'xstore'), $term->name); ?>"><?php if($curr) echo '<strong>'; ?><?php echo $term->name; ?><?php if($curr) echo '</strong>'; ?></a>
-					</li>
-					<?php
-				}
-				?>
-			</ul>
-			<?php
-		}
-		echo $after_widget;
-	}
+				});
+			" );
+        // List
+        } else {
+            echo '<ul>';
+            if(! is_wp_error( $terms ) && count($terms) > 0 ) {
+                foreach ( $terms as $brand ) {
 
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = $new_instance['title'];
+                    $stock = $brand->count;
 
-		return $instance;
-	}
+                    if ( $hide_empty && 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
 
-	function form( $instance ) {
-		$title = isset($instance['title']) ? $instance['title'] : '';
+                        $stock  = etheme_stock_taxonomy( $brand->term_id, 'brand' );
+                        if ( $stock < 1 ) continue;
+                    }
 
-		?>
-		<?php etheme_widget_input_text(__('Title', 'xstore'), $this->get_field_id('title'),$this->get_field_name('title'), $title); ?>
-
-		<?php
-	}
+                    $thumbnail_id = absint(get_woocommerce_term_meta($brand->term_id, 'thumbnail_id', true)); ?>
+                    <li class="cat-item"> <?php
+                        $countProd = ($count == 1) ? "({$stock})" : '';
+                        if ( $displayType == 'name' ) { ?>
+                            <a href="<?php echo get_term_link($brand); ?>">
+                                <?php echo esc_html($brand->name); ?>
+                                <span class="count"><?php echo esc_html($countProd); ?></span>
+                            </a>
+                        <?php } elseif( $displayType == 'image' ) {
+                            $brandImg = wp_get_attachment_image($thumbnail_id, array(100,50) );
+                            if (!empty( $brandImg )) { ?>
+                                <a href="<?php echo get_term_link($brand); ?>">
+                                    <?php echo $brandImg; ?>
+                                    <span class="count"><?php echo esc_html($countProd); ?></span>
+                                </a>
+                            <?php }
+                        } ?>
+                    </li>
+                <?php }
+            }
+            echo '</ul>';
+        }
+        echo '</div>';
+    }
 }

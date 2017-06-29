@@ -3,24 +3,27 @@
 ====================================*/
 .sidebar-widget.widget_product_categories,
 .wpb_widgetised_column .widget_product_categories{
-		.widget-title{
-			color:white;
-			padding: 25px 10px;
-			padding-bottom: 25px;
-			margin-bottom: 10px;
-			text-align: center;
-			font-size: 22px;
-			border:none;
-			line-height: 1.1;
-		}
-		.product-categories{
-			margin-bottom: 0;
-		}
-		select{
-			width: 100%;
-		}
+	.widget-title{
+		color:white;
+		padding: 25px 10px;
+		margin-bottom: 10px;
+		text-align: center;
+		font-size: 22px;
+		border:none;
+		line-height: 1.1;
+	}
+	.product-categories{
+		margin-bottom: 0;
+	}
+	select{
+		width: 100%;
+	}
 }
-
+.etheme_widget_brands{
+	select{
+		width: 100%;
+	}
+}
 .widget_product_categories.sidebar-widget,
 .wpb_widgetised_column .widget_product_categories{
 	ul {
@@ -32,12 +35,12 @@
 			}
 		}
 		padding-left: 0;
-	   li{
-	  	list-style: none;
-	  	display: block;
-	  	width: 100%;
-	  	position: relative;
-	  	margin-bottom: 0;
+		li{
+		  	list-style: none;
+		  	display: block;
+		  	width: 100%;
+		  	position: relative;
+		  	margin-bottom: 0;
 	  	&.firstItem{
 	  		padding-top: 0;
 	  	}
@@ -258,27 +261,38 @@
 	}
 }
 
-.sidebar-widget.widget_recent_reviews{
-	li{
-		a{
-			display: inline !important;
-			padding-top: 0.71em;
-			padding-right: 10px;
-			font-size: 1rem;
-			margin-bottom: 0.7em;
-			color: #1e1e1e;
-			font-weight: bold;
-			img{
-				float: left;
+.sidebar-widget{
+	&.widget_recent_reviews{
+		li{
+			a{
+				display: inline !important;
+				padding-top: 0.71em;
+				padding-right: 10px;
+				font-size: 1rem;
+				margin-bottom: 0.7em;
+				color: #1e1e1e;
+				font-weight: bold;
+				img{
+					float: left;
+				}
+			}
+			.reviewer{
+				-ms-word-break:break-all;
+				word-break:break-all;
+				display: block;
+			}
+			.star-rating{
+				margin-top: 0.7em;
 			}
 		}
-		.reviewer{
-			-ms-word-break:break-all;
-			word-break:break-all;
-			display: block;
-		}
-		.star-rating{
-			margin-top: 0.7em;
+	}
+	&.etheme_widget_brands{
+		li{
+			a{
+				span{
+					float: right;
+				}
+			}
 		}
 	}
 }
@@ -484,7 +498,6 @@
 		margin-bottom: 30px;
 	}
 }
-
 @media only screen and (max-width:992px){
 	.sidebar{
 		width: 100%;
@@ -574,4 +587,3 @@
 	}
 }
 /*-----  End of Shop Sidebar  ------*/
-

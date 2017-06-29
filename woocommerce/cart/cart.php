@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @version     3.0.3
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -42,7 +42,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 				<tr class="<?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
 
 
-					<td class="product-name">
+					<td class="product-name" data-title="<?php esc_attr_e( 'Product', 'xstore' ); ?>">
                         <div class="product-thumbnail">
                             <?php
                                     $thumbnail = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
@@ -77,13 +77,13 @@ do_action( 'woocommerce_before_cart' ); ?>
                         </div>
 					</td>
 
-					<td class="product-price">
+					<td class="product-price" data-title="<?php esc_attr_e( 'Price', 'xstore' ); ?>">
 						<?php
 							echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
 						?>
 					</td>
 
-					<td class="product-quantity" data-title="<?php _e( 'Quantity', 'xstore' ); ?>">
+					<td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'xstore' ); ?>">
 						<?php
 							if ( $_product->is_sold_individually() ) {
 								$product_quantity = sprintf( '1 <input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
@@ -100,7 +100,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 						?>
 					</td>
 
-					<td class="product-subtotal">
+					<td class="product-subtotal" data-title="<?php esc_attr_e( 'Total', 'xstore' ); ?>">
 						<?php
 							echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
 						?>

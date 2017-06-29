@@ -29,6 +29,7 @@ if(!function_exists('etheme_add_body_classes')) {
         $classes[] = (etheme_get_option('site_preloader')) ? 'et-preloader-on' : 'et-preloader-off';
         $classes[] = (etheme_get_option('just_catalog')) ? 'et-catalog-on' : 'et-catalog-off';
         $classes[] = ( ( etheme_get_option('footer_fixed') || etheme_get_custom_field('footer_fixed', $id) == 'yes' ) && etheme_get_custom_field('footer_fixed', $id) != 'no' ) ? 'et-footer-fixed-on' : 'et-footer-fixed-off';
+        $classes[] = ( etheme_get_option( 'search_form' ) != 'header' || etheme_get_option( 'top_wishlist_widget' ) != 'header' || etheme_get_option( 'cart_widget' ) != 'header' ) ? 'shop-top-bar': '';
 
         if ( etheme_get_option( 'secondary_menu' ) ) {
             $classes[] = 'et-secondary-menu-on';
@@ -558,7 +559,9 @@ if(!function_exists('etheme_get_product_class')) {
 // **********************************************************************//
 if(!function_exists('etheme_get_read_more')) {
     function etheme_get_read_more() {
-        return '<span class="read-more">'.__('Continue reading', 'xstore').'</span>';
+        $class = 'read-more';
+        if ( etheme_get_option( 'read_more' ) == 'btn' ) $class .= ' btn medium active';
+        return '<span class="' . $class . '">' . esc_html__( 'Continue reading', 'xstore' ) . '</span>';
     }
 }
 
@@ -785,13 +788,13 @@ if(!function_exists('etheme_excerpt_length')) {
 
 add_filter( 'excerpt_length', 'etheme_excerpt_length', 999 );
 
-if(!function_exists('etheme_excerpt_more')) {
+if( ! function_exists( 'etheme_excerpt_more' ) ) {
     function etheme_excerpt_more( $more ) {
-        return '...';
+        return etheme_get_option( 'excerpt_words' );
     }
 }
 
-add_filter('excerpt_more', 'etheme_excerpt_more');
+add_filter( 'excerpt_more', 'etheme_excerpt_more', 9999 );
 
 
 // **********************************************************************// 
@@ -838,6 +841,115 @@ if(!function_exists('etheme_excerpt')) {
         }
 }
 
+// **********************************************************************//
+// ! Search SKU
+// **********************************************************************/
+
+if(!function_exists('etheme_variation_query')) {
+    add_filter('the_posts', 'etheme_variation_query');
+    function etheme_variation_query($posts, $query = false) {
+        if ( etheme_get_option('search_by_sku') ) {
+            if (is_search() && !is_admin()) {
+                $ignoreIds = array(0);
+                foreach( $posts as $post ) {
+                    $ignoreIds[] = $post->ID;
+                }
+
+                //get_search_query does sanitization
+                $matchedSku = etheme_get_parent_post_by_sku(get_search_query(), $ignoreIds);
+
+                if ( $matchedSku ) {
+                    foreach( $matchedSku as $product_id ) {
+                        $posts[] = get_post($product_id->post_id);
+                    }
+                }
+                return $posts;
+            }
+        }
+        return $posts;
+    }
+}
+
+if(!function_exists('etheme_get_parent_post_by_sku')) {
+    function etheme_get_parent_post_by_sku($sku, $ignoreIds) {
+        //Check for
+        global $wpdb, $wp_query;
+
+        //Should the query do some extra joins for WPML Enabled sites...
+        $wmplEnabled = false;
+
+        if(defined('WPML_TM_VERSION') && defined('WPML_ST_VERSION') && class_exists("woocommerce_wpml")){
+            $wmplEnabled = true;
+            //What language should we search for...
+            $languageCode = ICL_LANGUAGE_CODE;
+        }
+
+        $results = array();
+        //Search for the sku of a variation and return the parent.
+        $ignoreIdsForMySql = implode(",", $ignoreIds);
+        $variationsSql = "
+          SELECT p.post_parent as post_id FROM $wpdb->posts as p
+          join $wpdb->postmeta pm
+          on p.ID = pm.post_id
+          and pm.meta_key='_sku'
+          and pm.meta_value LIKE '%$sku%'
+            ";
+        //IF WPML Plugin is enabled join and get correct language product.
+        if($wmplEnabled)
+        {
+            $variationsSql .=
+                "join ".$wpdb->prefix."icl_translations t on
+                 t.element_id = p.post_parent
+                 and t.element_type = 'post_product'
+                 and t.language_code = '$languageCode'";
+            ;
+        }
+        $variationsSql .= "
+          where 1
+          AND p.post_parent <> 0
+          and p.ID not in ($ignoreIdsForMySql)
+          and p.post_status = 'publish'
+          group by p.post_parent
+          ";
+
+        $variations = $wpdb->get_results($variationsSql);
+
+        foreach( $variations as $post ) {
+            $ignoreIds[] = $post->post_id;
+        }
+        //If not variation try a regular product sku
+        //Add the ids we just found to the ignore list...
+        $ignoreIdsForMySql = implode(",", $ignoreIds);
+        $regularProductsSql =
+            "SELECT p.ID as post_id FROM $wpdb->posts as p
+            join $wpdb->postmeta pm
+            on p.ID = pm.post_id
+            and  pm.meta_key='_sku' 
+            AND pm.meta_value LIKE '%$sku%'
+            ";
+        //IF WPML Plugin is enabled join and get correct language product.
+        if($wmplEnabled)
+        {
+            $regularProductsSql .=
+                "join ".$wpdb->prefix."icl_translations t on
+                 t.element_id = p.ID
+                 and t.element_type = 'post_product'
+                 and t.language_code = '$languageCode'";
+        }
+        $regularProductsSql .=
+            "where 1
+            and (p.post_parent = 0 or p.post_parent is null)
+            and p.ID not in ($ignoreIdsForMySql)
+            and p.post_status = 'publish'
+            group by p.ID";
+
+        $regular_products = $wpdb->get_results($regularProductsSql);
+        $results = array_merge($variations, $regular_products);
+        $wp_query->found_posts += sizeof($results);
+
+        return $results;
+    }
+}
 
 // **********************************************************************// 
 // ! AJAX search
@@ -853,10 +965,75 @@ if(!function_exists('etheme_ajax_search_action')) {
         );
         if(isset($_REQUEST['s'])) {
 
+            if ( etheme_get_option('search_by_sku') ) {
+                global $wpdb, $wp_query, $product;
+                $sku = $_REQUEST['s'];
+
+                //Should the query do some extra joins for WPML Enabled sites...
+                $wmplEnabled = false;
+
+                if(defined('WPML_TM_VERSION') && defined('WPML_ST_VERSION') && class_exists("woocommerce_wpml")){
+                    $wmplEnabled = true;
+                    //What language should we search for...
+                    $languageCode = ICL_LANGUAGE_CODE;
+                }
+
+                //Search for the sku of a variation and return the parent.
+                $variationsSql = "
+                  SELECT p.post_parent as post_id FROM $wpdb->posts as p
+                  join $wpdb->postmeta pm
+                  on p.ID = pm.post_id
+                  and pm.meta_key='_sku'
+                  and pm.meta_value LIKE '%$sku%'
+                  ";
+
+                //IF WPML Plugin is enabled join and get correct language product.
+                if($wmplEnabled)
+                {
+                    $variationsSql .=
+                        "join ".$wpdb->prefix."icl_translations t on
+                         t.element_id = p.post_parent
+                         and t.element_type = 'post_product'
+                         and t.language_code = '$languageCode'";
+                    ;
+                }
+
+                $variationsSql .= "
+                      where 1
+                      AND p.post_parent <> 0
+                      and p.post_status = 'publish'
+                      group by p.post_parent
+                  ";
+                $variations = $wpdb->get_results($variationsSql);
+
+
+                $regularProductsSql =
+                    "SELECT p.ID as post_id FROM $wpdb->posts as p
+                        join $wpdb->postmeta pm
+                        on p.ID = pm.post_id
+                        and  pm.meta_key='_sku' 
+                        AND pm.meta_value LIKE '%$sku%'
+                    ";
+                //IF WPML Plugin is enabled join and get correct language product.
+                if($wmplEnabled)
+                {
+                    $regularProductsSql .=
+                        "join ".$wpdb->prefix."icl_translations t on
+                         t.element_id = p.ID
+                         and t.element_type = 'post_product'
+                         and t.language_code = '$languageCode'";
+                }
+                $regularProductsSql .=
+                    "where 1
+                    and (p.post_parent = 0 or p.post_parent is null)
+                    and p.post_status = 'publish'
+                    group by p.ID";
+                $regular_products = $wpdb->get_results($regularProductsSql);
+            }
+
+
             $wc_get_template = function_exists( 'wc_get_template' ) ? 'wc_get_template' : 'woocommerce_get_template';
-
             $s = sanitize_text_field($_REQUEST['s']);
-
             $ordering_args = $woocommerce->query->get_catalog_ordering_args( 'title', 'asc' );
 
             $args = array(
@@ -868,13 +1045,13 @@ if(!function_exists('etheme_ajax_search_action')) {
                 'order'               => $ordering_args['order'],
                 'posts_per_page'      => 8,
                 'suppress_filters'    => false,
-                'meta_query'          => array(
-                    array(
-                        'key'     => '_visibility',
-                        'value'   => array( 'search', 'visible' ),
-                        'compare' => 'IN'
-                    )
-                )
+            );
+
+            $args['tax_query'][] = array(
+              'taxonomy' => 'product_visibility',
+              'field'    => 'name',
+              'terms'    => 'hidden',
+              'operator' => 'NOT IN',
             );
 
             if ( $_REQUEST['cat'] ) {
@@ -889,11 +1066,16 @@ if(!function_exists('etheme_ajax_search_action')) {
 
             $products = ( etheme_get_option( 'search_ajax_product' ) ) ? get_posts( $args ) : '' ;
 
-            if ( ! empty($products) ) {
+            if ( ! empty( $products) ) {
+
                 ob_start();
 
                 foreach ( $products as $post ) {
                     setup_postdata( $post );
+                    $product = wc_get_product( $post->ID );
+
+                    if ( ! $product->is_visible() ) continue;
+                   
                     $wc_get_template( 'content-widget-product.php' );
                 }
 
@@ -905,6 +1087,50 @@ if(!function_exists('etheme_ajax_search_action')) {
             }
 
             wp_reset_postdata();
+
+            /* get sku results */
+            
+            if ( ( !empty( $regular_products ) || !empty( $variations ) ) && etheme_get_option('search_by_sku') ) {
+
+                $result['status'] = 'success';
+                if ( empty($products) ) {
+                    $result['html'] .= '<div class="product-ajax-list product-sku-ajax-list">';
+                    $result['html'] .= '<h3 class="search-results-title">' . esc_html__('Products found', 'xstore') . '<a href="' . esc_url( home_url() ) . '/?s='. $s .'&post_type=product">' . esc_html__('View all', 'xstore' ) . '</a></h3>';
+                    $result['html'] .= '<ul>';
+                }
+
+                $products = array_merge($variations, $regular_products);
+
+                $arrayID = array(); 
+                foreach ($products as $object) { 
+                    array_push($arrayID, $object->post_id); 
+                } 
+                $arrayID = array_unique($arrayID); 
+
+                $newObjects = array(); 
+                foreach ($arrayID as $id) { 
+                    foreach ($products as $object) { 
+                        if ($object->post_id == $id) { 
+                            array_push($newObjects, $object); 
+                            break; 
+                        } 
+                    } 
+                }
+
+                foreach ( $newObjects as $product ) {
+                    $_product = wc_get_product( $product->post_id );
+
+                        $result['html'] .= '<li>';
+                            $result['html'] .= '<a href="'.get_the_permalink($product->post_id).'" title="'.get_the_title($product->post_id).'" class="product-list-image">';
+                                $result['html'] .= get_the_post_thumbnail($product->post_id);
+                            $result['html'] .='</a>';
+                            $result['html'] .= '<p class="product-title"><a href="'.get_the_permalink($product->post_id).'" title="'.get_the_title($product->post_id).'">'.get_the_title($product->post_id).'</a></p>';
+                            $result['html'] .= '<div class="price">'.$_product->get_price_html().'</div>';
+                        $result['html'] .= '</li>';
+                }            
+
+                $result['html'] .= '</ul></div>';                  
+            }
 
 
             /* get posts results */
@@ -923,19 +1149,14 @@ if(!function_exists('etheme_ajax_search_action')) {
 
             if ( !empty( $posts ) ) {
                 ob_start();
-
                 foreach ( $posts as $post ) {
-                    setup_postdata( $post );
                     ?>
                         <li>
-                            <?php if ( has_post_thumbnail($post->ID) ): ?>
-                                <a href="<?php the_permalink($post->ID); ?>" class="post-list-image">
-                                    <?php echo get_the_post_thumbnail( $post->ID, 'small' ); ?>
-                                </a>
-                            <?php endif ?>
-                            <h4><a href="<?php the_permalink($post->ID) ?>"><?php echo get_the_title($post->ID); ?></a></h4>
-                            <span class="post-date"><?php echo get_the_time(get_option('date_format'), $post); ?></span>
+                            <a href="<?php echo get_the_permalink( $post->ID ); ?>" class="post-list-image"><?php echo get_the_post_thumbnail( $post->ID );?></a>
+                            <p class="post-title"><a href="<?php echo get_the_permalink( $post->ID ); ?>"><?php echo get_the_title( $post->ID ) ?></a></p>
+                            <span class="post-date"><?php echo get_the_date( '',$post->ID ); ?></span>
                         </li>
+  
                     <?php
                 }
 
@@ -945,19 +1166,21 @@ if(!function_exists('etheme_ajax_search_action')) {
                 $result['html'] .= '<ul>' . ob_get_clean() . '</ul>';
                 $result['html'] .= '</div>';
             }
-
             wp_reset_postdata();
 
-            if ( empty( $products ) && empty( $posts ) ) {
+            if ( empty( $products ) && empty( $posts ) && empty( $regular_products ) && empty( $variations ) ) {
                 $result['status'] = 'error';
                 $result['html'] = '<div class="empty-category-block">';
                 $result['html'] .= '<h3>' . esc_html__( 'No results were found', 'xstore' ) . '</h3>';
                 $result['html'] .= '<p class="not-found-info">' . esc_html__( 'We invite you to get acquainted with an assortment of our site. Surely you can find something for yourself!', 'xstore' ). '</p>';
                 $result['html'] .= '</div>';
             }
-        }
 
-        echo json_encode($result);
+            wp_reset_postdata();
+
+       }
+
+         echo json_encode($result);
 
         die();
     }
@@ -1023,7 +1246,8 @@ if( ! function_exists('etheme_login_facebook') ) {
             return;
         }
 
-        $account_url    = wc_get_page_permalink('myaccount');
+        $page = get_option('etheme_fb_login');
+        $account_url    = wc_get_page_permalink($page);
         $security_salt  = apply_filters('et_facebook_salt', '2NlBUibcszrVtNmDnxqDbwCOpLWq91eatIz6O1O');
         $app_id         = etheme_get_option('facebook_app_id');
         $app_secret     = etheme_get_option('facebook_app_secret');
@@ -1114,7 +1338,10 @@ if( ! function_exists('etheme_faceboook_login_button') ) {
 
         if( empty( $app_secret ) || empty( $app_id ) ) return;
 
-        $facebook_login_url = add_query_arg('facebook', 'login', wc_get_page_permalink('myaccount'));
+        $page = ( is_checkout() ) ? 'checkout' : 'myaccount';
+        update_option( 'etheme_fb_login', $page );
+
+        $facebook_login_url = add_query_arg( 'facebook', 'login', wc_get_page_permalink( $page ) );
         echo '<div class="et-facebook-login-wrapper"><a href="' . esc_url( $facebook_login_url ) . '" class="et-facebook-login-button"><i class="fa fa-facebook"></i> ' . esc_html__('Login / Register with Facebook', 'xstore') . '</a></div>';
     }
 }
@@ -1124,9 +1351,11 @@ if( ! function_exists('etheme_faceboook_login_button') ) {
 // ! Get activated theme
 // **********************************************************************//
 
-if(!function_exists('etheme_is_activated')) {
+if(!function_exists('etheme_activated_theme')) {
     function etheme_activated_theme() {
-        return get_option( 'xtheme_activated_theme', false );
+        $activated_data = get_option( 'etheme_activated_data' );
+        $theme = ( isset( $activated_data['theme'] ) && ! empty( $activated_data['theme'] ) ) ? $activated_data['theme'] : false ;
+        return $theme;
     }
 
 }
@@ -1138,9 +1367,69 @@ if(!function_exists('etheme_is_activated')) {
 
 if(!function_exists('etheme_is_activated')) {
     function etheme_is_activated() {
-        //if ( etheme_activated_theme() != ETHEME_PREFIX ) return false;
-        if ( ! etheme_activated_theme() ) update_option( 'xtheme_activated_theme', ETHEME_PREFIX );
-        return get_option( 'xtheme_is_activated', false );
+        if ( etheme_activated_theme() != ETHEME_PREFIX ) return false;
+        if ( get_option( 'xtheme_is_activated', false ) && ! get_option( 'etheme_is_activated' ) ) update_option( 'etheme_is_activated', true );
+        return get_option( 'etheme_is_activated', false );
+    }
+}
+
+
+// **********************************************************************//
+// ! Setup item data for old theme versions
+// **********************************************************************//
+
+add_action( 'admin_init', 'etheme_set_item' );
+if ( ! function_exists( 'etheme_set_item' ) ) :
+    function etheme_set_item(){
+        if ( ! etheme_is_activated() ) return;
+        $item_data = get_option( 'etheme_activated_data' );
+        if ( ! empty( $item_data['item'] ) ) return;
+
+        if( isset( $item_data['purchase'] ) && ! empty( $item_data['purchase'] ) ) {
+            $code = trim( $item_data['purchase'] );
+
+            if( empty( $code ) ) return;
+
+            $theme_id = 15780546;
+            $api = ETHEME_API;
+
+            $domain = get_option('siteurl'); //or home
+            $domain = str_replace('http://', '', $domain);
+            $domain = str_replace('https://', '', $domain);
+            $domain = str_replace('www', '', $domain); //add the . after the www if you don't want it
+            $domain = urlencode($domain);
+
+            $response = wp_remote_get( $api . 'activate/' . $code . '?envato_id='. $theme_id .'&domain=' . $domain );
+            $response_code = wp_remote_retrieve_response_code( $response );
+
+            if( $response_code != '200' ) return;
+            
+            $data = json_decode( wp_remote_retrieve_body($response), true );
+
+            if( isset( $data['error'] ) ) return;
+            if( ! $data['verified'] ) return;
+
+            foreach ( $data as $key => $value ) {
+               $item_data['item'][$key] = $value;
+            }
+
+            update_option( 'etheme_activated_data', maybe_unserialize( $item_data ) );
+        }
+        return;
+    }
+endif;
+
+
+// **********************************************************************//
+// ! Check support date
+// **********************************************************************//
+
+if ( ! function_exists( 'etheme_support_date' ) ) {
+    function etheme_support_date(){
+        $data = get_option( 'etheme_activated_data' );
+        $support_date = strtotime( $data['item']['supported_until'] );
+        $current_date = strtotime( date( "Y-m-d" ) );
+        return $support_date > $current_date;
     }
 }
 
@@ -1490,5 +1779,37 @@ if(!function_exists('etheme_photoswipe_template')) {
         <?php
     }
 }
+
+
+if ( ! function_exists( 'etheme_stock_taxonomy' ) ) :
+function etheme_stock_taxonomy( $term_id = false, $taxonomy = 'product_cat' ) {
+    if ( $term_id === false ) return false;
+    $args = array(
+        'post_type'         => 'product',
+        'posts_per_page'    => -1,
+        'tax_query'         => array( 
+            array(
+                'taxonomy'  => $taxonomy,
+                'field'     => 'term_id',
+                'terms'     => $term_id
+            ),
+        ),
+    );
+
+    $cat_prods = get_posts( $args );
+    $i = 0;
+
+    foreach ( $cat_prods as $single_prod ) { 
+        $product = wc_get_product( $single_prod->ID );
+        if ( $product->is_in_stock() === true )  {
+            $i++;
+        }
+    }
+
+    return $i;
+}
+endif;
+
+
 
 ?>

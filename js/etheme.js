@@ -46,6 +46,7 @@ var etTheme;
             this.headerSimpleHover();
             this.hamburgerIcon();
             this.scrollMenu();
+            this.NavbarHeader();
 
             if( etConfig.woocommerce ) {
                 this.wishlist();
@@ -543,14 +544,74 @@ var etTheme;
 
         },
 
+        NavbarHeader: function($location){
+
+            // **********************************************************************//
+            // ! Get header navbar data
+            // **********************************************************************//
+
+            if ( ! $( 'body' ).hasClass( 'shop-top-bar' ) || $(window).width() > 992 && $location !='fixed' ) return; 
+
+            var navbar = {};
+
+            navbar['out'] = '';
+
+            $( '.navbar-header' ).each( function(e){
+
+                // Get wishlist
+                if ( $(this).find( '.et-wishlist-widget' ).html() != null ) {
+                    navbar['wishlist'] = '<div class=" asdasd ' + $(this).find( '.et-wishlist-widget' ).attr( 'class' ) + '">';
+                    navbar['wishlist'] += $(this).find( '.et-wishlist-widget' ).html();
+                    navbar['wishlist'] += '</div>';
+                }
+
+                // Get search
+                if ( $(this).find( '.header-search' ).html() != null ) {
+                    navbar['search'] = '<div class="' + $(this).find( '.header-search' ).attr( 'class' ) + '">';
+                    navbar['search'] += $(this).find( '.header-search' ).html();
+                    navbar['search'] += '</div>';
+                }
+
+                // Get search for unstandard header types
+                if ( ( $( 'body' ).hasClass( 'global-header-center' ) || $( 'body' ).hasClass( 'global-header-center3' ) || $( 'body' ).hasClass( 'global-header-two-rows' ) || $( 'body' ).hasClass( 'global-header-advanced' ) ) && $(this).parents().find( '.header-search' ).html() != null ) {
+                    navbar['search'] = '<div class="header-search act-full-width">';
+                    navbar['search'] += $(this).parents().find( '.header-search' ).html();
+                    navbar['search'] += '</div>';
+                }
+
+                // Get cart
+                if ( $(this).find( '.shopping-container' ).html() != null ) {
+                    navbar['cart'] = '<div class="' + $(this).find( '.shopping-container' ).attr( 'class' ) + '">';
+                    navbar['cart'] += $(this).find( '.shopping-container' ).html();
+                    navbar['cart'] += '</div>';
+                }
+
+            });
+
+            if ( $location != 'fixed' ) $( '.navbar-header.show-in-header' ).remove();
+
+            // Create out data
+            navbar['out'] += ( $location != 'fixed' ) ? '<div class="navbar-header show-in-header">' : '';
+            navbar['out'] += ( navbar['search'] != null ) ? navbar['search'] : '';
+            navbar['out'] += ( navbar['wishlist'] != null ) ? navbar['wishlist'] : '';
+            navbar['out'] += ( navbar['cart'] != null ) ? navbar['cart'] : '';
+            navbar['out'] += ( $location != 'fixed' ) ? '</div>' : '';
+
+            // Do it for fixed header
+            if ( $location == 'fixed' ) return navbar['out'];
+
+            // Do it for mobile menu
+            $( 'header.main-header .navbar-toggle' ).before( navbar['out'] );
+        },
+
         fixedHeader: function() {
-            
-            if ( $( 'body' ).hasClass( 'et-fixed-disable' ) ) return;
-            if ( $( 'body' ).hasClass( 'et-vertical-fixed' ) && $(window).width() > 992 ) return;
 
             // **********************************************************************//
             // ! Fixed header
             // **********************************************************************//
+            
+            if ( $( 'body' ).hasClass( 'et-fixed-disable' ) ) return;
+            if ( $( 'body' ).hasClass( 'et-vertical-fixed' ) && $(window).width() > 992 ) return;
 
             var header = $('.header-wrapper'),
                 logo = header.find('.header-logo').html(),
@@ -562,6 +623,11 @@ var etTheme;
                 color = $('.page-wrapper').data('fixed-color'),
                 startOffset = 240,
                 menuHtml;
+
+            // Do it for non standard navbar
+            if ( $( 'body' ).hasClass( 'shop-top-bar' ) && ! $( 'body' ).hasClass( 'global-header-hamburger-icon' ) ){
+                navbar = this.NavbarHeader( 'fixed' );
+            }
 
             if( menuRight.length > 0 ) {
                 menuHtml = menu.html() + menuRight.html();
@@ -614,7 +680,7 @@ var etTheme;
         },
         resizeVideo: function() {
 
-            $(document).find('iframe[src*="youtube.com"], iframe[src*="vimeo.com"]').each(function() {
+            $(document).find('.single-product iframe[src*="youtube.com"], .single-product iframe[src*="vimeo.com"]').each(function() {
                 var video = $(this);
                 video.attr('width', '100%');
                 var videoWidth = video.width();
@@ -990,6 +1056,10 @@ var etTheme;
                     init: function(el) {
                         methods.el = el;
 
+                        if ( $(window).width() <= 1024 ) {
+                            methods.responsive();
+                        }
+
                         $(window).resize(function() {
                             if ( ! $( 'body' ).hasClass( 'et-vertical-fixed' ) ) methods.setOffsets();
                             methods.sideMenu();
@@ -1007,7 +1077,20 @@ var etTheme;
                                 tooltip.html(newContent);
                             }
                         });
-
+                    },
+                    responsive: function(){
+                        $( '.menu-main-container li a' ).on( 'click', function(e){
+                            if ( ! $(this).parent('li').hasClass( 'menu-item-has-children' ) ) return;
+                            if ( ! $(this).is('[q]') ) {
+                                $(this).attr( 'q', 0 );
+                            } 
+                            var q = $(this).attr( 'q' );
+                            if ( q < 1 ) {
+                                q++;
+                                $(this).attr( 'q', q );
+                                e.preventDefault();
+                            }
+                        });
                     },
                     setOffsets: function() {
 
@@ -1159,6 +1242,9 @@ var etTheme;
                     }
                 });
 
+                // fix for brands list
+                //if ( ! $( 'body' ).hasClass( 'page-template-portfolio' ) ) $grid.isotope( 'cellsByRow' );
+
                 // layout Isotope after each image loads
                 $grid.imagesLoaded().progress( function() {
                     $grid.isotope('layout');
@@ -1209,6 +1295,23 @@ var etTheme;
             var $container = $('.isotope-container');
 
             var $isotope = $('.et-isotope');
+
+            $isotope.each(function() {
+
+                var $grid = $(this).isotope({
+                    itemSelector: '.et-isotope-item,.product-category.category-grid',
+                    isOriginLeft: ! $('body').hasClass('rtl'),
+                    masonry: {
+                        //columnWidth: '.grid-sizer'
+                    }
+                });
+
+                // layout Isotope after each image loads
+                $grid.imagesLoaded().progress( function() {
+                    $grid.isotope('layout').trigger('layout-changed');
+                });
+
+            });
 
             $isotope.each(function() {
 
@@ -1595,7 +1698,7 @@ var etTheme;
 
             var leftTabs = $('.left-bar, .right-bar');
             var newTitles;
-            var time = 250;
+            var time = 50;
 
             leftTabs.each(function(){
                 var $this = $(this);
@@ -1650,9 +1753,12 @@ var etTheme;
                     if(tabOpened(tabId)){
                         //closeTab($this, tabId, false);
                     }else{
-                        closeAllTabs($this);
+                        var reopen = ( $(this).parents( '.tabs' ).first().find( '.et-tabs-wrapper' ).length > 0 ) ? tabReopen( $(this) ) : '';
+
+                        closeAllTabs( $this, $(this) );
                         setTimeout(function() {
                             openTab($this, tabId);
+                            if ( reopen != '' ) openTab($this, reopen);
                         }, time );
                     }
                 });
@@ -1664,13 +1770,27 @@ var etTheme;
                     if(tabOpened(tabId)){
                         closeTab($this, tabId, false);
                     }else{
-                        closeAllTabs($this);
+                        var reopen = ( $(this).parents( '.tabs' ).first().find( '.et-tabs-wrapper' ).length > 0 ) ? tabReopen( $(this) ) : '';
+
+                        closeAllTabs( $this, $(this) );
                         setTimeout(function() {
                             openTab($this, tabId);
+                            if ( reopen != '' ) openTab($this, reopen);
                         }, time );
                     }
                 });
             });
+
+            var tabReopen = function( tab ) {
+                var reopen = '';
+                tab.parents( '.tabs' ).first().find( '.et-tabs-wrapper .tab-title, .et-tabs-wrapper .tab-title-left' ).each(function(){ 
+                    if ( $(this).hasClass( 'opened' ) ) {
+                        reopen = $(this).attr('id');
+                    }
+                    
+                });
+                return reopen;
+            };
 
             var tabOpened = function(id) {
                 return $('#' + id).hasClass('opened');
@@ -1704,8 +1824,8 @@ var etTheme;
 
             };
 
-            var closeAllTabs = function(tabs) {
-                tabs.find('.tab-title, .tab-title-left').each(function(){
+            var closeAllTabs = function( tabs, curretTab ) {
+                curretTab.parents( '.tabs' ).first().find( '.tab-title, .tab-title-left' ).each(function(){
                     var tabId = $(this).attr('id');
                     if(tabOpened(tabId)) {
                         closeTab(tabs, tabId, true);
@@ -1717,7 +1837,6 @@ var etTheme;
                 contentClass: 'tab-content-scroll',
                 preventPageScrolling: true
             });
-
         },
         categoriesAccordion: function() {
             // **********************************************************************//
@@ -1898,11 +2017,11 @@ var etTheme;
             });
 
             if ( ! $( '.mobile-menu-wrapper' ).hasClass( 'fullscreenMenu' ) ) {
-                 $( ".mobile-menu-wrapper .container" ).nanoScroller({
+                 $( ".mobile-menu-wrapper > .container" ).nanoScroller({
                     contentClass: 'navbar-collapse'
                 });
             } else {
-                $( "#fullscreenMenu .container.fullscreenMenu-container" ).nanoScroller({
+                $( "#fullscreenMenu > .container.fullscreenMenu-container" ).nanoScroller({
                     contentClass: 'fullscreenMenu-collapse'
                 });
             }
@@ -2251,12 +2370,13 @@ var etTheme;
         // ! ScrollMenu
         // **********************************************************************//
         scrollMenu: function(){
-            var scrollMenuInside = jQuery('.header-vertical .item-design-mega-menu > .nav-sublist-dropdown > .container');
-                
+            var scrollMenuInside = jQuery('.header-vertical .item-design-mega-menu > .nav-sublist-dropdown > .container, .menu-wrapper .item-design-mega-menu > .nav-sublist-dropdown > .container');
+            
+
             scrollMenuInside.each(function() {
                 var $this = jQuery(this);
                 var innerContent = $this.find('> ul');
-                    
+                
                 $this.on('mousemove', function(e) {
                    var parentOffset = $this.offset(); 
                    
