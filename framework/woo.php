@@ -89,6 +89,8 @@ if(!function_exists('etheme_template_hooks')) {
 			return 80;
 		}, 30 );
 
+		remove_action( 'woocommerce_cart_is_empty', 'wc_empty_cart_message', 10 );
+
 		// 360 view plugin
 		if( class_exists( 'SmartProductPlugin' ) ) {
 			remove_filter('woocommerce_single_product_image_html', array('SmartProductPlugin', 'wooCommerceImage'), 999, 2 );
@@ -1013,6 +1015,7 @@ if(!function_exists('etheme_cart_items')) {
 				<?php
 				$i = 0;
 				$cart = array_reverse( WC()->cart->get_cart() );
+				do_action( 'woocommerce_before_mini_cart_contents' );
 				foreach ( $cart as $cart_item_key => $cart_item ) {
 					$i++;
 					if( $i > $limit ) continue;
@@ -1025,7 +1028,7 @@ if(!function_exists('etheme_cart_items')) {
 						$thumbnail     = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
 						$product_price = apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
 						?>
-						<li class="<?php echo esc_attr( apply_filters( 'woocommerce_mini_cart_item_class', 'mini_cart_item', $cart_item, $cart_item_key ) ); ?>">
+						<li class="woocommerce-mini-cart-item <?php echo esc_attr( apply_filters( 'woocommerce_mini_cart_item_class', 'mini_cart_item', $cart_item, $cart_item_key ) ); ?>">
 							<?php
 							echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
 								'<a href="%s" class="remove" title="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
@@ -1055,19 +1058,20 @@ if(!function_exists('etheme_cart_items')) {
 						<?php
 					}
 				}
+				do_action( 'woocommerce_mini_cart_contents' );
 				?>
 			</ul>
 
 		<?php else : ?>
 
-			<p class="empty"><?php esc_html_e( 'No products in the cart.', 'xstore' ); ?></p>
+			<p class="woocommerce-mini-cart__empty-message empty"><?php esc_html_e( 'No products in the cart.', 'xstore' ); ?></p>
 
 		<?php endif; ?>
 
 
 		<?php if ( ! WC()->cart->is_empty() ) : ?>
 
-			<div class="cart-widget-subtotal">
+			<div class="cart-widget-subtotal woocommerce-mini-cart__total total">
 				<span class="small-h"><?php echo esc_html__('Cart Subtotal:', 'xstore'); ?></span>
 				<span class="big-coast">
 					<?php echo WC()->cart->get_cart_subtotal(); ?>

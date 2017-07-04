@@ -13,7 +13,7 @@
  * @see 	    https://docs.woothemes.com/document/template-structure/
  * @author  WooThemes
  * @package WooCommerce/Templates
- * @version 2.0.0
+ * @version 3.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,8 +32,8 @@ $empty_cart_content = etheme_get_option('empty_cart_content');
 	<i class="icon-shopping-cart"></i>
 
 	<?php if( empty( $empty_cart_content ) ): ?>
-		<h1 style="text-align: center;"><?php _e('YOUR SHOPPING CART IS EMPTY', 'xstore') ?></h1>
-		<p style="text-align: center;"><?php _e('We invite you to get acquainted with an assortment of our shop. Surely you can find something for yourself!', 'xstore') ?></p>
+		<h1 style="text-align: center;"><?php esc_html_e('YOUR SHOPPING CART IS EMPTY', 'xstore') ?></h1>
+		<p style="text-align: center;"><?php esc_html_e('We invite you to get acquainted with an assortment of our shop. Surely you can find something for yourself!', 'xstore') ?></p>
 	<?php else: ?>
 		<?php echo do_shortcode( $empty_cart_content ); ?>
 	<?php endif; ?>

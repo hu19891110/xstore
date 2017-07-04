@@ -4,7 +4,7 @@
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.0.3
+ * @version     3.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -39,7 +39,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 			if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
 				$product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
 				?>
-				<tr class="<?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
+				<tr class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
 
 
 					<td class="product-name" data-title="<?php esc_attr_e( 'Product', 'xstore' ); ?>">
@@ -91,7 +91,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 								$product_quantity = woocommerce_quantity_input( array(
 									'input_name'  => "cart[{$cart_item_key}][qty]",
 									'input_value' => $cart_item['quantity'],
-									'max_value'   => $_product->backorders_allowed() ? '' : $_product->get_stock_quantity(),
+									'max_value'   => $_product->get_max_purchase_quantity(),
 									'min_value'   => '0'
 								), $_product, false );
 							}

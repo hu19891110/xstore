@@ -12,7 +12,7 @@
  * @see 	    http://docs.woothemes.com/document/template-structure/
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.0.2
+ * @version     3.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -132,24 +132,24 @@ if ( ! $gallery_slider ) {
 
 				$index = 1;
 
-				$columns           = apply_filters( 'woocommerce_product_thumbnails_columns', 4 );
-				$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
-				$full_size_image   = wp_get_attachment_image_src( $post_thumbnail_id, 'full' );
-				$image_title       = get_post_field( 'post_excerpt', $post_thumbnail_id );
-				$placeholder       = has_post_thumbnail() ? 'with-images' : 'without-images';
+                $columns           = apply_filters( 'woocommerce_product_thumbnails_columns', 4 );
+                $post_thumbnail_id = get_post_thumbnail_id( $post->ID );
+                $full_size_image   = wp_get_attachment_image_src( $post_thumbnail_id, 'full' );
+                $placeholder       = has_post_thumbnail() ? 'with-images' : 'without-images';
 
 
 				// **********************************************************************************************
 				// ! Main product image
 				// **********************************************************************************************
 
-				$attributes = array(
-					'title'                   => $image_title,
-					'data-src'                => $full_size_image[0],
-					'data-large_image'        => $full_size_image[0],
-					'data-large_image_width'  => $full_size_image[1],
-					'data-large_image_height' => $full_size_image[2],
-				);
+                $attributes = array(
+                    'title'                   => get_post_field( 'post_title', $post_thumbnail_id ),
+                    'data-caption'            => get_post_field( 'post_excerpt', $post_thumbnail_id ),
+                    'data-src'                => $full_size_image[0],
+                    'data-large_image'        => $full_size_image[0],
+                    'data-large_image_width'  => $full_size_image[1],
+                    'data-large_image_height' => $full_size_image[2],
+                );
 
 				if ( ! $et_zoom && ! $product_photoswipe ) {
 					//$et_zoom_class = '';
@@ -176,15 +176,13 @@ if ( ! $gallery_slider ) {
 
 						$full_size_image = wp_get_attachment_image_src( $attachment_id, 'full' );
 
-						$image_title = esc_attr( get_the_title( $attachment_id ) );
-
 						$attributes = array(
-							'title'                   => $image_title,
-							'data-src'                => $full_size_image[0],
-							'data-large_image'        => $full_size_image[0],
-							'data-large_image_width'  => $full_size_image[1],
-							'data-large_image_height' => $full_size_image[2],
-						);
+                            'title'                   => esc_attr( get_the_title( $attachment_id ) ),
+                            'data-src'                => $full_size_image[0],
+                            'data-large_image'        => $full_size_image[0],
+                            'data-large_image_width'  => $full_size_image[1],
+                            'data-large_image_height' => $full_size_image[2],
+                        );
 
 						$html  = '<div class="images woocommerce-product-gallery woocommerce-product-gallery__wrapper"><div data-thumb="' . get_the_post_thumbnail_url( $attachment_id, 'shop_thumbnail' ) . '" class="' . $et_zoom_class . '"><a href="' . esc_url( $full_size_image[0] ) . '"  data-large="'.esc_url( $full_size_image[0] ).'" data-width="' . esc_attr( $full_size_image[1] ) . '"  data-height="' . esc_attr( $full_size_image[2] ) . '" data-index="'. $index .'" itemprop="image" class="woocommerce-main-image zoom" >';
 
